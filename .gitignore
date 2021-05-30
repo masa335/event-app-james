@@ -26,5 +26,8 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
+# Ignore .env
+/.env
+
 # その他開発メモ
 /development_log.md
