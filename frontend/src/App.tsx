@@ -1,6 +1,9 @@
 import React from 'react';
 import { ChakraProvider, Flex, Heading } from "@chakra-ui/react"
+import { BrowserRouter } from "react-router-dom"
+
 import theme from "./theme/theme"
+import { Router } from './router/router';
 
 
 function App() {
@@ -20,6 +23,9 @@ function App() {
           </Heading>
         </Flex>
       </Flex>
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
     </ChakraProvider>
   );
 }
