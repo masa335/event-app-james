@@ -1,5 +1,6 @@
 import { memo, VFC } from "react";
 import { Route, Switch } from "react-router-dom";
+import { HeaderLayout } from "../components/templates/HeaderLayout";
 
 import { HomeRoutes } from "./HomeRoutes";
 
@@ -10,7 +11,9 @@ export const Router: VFC = memo(() => {
         <Switch>
           {HomeRoutes.map((route) => (
             <Route key={route.path} exact={route.exact} path={route.path}>
-              {route.children}
+              <HeaderLayout>
+                {route.children}
+              </HeaderLayout>
             </Route>
           ))}
         </Switch>

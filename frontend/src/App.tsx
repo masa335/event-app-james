@@ -9,7 +9,7 @@ import { Router } from './router/router';
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <Flex
+      {/* <Flex
         as="nav"
         bg="#76a1b8"
         color="white"
@@ -22,7 +22,7 @@ function App() {
             JAMES
           </Heading>
         </Flex>
-      </Flex>
+      </Flex> */}
       <BrowserRouter>
         <Router />
       </BrowserRouter>
