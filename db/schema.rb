@@ -10,7 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_30_015554) do
+ActiveRecord::Schema.define(version: 2021_06_20_005730) do
+
+  create_table "events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "event_name", null: false
+    t.string "event_category"
+    t.datetime "event_date"
+    t.integer "prefecture_id"
+    t.string "venue"
+    t.text "explanation"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_events_on_user_id"
+  end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "provider", default: "email", null: false
@@ -45,4 +58,5 @@ ActiveRecord::Schema.define(version: 2021_05_30_015554) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "events", "users"
 end

@@ -68,3 +68,7 @@ Metrics/MethodLength:
   Max: 30
   Exclude:
     - "db/migrate/*.rb"
+
+# ハッシュ記法
+HashSyntax:
+  EnforcedStyle: ruby19
