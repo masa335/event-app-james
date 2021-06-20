@@ -72,3 +72,7 @@ Metrics/MethodLength:
 # ハッシュ記法
 HashSyntax:
   EnforcedStyle: ruby19
+
+# クラス定義
+ClassAndModuleChildren:
+  EnforcedStyle: compact
