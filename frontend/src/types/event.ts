@@ -4,7 +4,7 @@ export type Event = {
   event_name: string;
   event_category: string;
   event_date: Date;
-  prefecture_id: string;
+  prefecture_id: number;
   venue: string;
   explanation: string;
 }
