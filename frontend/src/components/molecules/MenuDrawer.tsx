@@ -7,15 +7,19 @@ type Props = {
   onClose: () => void;
   onClickUser: () => void;
   onClickLogin: () => void;
+  onClickCreateEvent: () => void;
 };
 
 export const MenuDrawer: VFC<Props> = memo((props) => {
-  const { isOpen, onClose, onClickUser, onClickLogin } = props;
+  const { isOpen, onClose, onClickUser, onClickLogin, onClickCreateEvent } = props;
   return (
     <Drawer placement="left" size="xs" onClose={onClose} isOpen={isOpen}>
       <DrawerOverlay>
         <DrawerContent>
           <DrawerBody as="nav" p={0} bg="gray.100">
+            <Button w="100%" onClick={onClickCreateEvent}>
+              イベント作成
+            </Button>
             <Button w="100%" onClick={onClickUser}>
               アカウント
             </Button>

@@ -11,6 +11,8 @@ export const Header: VFC = memo(() => {
 
   const onClickHome = useCallback(() => history.push("/"),[]);
 
+  const onClickCreateEvent = useCallback(() => history.push("/create"),[]);
+
   const onClickUser = useCallback(() => history.push("/user"),[]);
 
   const onClickLogin = useCallback(() => history.push("/login"),[]);
@@ -37,6 +39,9 @@ export const Header: VFC = memo(() => {
             flexGrow={2}
           >
             <Box pr={4}>
+              <Link onClick={onClickCreateEvent}>イベント作成</Link>
+            </Box>
+            <Box pr={4}>
               <Link onClick={onClickUser}>アカウント</Link>
             </Box>
             <Box pr={4}>
@@ -50,6 +55,7 @@ export const Header: VFC = memo(() => {
           onClose={onClose} 
           onClickUser={onClickUser} 
           onClickLogin={onClickLogin}
+          onClickCreateEvent={onClickCreateEvent}
         />
       </>
   );
