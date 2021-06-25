@@ -3,12 +3,18 @@ import { Login } from "../components/pages/Login";
 import { Page404 } from "../components/pages/Page404";
 import { User } from "../components/pages/User";
 import { CreateEvent } from "../components/pages/CreateEvent"
+import { Signup } from "../components/pages/Signup";
 
 export const HomeRoutes = [
   {
     path: "/",
     exact: true,
     children: <Home />
+  },
+  {
+    path: "/signup",
+    exact: false,
+    children: <Signup />
   },
   {
     path: "/login",
