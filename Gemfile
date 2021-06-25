@@ -33,6 +33,9 @@ group :development, :test do
   gem 'rubocop'
   gem 'rubocop-rails'
   gem 'dotenv-rails'
+  gem 'ruby-debug-ide', '~> 0.7.2'
+  gem 'debase', '~> 0.2.4.1'
+  gem 'pry-rails', '~> 0.3.9'
 end
 
 group :development do
