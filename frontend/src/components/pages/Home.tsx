@@ -9,14 +9,14 @@ export const Home: VFC = memo(() => {
   const {getEvents, events, loading} = useAllEvents();
 
   //ページを開いた時にだけ実行する
-  useEffect(() => getEvents(),[])
+  useEffect(() => getEvents(),[getEvents])
 
   return (
     <>
     <Heading as="h3" size="lg" pl="30px">新着イベント</Heading>
-    <Wrap pr={{ base:4, md: 8 }} pl={{ base:4, md: 8 }} pb={{ base:4, md: 8 }} pt="5px">
+    <Wrap pr={{ base:4, md: 8 }} pl={{ base:4, md: 8 }} pb={{ base:4, md: 8 }} pt="5px" justify="space-around">
       {events.map((event) => (
-        <WrapItem>
+        <WrapItem key={event.id}>
           <EventCard
             imageUrl="https://source.unsplash.com/random"
             eventName={event.event_name}

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import { useCallback, useState } from "react";
 import { useHistory } from "react-router-dom";
