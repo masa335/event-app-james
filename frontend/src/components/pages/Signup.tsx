@@ -1,7 +1,11 @@
 import { ChangeEvent, memo, useState, VFC } from "react";
 import { Button, FormControl, FormLabel, Input, Center, Stack } from "@chakra-ui/react"
+import { useSignup } from "../../hooks/useSignup";
+import { SignupParams } from "../../types/signup";
 
 export const Signup: VFC = memo(() => {
+  const { signup, loading } = useSignup();
+
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -20,6 +24,17 @@ export const Signup: VFC = memo(() => {
   const onChangePasswordConfirmation = (e: ChangeEvent<HTMLInputElement>) => {
     setPasswordConfirmation(e.target.value);
   };
+
+  //リクエストパラメーター
+  const params: SignupParams = {
+    name: name,
+    email: email,
+    password: password,
+    password_confirmation: passwordConfirmation,
+    confirm_success_url: "http://192.168.10.2:3000/"
+  };
+
+  const onClickSignup = () => signup(params);
 
   return (
     <Center my="30px" mx={{base: "40px", md: "200px", lg: "485px"}}>
@@ -40,7 +55,7 @@ export const Signup: VFC = memo(() => {
           <FormLabel fontSize="md">パスワード再確認</FormLabel>
           <Input value={passwordConfirmation} onChange={onChangePasswordConfirmation} border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
         </FormControl>
-        <Button colorScheme="blue">サインアップ</Button>
+        <Button onClick={onClickSignup} colorScheme="blue">サインアップ</Button>
       </Stack>
     </Center>
   );
