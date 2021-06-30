@@ -1,62 +1,78 @@
-import { ChangeEvent, memo, useState, VFC } from "react";
-import { Button, FormControl, FormLabel, Input, Center, Stack } from "@chakra-ui/react"
+import { memo, VFC } from "react";
+import { Button, FormControl, FormLabel, Input, Center, Stack, FormErrorMessage } from "@chakra-ui/react"
 import { useSignup } from "../../hooks/useSignup";
 import { SignupParams } from "../../types/signup";
+import { useForm } from "react-hook-form";
+import { useRef } from "react";
 
 export const Signup: VFC = memo(() => {
   const { signup, loading } = useSignup();
+  const { register, handleSubmit, watch, formState: { errors } } = useForm({ mode: "all" });
 
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const password = useRef({});
+  password.current = watch("password", "");
 
-
-  const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
+  const onSubmit = (params: SignupParams) => {
+    params.confirm_success_url = "http://192.168.10.2:3000/"
+    signup(params);
   };
-  const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-  };
-  const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
-  const onChangePasswordConfirmation = (e: ChangeEvent<HTMLInputElement>) => {
-    setPasswordConfirmation(e.target.value);
-  };
-
-  //リクエストパラメーター
-  const params: SignupParams = {
-    name: name,
-    email: email,
-    password: password,
-    password_confirmation: passwordConfirmation,
-    confirm_success_url: "http://192.168.10.2:3000/"
-  };
-
-  const onClickSignup = () => signup(params);
 
   return (
-    <Center my="30px" mx={{base: "40px", md: "200px", lg: "485px"}}>
-      <Stack spacing={4} w="100%">
-        <FormControl>
-          <FormLabel fontSize="md">メール</FormLabel>
-          <Input value={email} onChange={onChangeEmail} border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
-        </FormControl>
-        <FormControl>
-          <FormLabel fontSize="md">ニックネーム</FormLabel>
-          <Input value={name} onChange={onChangeName} border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
-        </FormControl>
-        <FormControl>
-          <FormLabel type="date" fontSize="md">パスワード</FormLabel>
-          <Input value={password} onChange={onChangePassword} border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
-        </FormControl>
-        <FormControl>
-          <FormLabel fontSize="md">パスワード再確認</FormLabel>
-          <Input value={passwordConfirmation} onChange={onChangePasswordConfirmation} border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
-        </FormControl>
-        <Button onClick={onClickSignup} colorScheme="blue">サインアップ</Button>
-      </Stack>
-    </Center>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Center my="30px" mx={{base: "40px", md: "200px", lg: "485px"}}>
+          <Stack spacing={4} w="100%">
+            <FormControl isInvalid={errors.email}>
+              <FormLabel fontSize="md">メール</FormLabel>
+              <Input 
+              id="email"
+              type="text"
+              {...register("email",{ required: "メールは必須入力です" })}
+              border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
+              <FormErrorMessage>
+                {errors.email && errors.email.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isInvalid={errors.name}>
+              <FormLabel fontSize="md">ニックネーム</FormLabel>
+              <Input 
+              id="name"
+              type="text"
+              {...register("name",{ required: "ニックネームは必須入力です" })}
+              border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
+              <FormErrorMessage>
+                {errors.name && errors.name.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isInvalid={errors.password}>
+              <FormLabel fontSize="md">パスワード</FormLabel>
+              <Input 
+              id="password"
+              type="password"
+              {...register("password",{ 
+                required: "パスワードは必須入力です"
+              })}
+              border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
+              <FormErrorMessage>
+                {errors.password && errors.password.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl isInvalid={errors.password_confirmation}>
+              <FormLabel fontSize="md">パスワード再確認</FormLabel>
+              <Input 
+              id="password_confirmation"
+              type="password"
+              {...register("password_confirmation",{ 
+                required: "パスワード再確認は必須入力です",
+                validate: value => value === password.current || "パスワードが一致しません"
+              })}
+              border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
+              <FormErrorMessage>
+                {errors.password_confirmation && errors.password_confirmation.message}
+              </FormErrorMessage>
+            </FormControl>
+            <Button type="submit" colorScheme="blue">サインアップ</Button>
+          </Stack>
+      </Center>
+    </form>
   );
 });
