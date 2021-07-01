@@ -7,13 +7,13 @@ import { useRef } from "react";
 
 export const Signup: VFC = memo(() => {
   const { signup, loading } = useSignup();
-  const { register, handleSubmit, watch, formState: { errors } } = useForm({ mode: "all" });
+  const { register, handleSubmit, watch, formState, formState: { errors } } = useForm({ mode: "all" });
 
   const password = useRef({});
   password.current = watch("password", "");
 
   const onSubmit = (params: SignupParams) => {
-    params.confirm_success_url = "http://192.168.10.2:3000/"
+    params.confirm_success_url = "http://192.168.10.2:3000/";
     signup(params);
   };
 
@@ -70,7 +70,7 @@ export const Signup: VFC = memo(() => {
                 {errors.password_confirmation && errors.password_confirmation.message}
               </FormErrorMessage>
             </FormControl>
-            <Button type="submit" colorScheme="blue">サインアップ</Button>
+            <Button type="submit" colorScheme="blue" disabled={!formState.isValid || loading} isLoading={loading}>サインアップ</Button>
           </Stack>
       </Center>
     </form>
