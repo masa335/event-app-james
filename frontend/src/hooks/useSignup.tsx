@@ -2,7 +2,7 @@
 import axios from "axios";
 import { useCallback, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { SignupParams } from "../types/signup";
+import { SignupParams } from "../types/signupParams";
 import { useMessage } from "./useMessage";
 
 axios.defaults.baseURL = 'http://192.168.10.2:3001';

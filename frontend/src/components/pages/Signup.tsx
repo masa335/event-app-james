@@ -1,7 +1,7 @@
 import { memo, VFC } from "react";
 import { Button, FormControl, FormLabel, Input, Center, Stack, FormErrorMessage } from "@chakra-ui/react"
 import { useSignup } from "../../hooks/useSignup";
-import { SignupParams } from "../../types/signup";
+import { SignupParams } from "../../types/signupParams";
 import { useForm } from "react-hook-form";
 import { useRef } from "react";
 

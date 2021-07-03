@@ -1,5 +1,5 @@
 import { Home } from "../components/pages/Home";
-import { Login } from "../components/pages/Login";
+import { Signin  } from "../components/pages/Signin";
 import { Page404 } from "../components/pages/Page404";
 import { User } from "../components/pages/User";
 import { CreateEvent } from "../components/pages/CreateEvent"
@@ -19,7 +19,7 @@ export const HomeRoutes = [
   {
     path: "/login",
     exact: false,
-    children: <Login />
+    children: <Signin />
   },
   {
     path: "/user",
