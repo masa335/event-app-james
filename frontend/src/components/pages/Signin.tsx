@@ -1,4 +1,4 @@
-import { memo, useRef, VFC } from "react";
+import { memo, VFC } from "react";
 import { useForm } from "react-hook-form";
 import { Button, FormControl, FormLabel, Input, Center, Stack, Link, Heading } from "@chakra-ui/react"
 
@@ -7,7 +7,7 @@ import { SigninParams } from "../../types/signinParams";
 
 export const Signin: VFC = memo(() => {
   const { signin, loading } = useSignin();
-  const { register, handleSubmit, watch, formState, formState: { errors } } = useForm({ mode: "all" });
+  const { register, handleSubmit, formState } = useForm({ mode: "all" });
 
   const onSubmit = (params: SigninParams) => {
     signin(params);

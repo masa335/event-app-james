@@ -4,9 +4,14 @@ import { useAllEvents } from "../../hooks/useAllEvents";
 
 import { Wrap, WrapItem, Heading } from "@chakra-ui/react";
 import { EventCard } from "../organisms/event/eventCard";
+import { useRecoilValue } from "recoil";
+import { authState } from "../../recoil/atoms/Auth";
 
 export const Home: VFC = memo(() => {
   const {getEvents, events, loading} = useAllEvents();
+  const auth = useRecoilValue(authState);
+  console.log(auth.currentUser?.name);
+  console.log(auth.isSignedIn);
 
   //ページを開いた時にだけ実行する
   useEffect(() => getEvents(),[getEvents])

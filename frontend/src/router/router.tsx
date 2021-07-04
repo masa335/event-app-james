@@ -1,10 +1,16 @@
-import { memo, VFC } from "react";
+import { memo, useEffect, VFC } from "react";
 import { Route, Switch } from "react-router-dom";
 import { HeaderLayout } from "../components/templates/HeaderLayout";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 import { HomeRoutes } from "./HomeRoutes";
 
 export const Router: VFC = memo(() => {
+  const { currentUser } = useCurrentUser();
+  useEffect(() => {
+    currentUser();
+  }, []);
+
   return (
     <Switch>
       <Route path="/" render={({ match: { url } }) => (
