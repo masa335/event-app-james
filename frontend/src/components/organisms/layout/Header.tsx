@@ -2,12 +2,19 @@ import { useDisclosure } from "@chakra-ui/hooks";
 import { Box, Flex, Heading, Link } from "@chakra-ui/layout";
 import { memo, useCallback, VFC } from "react";
 import { useHistory } from "react-router";
+import { useRecoilValue } from "recoil";
+import { useSignout } from "../../../hooks/useSignout";
+import { authState } from "../../../recoil/atoms/Auth";
 import { MenuIconButton } from "../../atoms/button/MenuIconButton";
 import { MenuDrawer } from "../../molecules/MenuDrawer";
 
 export const Header: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const history = useHistory();
+  const { signout, loading } = useSignout();
+
+  const auth = useRecoilValue(authState);
+  const isSignedIn = auth.isSignedIn;
 
   const onClickHome = useCallback(() => history.push("/"),[history]);
 
@@ -16,7 +23,7 @@ export const Header: VFC = memo(() => {
   const onClickUser = useCallback(() => history.push("/user"),[history]);
 
   const onClickLogin = useCallback(() => history.push("/login"),[history]);
-  
+
   return (
     <>
       <Flex
@@ -45,7 +52,11 @@ export const Header: VFC = memo(() => {
               <Link onClick={onClickUser}>アカウント</Link>
             </Box>
             <Box pr={4}>
-              <Link onClick={onClickLogin}>ログイン</Link>
+              {isSignedIn ? (
+                <Link onClick={signout}>ログアウト</Link>
+              ) : (
+                <Link onClick={onClickLogin}>ログイン</Link>
+              )}
             </Box>
           </Flex>
           <MenuIconButton onOpen={onOpen}/>
