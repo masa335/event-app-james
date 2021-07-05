@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import { useCallback, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { SigninParams } from "../types/signinParams";
+import { useCurrentUser } from "./useCurrentUser";
 import { useMessage } from "./useMessage";
 
 axios.defaults.baseURL = 'http://192.168.10.2:3001';
@@ -11,6 +12,7 @@ axios.defaults.baseURL = 'http://192.168.10.2:3001';
 export const useSignin = () => {
   const { showMessage } = useMessage();
   const history = useHistory();
+  const { currentUser } = useCurrentUser();
 
   const [loading, setLoading] = useState(false);
 
@@ -25,8 +27,11 @@ export const useSignin = () => {
       Cookies.set("_client", res.headers["client"]);
       Cookies.set("_uid", res.headers["uid"]);
 
+      //グローバルステートを更新
+      currentUser();
+
       showMessage({ title: "ログインしました", status: "success" });
-      history.push("/");
+      history.push("/")
     })
     .catch(() => {
       showMessage({ title: "ログイン中にエラーが発生しました", status: "error" });

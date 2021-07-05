@@ -22,7 +22,7 @@ export const useCurrentUser = () => {
         "uid": Cookies.get("_uid")
       }})
       .then((res) => {
-        setAuth({isSignedIn: true, currentUser: res.data.current_user});
+        setAuth({loading: false, isSignedIn: true, currentUser: res.data.current_user});
       })
       .catch((err) => {
         console.log(err);

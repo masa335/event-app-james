@@ -34,8 +34,8 @@ export const useSignout = () => {
       Cookies.remove("_client")
       Cookies.remove("_uid")
 
-      //グローバルステートを初期値に戻す
-      setAuth({isSignedIn: false, currentUser: undefined});
+      //グローバルステートを更新
+      setAuth({loading: false, isSignedIn: false, currentUser: undefined});
 
       showMessage({ title: "ログアウトしました", status: "success" });
       history.push("/");

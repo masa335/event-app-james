@@ -16,12 +16,14 @@ type authUser = {
 };
 
 export type Auth = {
+  loading: boolean
   isSignedIn: boolean;
-  currentUser: authUser | undefined;
+  currentUser?: authUser | undefined;
 };
 
 //グルーバルステートの初期値
 const initialAuth: Auth = {
+  loading: true,
   isSignedIn: false,
   currentUser: undefined
 };

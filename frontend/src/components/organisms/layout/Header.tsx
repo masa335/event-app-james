@@ -11,10 +11,11 @@ import { MenuDrawer } from "../../molecules/MenuDrawer";
 export const Header: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const history = useHistory();
-  const { signout, loading } = useSignout();
+  const { signout } = useSignout();
 
   const auth = useRecoilValue(authState);
   const isSignedIn = auth.isSignedIn;
+  const loading = auth.loading;
 
   const onClickHome = useCallback(() => history.push("/"),[history]);
 
@@ -45,18 +46,22 @@ export const Header: VFC = memo(() => {
             display={{ base: "none", md: "flex" }}
             flexGrow={2}
           >
+            {!loading && isSignedIn &&
+              <Box pr={4}>
+                <Link onClick={onClickCreateEvent}>イベント作成</Link>
+              </Box>
+            }
+            {!loading && isSignedIn &&
+              <Box pr={4}>
+                <Link onClick={onClickUser}>アカウント</Link>
+              </Box>
+            }
             <Box pr={4}>
-              <Link onClick={onClickCreateEvent}>イベント作成</Link>
-            </Box>
-            <Box pr={4}>
-              <Link onClick={onClickUser}>アカウント</Link>
-            </Box>
-            <Box pr={4}>
-              {isSignedIn ? (
+              {!loading && (isSignedIn ? (
                 <Link onClick={signout}>ログアウト</Link>
               ) : (
                 <Link onClick={onClickLogin}>ログイン</Link>
-              )}
+              ))}
             </Box>
           </Flex>
           <MenuIconButton onOpen={onOpen}/>
