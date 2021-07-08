@@ -1,15 +1,15 @@
 import { memo, useEffect, VFC } from "react";
-import { Heading, Box, Image, Text } from "@chakra-ui/react"
+import { Heading, Box, Image, Text, Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui/react"
 import { useRecoilValue } from "recoil";
 import { authState } from "../../recoil/atoms/Auth";
 import { useUser } from "../../hooks/useUser";
 import { useParams } from "react-router-dom";
 
 export const User: VFC = memo(() => {
-  // const auth = useRecoilValue(authState);
-  // const user = auth.currentUser;
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>(); //URLパラメーターを受け取る
   const { getUserInfo, loading, userInfo } = useUser();
+
+  //ユーザー情報を取得
   useEffect(() => getUserInfo(id),[]);
   
 
@@ -28,9 +28,36 @@ export const User: VFC = memo(() => {
         <Text fontSize="lg" textAlign="center" color="gray.600">{userInfo?.self_introduction}</Text>
       </Box>
       <Box my="20px" p={1} bg="#76a1b8">
-      <Heading as="h2" size="lg" color="white">イベント</Heading>
+      <Heading as="h2" size="md" color="white">イベント一覧</Heading>
       </Box>
-      <p>★TODO:主催、参加イベントをタブで分けたい。</p>
+      <Tabs size="sm" variant="enclosed" borderColor="gray.400">
+        <TabList mb="1em">
+          <Tab 
+            _selected={{ color: "gray.600", bg: "white", shadow: "sm", borderColor: "gray.400", borderBottom: "none"}} 
+            color="white"
+            bg="gray.300" 
+            borderBottomColor="gray.400"
+          >
+            主催したイベント
+          </Tab>
+          <Tab
+            _selected={{ color: "gray.600", bg: "white", shadow: "sm", borderColor: "gray.400", borderBottom: "none"}} 
+            color="white" 
+            bg="gray.300" 
+            borderBottomColor="gray.400"
+          >
+            参加するイベント
+          </Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <p>TODO:主催イベントを絞り込んで表示</p>
+          </TabPanel>
+          <TabPanel>
+            <p>TODO:参加するイベントを絞り込んで表示</p>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </Box>
     
     
