@@ -5,7 +5,6 @@ import { useCallback, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { authState } from "../recoil/atoms/Auth";
-import { SigninParams } from "../types/signinParams";
 import { useMessage } from "./useMessage";
 
 axios.defaults.baseURL = 'http://192.168.10.2:3001';

@@ -1,7 +1,5 @@
 import { memo, useEffect, VFC } from "react";
 import { Heading, Box, Image, Text, Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui/react"
-import { useRecoilValue } from "recoil";
-import { authState } from "../../recoil/atoms/Auth";
 import { useUser } from "../../hooks/useUser";
 import { useParams } from "react-router-dom";
 
@@ -10,7 +8,7 @@ export const User: VFC = memo(() => {
   const { getUserInfo, loading, userInfo } = useUser();
 
   //ユーザー情報を取得
-  useEffect(() => getUserInfo(id),[]);
+  useEffect(() => getUserInfo(id),[getUserInfo,id]);
   
 
   return (

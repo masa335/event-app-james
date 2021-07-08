@@ -2,7 +2,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useCallback } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { authState } from "../recoil/atoms/Auth";
 
 

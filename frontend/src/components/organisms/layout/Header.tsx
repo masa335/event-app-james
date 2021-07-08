@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useDisclosure } from "@chakra-ui/hooks";
 import { Box, Flex, Heading, Link } from "@chakra-ui/layout";
 import { memo, useCallback, VFC } from "react";
@@ -18,13 +19,13 @@ export const Header: VFC = memo(() => {
   const loading = auth.loading;
   const userId = auth.currentUser?.id;
 
-  const onClickHome = useCallback(() => history.push("/"),[history]);
+  const onClickHome = useCallback(() => history.push("/"),[]);
 
-  const onClickCreateEvent = useCallback(() => history.push("/create"),[history]);
+  const onClickCreateEvent = useCallback(() => history.push("/create"),[]);
 
-  const onClickUser = useCallback(() => history.push(`/user/${userId}`),[history]);
+  const onClickUser = useCallback(() => history.push(`/user/${userId}`),[]);
 
-  const onClickLogin = useCallback(() => history.push("/login"),[history]);
+  const onClickLogin = useCallback(() => history.push("/login"),[]);
 
   return (
     <>

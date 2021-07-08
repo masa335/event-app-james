@@ -9,6 +9,7 @@ axios.defaults.baseURL = 'http://192.168.10.2:3001';
 
 export const useSignup = () => {
   const { showMessage } = useMessage();
+  const history = useHistory();
 
   const [loading, setLoading] = useState(false);
 
@@ -21,6 +22,7 @@ export const useSignup = () => {
     .then((res) => {
       console.log(res.data);
       showMessage({ title: "メールを送信しました", status: "success" });
+      history.push("/");
     })
     .catch(() => {
       showMessage({ title: "サインアップ中にエラーが発生しました", status: "error" });
