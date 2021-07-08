@@ -2,7 +2,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useCallback } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { authState } from "../recoil/atoms/Auth";
 
 
@@ -11,9 +11,9 @@ axios.defaults.baseURL = 'http://192.168.10.2:3001';
 //認証済みのユーザーを取得する
 export const useCurrentUser = () => {
 
-  const setAuth = useSetRecoilState(authState);
+  const [auth, setAuth] = useRecoilState(authState);
 
-  const currentUser = useCallback(() => {
+  const getCurrentUser = useCallback(() => {
     if (Cookies.get("_access_token") && Cookies.get("_client") && Cookies.get("_uid")){
       axios
       .get("/api/v1/auth/sessions", { headers: {
@@ -23,6 +23,7 @@ export const useCurrentUser = () => {
       }})
       .then((res) => {
         setAuth({loading: false, isSignedIn: true, currentUser: res.data.current_user});
+        console.log(res.data.current_user);
       })
       .catch((err) => {
         console.log(err);
@@ -30,5 +31,5 @@ export const useCurrentUser = () => {
     }
   },[]);
 
-  return { currentUser };
+  return { getCurrentUser, auth };
 };

@@ -6,7 +6,7 @@ import { CreateEvent } from "../components/pages/CreateEvent"
 import { Signup } from "../components/pages/Signup";
 
 export const HomeRoutes = [
-  {
+  { 
     path: "/",
     exact: true,
     children: <Home />
@@ -22,7 +22,7 @@ export const HomeRoutes = [
     children: <Signin />
   },
   {
-    path: "/user",
+    path: "/user/:id",
     exact: false,
     children: <User />
   },

@@ -6,9 +6,9 @@ import { useCurrentUser } from "../hooks/useCurrentUser";
 import { HomeRoutes } from "./HomeRoutes";
 
 export const Router: VFC = memo(() => {
-  const { currentUser } = useCurrentUser();
+  const { getCurrentUser } = useCurrentUser();
   useEffect(() => {
-    currentUser();
+    getCurrentUser();
   }, []);
 
   return (

@@ -16,12 +16,13 @@ export const Header: VFC = memo(() => {
   const auth = useRecoilValue(authState);
   const isSignedIn = auth.isSignedIn;
   const loading = auth.loading;
+  const userId = auth.currentUser?.id;
 
   const onClickHome = useCallback(() => history.push("/"),[history]);
 
   const onClickCreateEvent = useCallback(() => history.push("/create"),[history]);
 
-  const onClickUser = useCallback(() => history.push("/user"),[history]);
+  const onClickUser = useCallback(() => history.push(`/user/${userId}`),[history]);
 
   const onClickLogin = useCallback(() => history.push("/login"),[history]);
 

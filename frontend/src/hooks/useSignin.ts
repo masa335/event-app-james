@@ -12,7 +12,7 @@ axios.defaults.baseURL = 'http://192.168.10.2:3001';
 export const useSignin = () => {
   const { showMessage } = useMessage();
   const history = useHistory();
-  const { currentUser } = useCurrentUser();
+  const { getCurrentUser } = useCurrentUser();
 
   const [loading, setLoading] = useState(false);
 
@@ -28,7 +28,7 @@ export const useSignin = () => {
       Cookies.set("_uid", res.headers["uid"]);
 
       //グローバルステートを更新
-      currentUser();
+      getCurrentUser();
 
       showMessage({ title: "ログインしました", status: "success" });
       history.push("/")
