@@ -35,7 +35,7 @@ export const Signin: VFC = memo(() => {
               {...register("password",{ required: "パスワードは必須入力です" })}
               border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
             </FormControl>
-            <Button type="submit" colorScheme="blue" disabled={!formState.isValid || loading} isLoading={loading}>サインイン</Button>
+            <Button type="submit" colorScheme="blue" disabled={!formState.isValid || loading} isLoading={loading}>ログイン</Button>
             <Link color="teal.500" href="/signup">まだアカウントをお持ちでない方はこちら</Link>
           </Stack>
       </Center>

@@ -14,7 +14,7 @@ export const Home: VFC = memo(() => {
   console.log(auth.isSignedIn);
 
   //ページを開いた時にだけ実行する
-  useEffect(() => getEvents(),[getEvents])
+  useEffect(() => getEvents(undefined),[getEvents])
 
   return (
     <>

@@ -1,14 +1,21 @@
 import { memo, useEffect, VFC } from "react";
-import { Heading, Box, Image, Text, Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui/react"
-import { useUser } from "../../hooks/useUser";
+import { Heading, Box, Image, Text, Tabs, TabList, Tab, TabPanels, TabPanel, Wrap, WrapItem } from "@chakra-ui/react"
 import { useParams } from "react-router-dom";
+
+import { useUser } from "../../hooks/useUser";
+import { EventCard } from "../organisms/event/eventCard";
+import { useAllEvents } from "../../hooks/useAllEvents";
 
 export const User: VFC = memo(() => {
   const { id } = useParams<{ id: string }>(); //URLパラメーターを受け取る
   const { getUserInfo, loading, userInfo } = useUser();
+  const {getEvents, events } = useAllEvents();
 
   //ユーザー情報を取得
   useEffect(() => getUserInfo(id),[getUserInfo,id]);
+
+  //主催イベント情報を取得
+  useEffect(() => getEvents(id),[getEvents,id]);
   
 
   return (
@@ -49,7 +56,17 @@ export const User: VFC = memo(() => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <p>TODO:主催イベントを絞り込んで表示</p>
+          <Wrap pr={{ base:4, md: 1 }} pl={{ base:4, md: 0 }} pb={{ base:4, md: 8 }} pt="5px">
+            {events.map((event) => (
+              <WrapItem key={event.id}>
+                <EventCard
+                  imageUrl="https://source.unsplash.com/random"
+                  eventName={event.event_name}
+                  prefecture="三重県"
+                />
+              </WrapItem>
+            ))}
+          </Wrap>
           </TabPanel>
           <TabPanel>
             <p>TODO:参加するイベントを絞り込んで表示</p>
