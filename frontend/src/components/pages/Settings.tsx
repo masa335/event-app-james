@@ -1,21 +1,34 @@
-import { memo, VFC, useEffect } from "react";
+import { memo, VFC, useEffect, } from "react";
 import { Heading, Box, Center, Stack, FormControl, FormLabel, Input, FormErrorMessage, Button, Textarea, Link } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { useRecoilValue } from "recoil";
 
-import { useAllEvents } from "../../hooks/useAllEvents";
-import { authState } from "../../recoil/atoms/Auth";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { User } from "../../types/user";
+import { useUser } from "../../hooks/useUser";
 
 export const Settings: VFC = memo(() => {
-  const {getEvents, events, loading} = useAllEvents();
-  const auth = useRecoilValue(authState);
-  const { register, handleSubmit, watch, formState, formState: { errors } } = useForm({ mode: "all" });
+  const { getCurrentUser, auth } = useCurrentUser();
+  const { updateUserInfo, loading } = useUser();
+  
+  const userId = auth.currentUser?.id;
+  const name = auth.currentUser?.name;
+  const age = auth.currentUser?.age;
+  const self_introduction = auth.currentUser?.self_introduction;
+  
+  const { register, handleSubmit, formState, formState: { errors } } = useForm({ 
+    mode: "all", 
+    defaultValues: {
+      name: name, 
+      age: age, 
+      self_introduction: self_introduction
+    } 
+  });
 
   //ページを開いた時にだけ実行する
-  // useEffect(() => getEvents(undefined),[getEvents])
+  useEffect(() => getCurrentUser(),[getCurrentUser])
 
-  const onSubmit = () => {
-    alert();
+  const onSubmit = (params: User) => {
+    updateUserInfo(userId, params);
   };
 
   return (
@@ -28,7 +41,7 @@ export const Settings: VFC = memo(() => {
         <Center my="30px" mx={{base: "10px", md: "200px", lg: "300px"}}>
           <Stack spacing={4} w="100%">
             <Heading as="h2" size="md" color="gray.600">プロフィール編集</Heading>
-            <FormControl isInvalid={errors.name}>
+            <FormControl isInvalid={!!errors.name}>
               <FormLabel fontSize="md">ニックネーム</FormLabel>
               <Input 
               id="name"
@@ -44,13 +57,15 @@ export const Settings: VFC = memo(() => {
               <Input 
               id="age"
               type="text"
+              {...register("age")}
               border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
             </FormControl>
             <FormControl>
               <FormLabel fontSize="md">自己紹介</FormLabel>
               <Textarea
-              id="selfIntroduction"
+              id="self_introduction"
               type="textarea"
+              {...register("self_introduction")}
               border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
             </FormControl>
             <Heading as="h2" size="md" color="gray.600">パスワード変更</Heading>
