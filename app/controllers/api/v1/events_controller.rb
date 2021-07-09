@@ -1,6 +1,10 @@
 class Api::V1::EventsController < ApplicationController
   def index
-    events = Event.all
+    events = if params[:user_id].nil?
+               Event.all
+             else
+               Event.where(user_id: params[:user_id])
+             end
     render json: events, status: :ok
   end
 
