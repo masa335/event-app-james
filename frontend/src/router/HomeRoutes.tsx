@@ -4,6 +4,7 @@ import { Page404 } from "../components/pages/Page404";
 import { User } from "../components/pages/User";
 import { CreateEvent } from "../components/pages/CreateEvent"
 import { Signup } from "../components/pages/Signup";
+import { Settings } from "../components/pages/Settings";
 
 export const HomeRoutes = [
   { 
@@ -30,6 +31,11 @@ export const HomeRoutes = [
     path: "/create",
     exact: false,
     children: <CreateEvent />
+  },
+  {
+    path: "/settings",
+    exact: false,
+    children: <Settings />
   },
   {
     path: "*",

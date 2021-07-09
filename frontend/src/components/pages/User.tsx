@@ -33,7 +33,7 @@ export const User: VFC = memo(() => {
         <Text fontSize="lg" textAlign="center" color="gray.600">{userInfo?.self_introduction}</Text>
       </Box>
       <Box my="20px" p={1} bg="#76a1b8">
-      <Heading as="h2" size="md" color="white">イベント一覧</Heading>
+        <Heading as="h2" size="md" color="white">イベント一覧</Heading>
       </Box>
       <Tabs size="sm" variant="enclosed" borderColor="gray.400">
         <TabList mb="1em">

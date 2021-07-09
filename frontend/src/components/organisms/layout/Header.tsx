@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useDisclosure } from "@chakra-ui/hooks";
-import { Box, Flex, Heading, Link } from "@chakra-ui/layout";
+import { Box, Flex, Heading, Link, Spacer } from "@chakra-ui/layout";
 import { memo, useCallback, VFC } from "react";
 import { useHistory } from "react-router";
 import { useRecoilValue } from "recoil";
@@ -24,6 +24,8 @@ export const Header: VFC = memo(() => {
   const onClickCreateEvent = useCallback(() => history.push("/create"),[]);
 
   const onClickUser = useCallback(() => history.push(`/user/${userId}`),[]);
+
+  const onClickSettings = useCallback(() => history.push("/settings"),[]);
 
   const onClickLogin = useCallback(() => history.push("/login"),[]);
 
@@ -58,6 +60,12 @@ export const Header: VFC = memo(() => {
                 <Link onClick={onClickUser}>アカウント</Link>
               </Box>
             }
+            {!loading && isSignedIn &&
+              <Box pr={4}>
+                <Link onClick={onClickSettings}>設定</Link>
+              </Box>
+            }
+            <Spacer />
             <Box pr={4}>
               {!loading && (isSignedIn ? (
                 <Link onClick={signout}>ログアウト</Link>
