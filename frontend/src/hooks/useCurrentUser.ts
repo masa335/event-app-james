@@ -27,6 +27,7 @@ export const useCurrentUser = () => {
       })
       .catch((err) => {
         console.log(err);
+        setAuth({loading: false, isSignedIn: false });
       })
     }
   },[]);

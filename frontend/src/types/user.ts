@@ -4,7 +4,9 @@ export type User = {
   uid: string;
   allow_password_change: boolean;
   name: string;
-  image: string;
+  image: {
+    url: string;
+  }
   email: string;
   gender: number;
   age: number;

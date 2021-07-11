@@ -13,7 +13,7 @@ export const useUser = () => {
   const { showMessage } = useMessage();
   const history = useHistory();
 
-  const getUserInfo = useCallback((userId: string | undefined) => {
+  const getUserInfo = useCallback((userId: string | number | undefined) => {
     setLoading(true);
     axios
     .get<User>(`/api/v1/users/${userId}`)
@@ -24,10 +24,10 @@ export const useUser = () => {
     .finally(() => setLoading(false));
   },[]);
 
-  const updateUserInfo = useCallback((userId: number | undefined, params: User) => {
+  const updateUserInfo = useCallback((userId: number | undefined, params: FormData) => {
     setLoading(true);
     axios
-    .put<User>(`/api/v1/users/${userId}`, params)
+    .put<User>(`/api/v1/users/${userId}`, params, {headers:{ "Content-Type": "multipart/form-data" }})
     .then((res) => {
       setUserInfo(res.data);
       showMessage({ title: "プロフィールを更新しました", status: "success" });

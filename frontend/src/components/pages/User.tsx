@@ -25,7 +25,7 @@ export const User: VFC = memo(() => {
         <Image
             borderRadius="full"
             boxSize="160px"
-            src="https://source.unsplash.com/random"
+            src={`http://192.168.10.2:3001${userInfo?.image.url}`}
             alt={userInfo?.name}
             m="auto"
           />

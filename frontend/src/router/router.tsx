@@ -7,7 +7,7 @@ import { HomeRoutes } from "./HomeRoutes";
 
 export const Router: VFC = memo(() => {
   const { getCurrentUser } = useCurrentUser();
-  useEffect(() => getCurrentUser(), [getCurrentUser]);
+  useEffect(() => getCurrentUser(), []);
 
   return (
     <Switch>
