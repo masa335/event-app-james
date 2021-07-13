@@ -5,6 +5,7 @@ import { User } from "../components/pages/User";
 import { CreateEvent } from "../components/pages/CreateEvent"
 import { Signup } from "../components/pages/Signup";
 import { Settings } from "../components/pages/Settings";
+import { UpdatePassword } from "../components/pages/UpdatePassword";
 
 export const HomeRoutes = [
   { 
@@ -21,6 +22,11 @@ export const HomeRoutes = [
     path: "/login",
     exact: false,
     children: <Signin />
+  },
+  {
+    path: "/updatePassword",
+    exact: false,
+    children: <UpdatePassword />
   },
   {
     path: "/user/:id",

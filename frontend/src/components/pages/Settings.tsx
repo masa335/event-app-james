@@ -111,7 +111,7 @@ export const Settings: VFC = memo(() => {
               </Stack>
             </FormControl>
             <Heading as="h2" size="md" color="gray.600">パスワード変更</Heading>
-            <Link color="teal.500">パスワード設定を開く</Link>
+            <Link href="/updatePassword" color="teal.500">パスワード設定を開く</Link>
             <Button type="submit" colorScheme="blue" disabled={loading} isLoading={loading}>保存する</Button>
             <Link color="red.400">アカウントを削除する</Link>
           </Stack>
