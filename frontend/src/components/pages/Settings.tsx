@@ -48,12 +48,12 @@ export const Settings: VFC = memo(() => {
   const onSubmit = (params: User) => {
     //画像もアップロードするので、FormDataを使う。
     const formData = new FormData();
-    formData.append('name', params.name)
-    formData.append('age', `${params.age}`)
-    formData.append('self_introduction', params.self_introduction)
-    formData.append('image', image ?? "")
+    formData.append('name', params.name);
+    formData.append('age', `${params.age}`);
+    formData.append('self_introduction', params.self_introduction);
+    image && formData.append('image', image ?? ""); //画像が選択されていない時はappendしない。
 
-    updateUserInfo(9, formData);
+    updateUserInfo(userId, formData);
   };
 
   return (

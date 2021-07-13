@@ -31,3 +31,6 @@
 
 # その他開発メモ
 /development_log.md
+
+# 画像保存先
+/public/uploads
