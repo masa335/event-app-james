@@ -23,7 +23,7 @@ export const Header: VFC = memo(() => {
 
   const onClickCreateEvent = useCallback(() => history.push("/create"),[]);
 
-  const onClickUser = useCallback(() => history.push(`/user/${userId}`),[]);
+  const onClickUser = useCallback(() => history.push(`/user/${userId}`),[userId]);
 
   const onClickSettings = useCallback(() => history.push("/settings"),[]);
 

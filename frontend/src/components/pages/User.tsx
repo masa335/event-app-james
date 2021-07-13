@@ -20,12 +20,13 @@ export const User: VFC = memo(() => {
 
   return (
     <>
+    {console.log(userInfo)}
     <Box mx="40px" my="20px">
       <Box borderBottom="6px" borderStyle="double" borderColor="blackAlpha.400">
         <Image
             borderRadius="full"
             boxSize="160px"
-            src={`http://192.168.10.2:3001${userInfo?.image.url}`}
+            src={userInfo?.image.url}
             alt={userInfo?.name}
             m="auto"
           />
@@ -74,8 +75,6 @@ export const User: VFC = memo(() => {
         </TabPanels>
       </Tabs>
     </Box>
-    
-    
     </>
   );
 });

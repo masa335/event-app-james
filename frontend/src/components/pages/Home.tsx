@@ -9,9 +9,6 @@ import { authState } from "../../recoil/atoms/Auth";
 
 export const Home: VFC = memo(() => {
   const {getEvents, events, loading} = useAllEvents();
-  const auth = useRecoilValue(authState);
-  console.log(auth.currentUser?.name);
-  console.log(auth.isSignedIn);
 
   //ページを開いた時にだけ実行する
   useEffect(() => getEvents(undefined),[getEvents])

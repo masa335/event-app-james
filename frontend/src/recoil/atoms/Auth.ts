@@ -7,7 +7,9 @@ type authUser = {
   email: string;
   gender: number;
   id: number;
-  image: string;
+  image: {
+    url: string;
+  }
   name: string;
   provider: string;
   self_introduction: string;
@@ -22,7 +24,7 @@ export type Auth = {
 
 //グルーバルステートの初期値
 const initialAuth: Auth = {
-  loading: true,
+  loading: false,
   isSignedIn: false,
   currentUser: undefined
 };

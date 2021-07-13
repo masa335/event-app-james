@@ -23,11 +23,13 @@ export const useCurrentUser = () => {
       }})
       .then((res) => {
         setAuth({loading: false, isSignedIn: true, currentUser: res.data.current_user});
+        console.log("recoil set");
         console.log(res.data.current_user);
       })
       .catch((err) => {
         console.log(err);
         setAuth({loading: false, isSignedIn: false });
+        console.log("recoil set");
       })
     }
   },[]);
