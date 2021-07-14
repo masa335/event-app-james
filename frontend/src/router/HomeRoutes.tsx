@@ -49,3 +49,21 @@ export const HomeRoutes = [
     children: <Page404 />
   }
 ];
+
+export const NotSignedInRoutes = [
+  { 
+    path: "/",
+    exact: true,
+    children: <Home />
+  },
+  {
+    path: "/login",
+    exact: false,
+    children: <Signin />
+  },
+  {
+    path: "*",
+    exact: false,
+    children: <Signin />
+  }
+];
