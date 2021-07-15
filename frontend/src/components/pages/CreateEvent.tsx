@@ -1,81 +1,141 @@
-import { ChangeEvent, memo, useState, VFC } from "react";
-import { Button, FormControl, FormLabel, Input, Center, Stack, Textarea } from "@chakra-ui/react"
-import { useCreateEvent } from "../../hooks/useCreateEvent";
+import React, { memo, VFC, useEffect, useState, useCallback, ChangeEvent, } from "react";
+import { Heading, Box, Center, Stack, FormControl, FormLabel, Input, FormErrorMessage, Button, Textarea, Link, Image, Select } from "@chakra-ui/react";
+import { useForm } from "react-hook-form";
+
+import { useRecoilValue } from "recoil";
+import { authState } from "../../recoil/atoms/Auth";
 import { Event } from "../../types/event";
+import { useCreateEvent } from "../../hooks/useCreateEvent";
+import { prefectures } from "../../data/prefectures";
 
 export const CreateEvent: VFC = memo(() => {
   const { createEvent, loading } = useCreateEvent();
+  const [ userId, setUserId ] = useState<number>();
 
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
-  const [date, setDate] = useState("");
-  const [prefecture, setPrefecture] = useState(0);
-  const [venue, setVenue] = useState("");
-  const [explanation, setExplanation] = useState("");
+  const auth = useRecoilValue(authState);
 
-  const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-  };
-  const onChangeCategory = (e: ChangeEvent<HTMLInputElement>) => {
-    setCategory(e.target.value);
-  };
-  const onChangeDate = (e: ChangeEvent<HTMLInputElement>) => {
-    setDate(e.target.value);
-  };
-  const onChangePrefecture = (e: ChangeEvent<HTMLInputElement>) => {
-    setPrefecture(Number(e.target.value));
-  };
-  const onChangeVenue = (e: ChangeEvent<HTMLInputElement>) => {
-    setVenue(e.target.value);
-  };
-  const onChangeExplanation = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setExplanation(e.target.value);
-  };
+  const [image, setImage] = useState<File>();
 
-  const now: Date = new Date(); //テスト用
+  
+  const { register, handleSubmit, formState: { errors } } = useForm({ 
+    mode: "onChange"
+  });
 
-  const params: Event = {
-    user_id: 2,
-    event_name: name,
-    event_category: category,
-    event_date: now,
-    prefecture_id: prefecture,
-    venue: venue,
-    explanation: explanation,
+  const selectImage = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return
+    const selectedImage: File = e.target.files[0];
+    setImage(selectedImage)
+  }, [])
+
+  const onSubmit = (params: Event) => {
+    //画像もアップロードするので、FormDataを使う。
+    const formData = new FormData();
+    const startDate = (new Date(params.start_date).toUTCString());
+    const endDate = (new Date(params.end_date).toUTCString());
+    formData.append('user_id', `${auth.currentUser?.id}`);
+    formData.append('event_name', params.event_name);
+    formData.append('event_category', params.event_category);
+    formData.append('start_date', startDate);
+    formData.append('end_date', endDate);
+    formData.append('prefecture_id', `${params.prefecture_id}`);
+    formData.append('venue', params.venue);
+    formData.append('explanation', params.explanation);
+    image && formData.append('image', image ?? ""); //画像が選択されていない時はappendしない。
+
+    createEvent(formData);
   };
-
-  const onClickCreateEvent = () => createEvent(params);
 
   return (
-    <Center my="30px" mx={{base: "10px", md: "30px", lg: "300px"}}>
-      <Stack spacing={4} w="100%">
-        <FormControl isRequired>
-          <FormLabel fontSize="md">イベント名</FormLabel>
-          <Input value={name} onChange={onChangeName} border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
-        </FormControl>
-        <FormControl>
-          <FormLabel fontSize="md">カテゴリ</FormLabel>
-          <Input value={category} onChange={onChangeCategory} border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
-        </FormControl>
-        <FormControl>
-          <FormLabel type="date" fontSize="md">開催日</FormLabel>
-          <Input value={date} onChange={onChangeDate} border="1px" w="200px" borderColor="gray.400" backgroundColor="gray.100"/>
-        </FormControl>
-        <FormControl>
-          <FormLabel fontSize="md">開催する都道府県</FormLabel>
-          <Input value={prefecture} onChange={onChangePrefecture} w="100px" border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
-        </FormControl>
-        <FormControl>
-          <FormLabel fontSize="md">会場</FormLabel>
-          <Input value={venue} onChange={onChangeVenue} border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
-        </FormControl>
-        <FormControl>
-          <FormLabel fontSize="md">イベントの説明</FormLabel>
-          <Textarea value={explanation} onChange={onChangeExplanation} border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
-        </FormControl>
-        <Button onClick={onClickCreateEvent} colorScheme="blue">作成</Button>
-      </Stack>
-    </Center>
-    
+    <>
+    <Box mx={{ base:2, md: "40px" }} my="20px">
+      <Box my="20px" p={1} bg="#76a1b8">
+        <Heading as="h2" size="md" color="white">イベント作成</Heading>
+      </Box>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Center my="30px" mx={{base: "10px", md: "200px", lg: "300px"}}>
+          <Stack spacing={4} w="100%">
+            <FormControl isInvalid={errors.name}>
+              <FormLabel fontSize="md">イベント名</FormLabel>
+              <Input 
+              id="event_name"
+              type="text"
+              {...register("event_name",{ required: "イベント名は必須入力です" })}
+              border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
+              <FormErrorMessage>
+                {errors.event_name && errors.event_name.message}
+              </FormErrorMessage>
+            </FormControl>
+            <FormControl>
+              <FormLabel fontSize="md">カテゴリ</FormLabel>
+              <Input 
+              id="event_category"
+              type="text"
+              {...register("event_category")}
+              border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
+            </FormControl>
+            <FormControl>
+              <FormLabel fontSize="md">開始日時</FormLabel>
+              <Input
+              id="start_date"
+              type="datetime-local"
+              {...register("start_date")}
+              w="250px" border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
+            </FormControl>
+            <FormControl>
+              <FormLabel fontSize="md">終了日時</FormLabel>
+              <Input
+              id="end_date"
+              type="datetime-local"
+              {...register("end_date")}
+              w="250px" border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
+            </FormControl>
+            <FormControl>
+              <FormLabel fontSize="md">開催する都道府県</FormLabel>
+              <Select 
+              id="prefecture_id"
+              placeholder="選択してください"
+              type="text"
+              {...register("prefecture_id")}
+              w="200px" border="1px" borderColor="gray.400" backgroundColor="gray.100"
+              >
+                {
+                  prefectures.map((prefecture, index) =>
+                  <option key={index} value={index}>{prefecture}</option>
+                  )
+                }
+              </Select>
+            </FormControl>
+            <FormControl>
+              <FormLabel fontSize="md">会場</FormLabel>
+              <Input
+              id="venue"
+              type="text"
+              {...register("venue")}
+              border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
+            </FormControl>
+            <FormControl>
+              <FormLabel fontSize="md">イベントの説明</FormLabel>
+              <Textarea
+              id="explanation"
+              type="date"
+              {...register("explanation")}
+              border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
+            </FormControl>
+            <FormControl>
+              <FormLabel fontSize="md">イベント画像</FormLabel>
+              <Stack direction="column">
+                <input 
+                id="image"
+                type="file"
+                onChange={(e: ChangeEvent<HTMLInputElement>) => selectImage(e)}
+                />
+              </Stack>
+            </FormControl>
+            <Button type="submit" colorScheme="blue" disabled={loading} isLoading={loading}>イベントを作成する</Button>
+          </Stack>
+        </Center>
+      </form>
+    </Box>
+    </>
   );
 });
