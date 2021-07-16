@@ -1,15 +1,19 @@
 import { memo, useCallback, useEffect, VFC } from "react";
-import { Heading, Box, Image, Text, Tabs, TabList, Tab, TabPanels, TabPanel, Wrap, WrapItem } from "@chakra-ui/react"
+import { Heading, Box, Image, Text, Tabs, TabList, Tab, TabPanels, TabPanel, Wrap, WrapItem, useDisclosure } from "@chakra-ui/react"
 import { useParams } from "react-router-dom";
 
 import { useUser } from "../../hooks/useUser";
 import { EventCard } from "../organisms/event/eventCard";
 import { useAllEvents } from "../../hooks/useAllEvents";
+import { EventDetailModal } from "../organisms/event/EventDetailModal";
+import { useSelectUser } from "../../hooks/useSelectEvent";
 
 export const User: VFC = memo(() => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { id } = useParams<{ id: string }>(); //URLパラメーターを受け取る
   const { getUserInfo, loading, userInfo } = useUser();
   const {getEvents, events } = useAllEvents();
+  const { onSelectEvent, selectedEvent } = useSelectUser();
 
   //ユーザー情報を取得
   useEffect(() => getUserInfo(id),[getUserInfo,id]);
@@ -19,9 +23,9 @@ export const User: VFC = memo(() => {
 
   const onClickEvent = useCallback(
     (id: number | undefined) => {
-      alert(id);
+      onSelectEvent({ id, events, onOpen});
     },
-    []
+    [onOpen, events, onSelectEvent]
   );
   
 
@@ -84,6 +88,7 @@ export const User: VFC = memo(() => {
         </TabPanels>
       </Tabs>
     </Box>
+    <EventDetailModal event={selectedEvent} isOpen={isOpen} onClose={onClose}/>
     </>
   );
 });
