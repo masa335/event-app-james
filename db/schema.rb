@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_16_003302) do
+ActiveRecord::Schema.define(version: 2021_07_16_015246) do
 
   create_table "events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -25,6 +25,15 @@ ActiveRecord::Schema.define(version: 2021_07_16_003302) do
     t.datetime "end_date"
     t.string "image"
     t.index ["user_id"], name: "index_events_on_user_id"
+  end
+
+  create_table "memberships", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_id"], name: "index_memberships_on_event_id"
+    t.index ["user_id"], name: "index_memberships_on_user_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -61,4 +70,6 @@ ActiveRecord::Schema.define(version: 2021_07_16_003302) do
   end
 
   add_foreign_key "events", "users"
+  add_foreign_key "memberships", "events"
+  add_foreign_key "memberships", "users"
 end

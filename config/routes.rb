@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      resources :events
+      resources :events do
+        resource :memberships, only: [:create, :destroy]
+      end
       resources :users, only: [:show, :update]
       mount_devise_token_auth_for 'User', at: 'auth', controllers: {
         registrations: 'api/v1/auth/registrations'
