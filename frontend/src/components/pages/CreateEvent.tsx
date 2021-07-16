@@ -10,12 +10,10 @@ import { prefectures } from "../../data/prefectures";
 
 export const CreateEvent: VFC = memo(() => {
   const { createEvent, loading } = useCreateEvent();
-  const [ userId, setUserId ] = useState<number>();
 
   const auth = useRecoilValue(authState);
 
   const [image, setImage] = useState<File>();
-
   
   const { register, handleSubmit, formState: { errors } } = useForm({ 
     mode: "onChange"
@@ -30,8 +28,8 @@ export const CreateEvent: VFC = memo(() => {
   const onSubmit = (params: Event) => {
     //画像もアップロードするので、FormDataを使う。
     const formData = new FormData();
-    const startDate = (new Date(params.start_date).toUTCString());
-    const endDate = (new Date(params.end_date).toUTCString());
+    const startDate = (new Date(params.start_date).toString());
+    const endDate = (new Date(params.end_date).toString());
     formData.append('user_id', `${auth.currentUser?.id}`);
     formData.append('event_name', params.event_name);
     formData.append('event_category', params.event_category);

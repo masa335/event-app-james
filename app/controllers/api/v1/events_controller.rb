@@ -21,7 +21,7 @@ class Api::V1::EventsController < ApplicationController
 
   def event_params
     params.permit(
-      :user_id, :event_name, :event_category, :event_date, :prefecture_id, :venue, :explanation
+      :user_id, :event_name, :event_category, :start_date, :end_date, :prefecture_id, :venue, :explanation
     )
   end
 end
