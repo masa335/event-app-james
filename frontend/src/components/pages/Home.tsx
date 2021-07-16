@@ -22,7 +22,7 @@ export const Home: VFC = memo(() => {
     (id: number | undefined) => {
       onSelectEvent({ id, events, onOpen});
     },
-    []
+    [onOpen, events, onSelectEvent]
   );
 
   return (
