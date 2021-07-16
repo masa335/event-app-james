@@ -2,7 +2,8 @@ class Api::V1::UsersController < ApplicationController
   # ユーザー情報取得(個別)
   def show
     user = User.find(params[:id])
-    render json: user, status: :ok
+    participating_events = user.participating_events
+    render json: { user: user, participating_events: participating_events }, status: :ok
   end
 
   def update

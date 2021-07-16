@@ -7,6 +7,7 @@ import { EventCard } from "../organisms/event/eventCard";
 import { useAllEvents } from "../../hooks/useAllEvents";
 import { EventDetailModal } from "../organisms/event/EventDetailModal";
 import { useSelectUser } from "../../hooks/useSelectEvent";
+import { prefectures } from "../../data/prefectures";
 
 export const User: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -37,12 +38,12 @@ export const User: VFC = memo(() => {
         <Image
             borderRadius="full"
             boxSize="160px"
-            src={userInfo?.image.url}
-            alt={userInfo?.name}
+            src={userInfo?.user.image.url}
+            alt={userInfo?.user.name}
             m="auto"
           />
-        <Text fontSize="2xl" textAlign="center" color="gray.600">{userInfo?.name}</Text>
-        <Text fontSize="lg" textAlign="center" color="gray.600">{userInfo?.self_introduction}</Text>
+        <Text fontSize="2xl" textAlign="center" color="gray.600">{userInfo?.user.name}</Text>
+        <Text fontSize="lg" textAlign="center" color="gray.600">{userInfo?.user.self_introduction}</Text>
       </Box>
       <Box my="20px" p={1} bg="#76a1b8">
         <Heading as="h2" size="md" color="white">イベント一覧</Heading>
@@ -83,7 +84,19 @@ export const User: VFC = memo(() => {
           </Wrap>
           </TabPanel>
           <TabPanel>
-            <p>TODO:参加するイベントを絞り込んで表示</p>
+          <Wrap pr={{ base:4, md: 1 }} pl={{ base:4, md: 0 }} pb={{ base:4, md: 8 }} pt="5px">
+            {userInfo?.participating_events.map((event) => (
+              <WrapItem key={event.id}>
+                <EventCard
+                  id={event.id}
+                  imageUrl={event.image.url ?? "https://source.unsplash.com/random"}
+                  eventName={event.event_name}
+                  prefecture={event.prefecture_id ? prefectures[event.prefecture_id] : ""}
+                  onClick={onClickEvent}
+                />
+              </WrapItem>
+            ))}
+          </Wrap>
           </TabPanel>
         </TabPanels>
       </Tabs>
