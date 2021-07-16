@@ -1,4 +1,4 @@
-import { memo, useEffect, VFC } from "react";
+import { memo, useCallback, useEffect, VFC } from "react";
 import { Heading, Box, Image, Text, Tabs, TabList, Tab, TabPanels, TabPanel, Wrap, WrapItem } from "@chakra-ui/react"
 import { useParams } from "react-router-dom";
 
@@ -16,6 +16,13 @@ export const User: VFC = memo(() => {
 
   //主催イベント情報を取得
   useEffect(() => getEvents(id),[getEvents,id]);
+
+  const onClickEvent = useCallback(
+    (id: number | undefined) => {
+      alert(id);
+    },
+    []
+  );
   
 
   return (
@@ -61,9 +68,11 @@ export const User: VFC = memo(() => {
             {events.map((event) => (
               <WrapItem key={event.id}>
                 <EventCard
+                  id={event.id}
                   imageUrl="https://source.unsplash.com/random"
                   eventName={event.event_name}
                   prefecture="三重県"
+                  onClick={onClickEvent}
                 />
               </WrapItem>
             ))}

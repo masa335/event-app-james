@@ -2,16 +2,28 @@ import { useEffect } from "react";
 import { memo, VFC } from "react";
 import { useAllEvents } from "../../hooks/useAllEvents";
 
-import { Wrap, WrapItem, Heading } from "@chakra-ui/react";
+import { Wrap, WrapItem, Heading, useDisclosure } from "@chakra-ui/react";
 import { EventCard } from "../organisms/event/eventCard";
 import { useRecoilValue } from "recoil";
 import { authState } from "../../recoil/atoms/Auth";
+import { useCallback } from "react";
+import { EventDetailModal } from "../organisms/event/EventDetailModal";
+import { useSelectUser } from "../../hooks/useSelectEvent";
 
 export const Home: VFC = memo(() => {
-  const {getEvents, events, loading} = useAllEvents();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { getEvents, events, loading } = useAllEvents();
+  const { onSelectEvent, selectedEvent } = useSelectUser();
 
   //ページを開いた時にだけ実行する
   useEffect(() => getEvents(undefined),[getEvents])
+
+  const onClickEvent = useCallback(
+    (id: number | undefined) => {
+      onSelectEvent({ id, events, onOpen});
+    },
+    []
+  );
 
   return (
     <>
@@ -20,13 +32,16 @@ export const Home: VFC = memo(() => {
       {events.map((event) => (
         <WrapItem key={event.id}>
           <EventCard
+            id={event.id}
             imageUrl="https://source.unsplash.com/random"
             eventName={event.event_name}
             prefecture="三重県"
+            onClick={onClickEvent}
           />
         </WrapItem>
       ))}
     </Wrap>
+    <EventDetailModal event={selectedEvent} isOpen={isOpen} onClose={onClose}/>
     </>
   );
 });

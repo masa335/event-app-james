@@ -3,13 +3,15 @@ import { Box, Icon, Image, Stack, Text, HStack } from "@chakra-ui/react";
 import { MdLocationOn } from "react-icons/md"
 
 type Props = {
+  id: number | undefined;
   imageUrl: string;
   eventName: string;
   prefecture: string;
+  onClick: (id: number | undefined) => void;
 };
 
 export const EventCard: VFC<Props> = memo(props => {
-  const { imageUrl, eventName, prefecture } = props;
+  const { id, imageUrl, eventName, prefecture, onClick } = props;
 
   return (
     <Box
@@ -20,6 +22,7 @@ export const EventCard: VFC<Props> = memo(props => {
       shadow="md"
       p={4}
       _hover={{ cursor: "pointer", opacity: 0.8 }}
+      onClick={() => onClick(id)}
     >
       <Stack textAlign="center">
         <Image
