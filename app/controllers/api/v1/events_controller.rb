@@ -1,11 +1,7 @@
 class Api::V1::EventsController < ApplicationController
   def index
     # 主催イベントはuserコントローラの方に書けるかも。
-    events = if params[:user_id].nil?
-               Event.all
-             else
-               Event.where(user_id: params[:user_id])
-             end
+    events = Event.all
     render json: events, status: :ok
   end
 

@@ -9,7 +9,7 @@ export const useAllEvents = () => {
   const getEvents = useCallback((userId: string | undefined) => {
     setLoading(true);
     axios
-    .get<Array<Event>>("http://192.168.10.2:3001/api/v1/events" + (userId ? `?user_id=${userId}` : ""))
+    .get<Array<Event>>("http://192.168.10.2:3001/api/v1/events")
     .then((res) => setEvents(res.data))
     .catch(() => {
       alert("イベントの取得に失敗しました。");

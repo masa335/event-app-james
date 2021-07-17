@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 
 import { useUser } from "../../hooks/useUser";
 import { EventCard } from "../organisms/event/eventCard";
-import { useAllEvents } from "../../hooks/useAllEvents";
 import { EventDetailModal } from "../organisms/event/EventDetailModal";
 import { useSelectUser } from "../../hooks/useSelectEvent";
 import { prefectures } from "../../data/prefectures";
@@ -13,14 +12,11 @@ export const User: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { id } = useParams<{ id: string }>(); //URLパラメーターを受け取る
   const { getUserInfo, loading, userInfo } = useUser();
-  const {getEvents, events } = useAllEvents();
+  const events = userInfo?.organized_events.concat(userInfo?.participating_events)!; //主催イベントと参加イベントをマージ
   const { onSelectEvent, selectedEvent } = useSelectUser();
 
   //ユーザー情報を取得
   useEffect(() => getUserInfo(id),[getUserInfo,id]);
-
-  //主催イベント情報を取得
-  useEffect(() => getEvents(id),[getEvents,id]);
 
   const onClickEvent = useCallback(
     (id: number | undefined) => {
@@ -29,7 +25,6 @@ export const User: VFC = memo(() => {
     [onOpen, events, onSelectEvent]
   );
   
-
   return (
     <>
     {console.log(userInfo)}
@@ -70,13 +65,13 @@ export const User: VFC = memo(() => {
         <TabPanels>
           <TabPanel>
           <Wrap pr={{ base:4, md: 1 }} pl={{ base:4, md: 0 }} pb={{ base:4, md: 8 }} pt="5px">
-            {events.map((event) => (
+            {userInfo?.organized_events.map((event) => (
               <WrapItem key={event.id}>
                 <EventCard
                   id={event.id}
-                  imageUrl="https://source.unsplash.com/random"
+                  imageUrl={event.image.url ?? "https://source.unsplash.com/random"}
                   eventName={event.event_name}
-                  prefecture="三重県"
+                  prefecture={event.prefecture_id ? prefectures[event.prefecture_id] : ""}
                   onClick={onClickEvent}
                 />
               </WrapItem>
