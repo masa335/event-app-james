@@ -4,8 +4,6 @@ import { useAllEvents } from "../../hooks/useAllEvents";
 
 import { Wrap, WrapItem, Heading, useDisclosure } from "@chakra-ui/react";
 import { EventCard } from "../organisms/event/eventCard";
-import { useRecoilValue } from "recoil";
-import { authState } from "../../recoil/atoms/Auth";
 import { useCallback } from "react";
 import { EventDetailModal } from "../organisms/event/EventDetailModal";
 import { useSelectUser } from "../../hooks/useSelectEvent";

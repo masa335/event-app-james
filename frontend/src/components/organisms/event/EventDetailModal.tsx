@@ -1,6 +1,5 @@
 import { memo, VFC } from "react";
-import { Box, Icon, Image, Stack, Text, HStack, Modal, ModalContent, ModalOverlay, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, Textarea } from "@chakra-ui/react";
-import { MdLocationOn } from "react-icons/md"
+import { Stack, Modal, ModalContent, ModalOverlay, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, Textarea } from "@chakra-ui/react";
 import { Event } from "../../../types/event";
 import { prefectures } from "../../../data/prefectures";
 
