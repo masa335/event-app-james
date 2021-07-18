@@ -51,7 +51,7 @@ export const Home: VFC = memo(() => {
         </WrapItem>
       ))}
     </Wrap>
-    <EventDetailModal event={selectedEvent} isOpen={isOpen} onClose={onClose} isJoined={isJoined} isOrganizer={isOrganizer}/>
+    <EventDetailModal event={selectedEvent} isOpen={isOpen} onClose={onClose} isJoined={isJoined} isOrganizer={isOrganizer} isSignedIn={auth.isSignedIn}/>
     </>
   );
 });

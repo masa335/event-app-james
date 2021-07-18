@@ -4,6 +4,7 @@ import { Event } from "../../../types/event";
 import { prefectures } from "../../../data/prefectures";
 import { useMemberships } from "../../../hooks/useMemberships";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 
 type Props = {
@@ -11,13 +12,15 @@ type Props = {
   isOpen: boolean;
   isJoined: boolean;
   isOrganizer: boolean;
+  isSignedIn: boolean;
   onClose: () => void;
 };
 
 export const EventDetailModal: VFC<Props> = memo(props => {
-  const { event, isOpen, onClose, isJoined, isOrganizer } = props;
+  const { event, isOpen, onClose, isJoined, isOrganizer, isSignedIn } = props;
   const [ buttonSwitch, setButtonSwitch ] = useState<boolean>();
   const { createMemberships, deleteMemberships, loading } = useMemberships();
+  const history = useHistory();
   
   useEffect(() => setButtonSwitch(isJoined),[isOpen])
 
@@ -29,6 +32,10 @@ export const EventDetailModal: VFC<Props> = memo(props => {
   const onClickCancel = () => {
     event?.id ? deleteMemberships(event?.id) : console.log("eventIdがありません")
     setButtonSwitch(false);
+  }
+
+  const redirectToSignIn = () => {
+    history.push("/login")
   }
 
   return (
@@ -67,11 +74,16 @@ export const EventDetailModal: VFC<Props> = memo(props => {
               <FormLabel>イベントの説明</FormLabel>
               <Textarea value={event?.explanation} isReadOnly={true}></Textarea>
             </FormControl>
-            {!isOrganizer && (buttonSwitch ?
-              <Button onClick={onClickCancel} colorScheme="red" isLoading={loading}>参加を取り消す</Button>
-              :
-              <Button onClick={onClickJoin} colorScheme="blue" isLoading={loading}>参加する</Button>
-            )}
+            {isSignedIn ? 
+              ( !isOrganizer && 
+                ( buttonSwitch ?
+                  <Button onClick={onClickCancel} colorScheme="red" isLoading={loading}>参加を取り消す</Button>
+                  :
+                  <Button onClick={onClickJoin} colorScheme="blue" isLoading={loading}>参加する</Button>
+                )
+              )
+            : <Button onClick={redirectToSignIn} colorScheme="blue" isLoading={loading}>参加する</Button>
+            }
           </Stack>
         </ModalBody>
       </ModalContent>
