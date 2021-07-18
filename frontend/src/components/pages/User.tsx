@@ -69,6 +69,7 @@ export const User: VFC = memo(() => {
               <WrapItem key={event.id}>
                 <EventCard
                   id={event.id}
+                  userId={event.user_id}
                   imageUrl={event.image.url ?? "https://source.unsplash.com/random"}
                   eventName={event.event_name}
                   prefecture={event.prefecture_id ? prefectures[event.prefecture_id] : ""}
@@ -84,6 +85,7 @@ export const User: VFC = memo(() => {
               <WrapItem key={event.id}>
                 <EventCard
                   id={event.id}
+                  userId={event.user_id}
                   imageUrl={event.image.url ?? "https://source.unsplash.com/random"}
                   eventName={event.event_name}
                   prefecture={event.prefecture_id ? prefectures[event.prefecture_id] : ""}
@@ -96,7 +98,7 @@ export const User: VFC = memo(() => {
         </TabPanels>
       </Tabs>
     </Box>
-    <EventDetailModal event={selectedEvent} isOpen={isOpen} onClose={onClose} isJoined={true}/>
+    <EventDetailModal event={selectedEvent} isOpen={isOpen} onClose={onClose} isJoined={true} isOrganizer={true}/>
     </>
   );
 });

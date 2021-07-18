@@ -4,14 +4,15 @@ import { MdLocationOn } from "react-icons/md"
 
 type Props = {
   id: number | undefined;
+  userId: number | undefined;
   imageUrl: string;
   eventName: string;
   prefecture: string;
-  onClick: (id: number | undefined) => void;
+  onClick: (id: number | undefined, userId: number | undefined) => void;
 };
 
 export const EventCard: VFC<Props> = memo(props => {
-  const { id, imageUrl, eventName, prefecture, onClick } = props;
+  const { id, userId, imageUrl, eventName, prefecture, onClick } = props;
 
   return (
     <Box
@@ -22,7 +23,7 @@ export const EventCard: VFC<Props> = memo(props => {
       shadow="md"
       p={4}
       _hover={{ cursor: "pointer", opacity: 0.8 }}
-      onClick={() => onClick(id)}
+      onClick={() => onClick(id, userId)}
     >
       <Stack textAlign="center">
         <Image

@@ -14,6 +14,7 @@ export const Home: VFC = memo(() => {
   const { getEvents, events, loading } = useAllEvents();
   const { onSelectEvent, selectedEvent } = useSelectUser();
   const [ isJoined, setIsJoined ] = useState(false); // 参加済みのイベントならtrue
+  const [ isOrganizer, setIsOrganizer ] = useState(false); //イベント主催者ならtrue
   const { getCurrentUser, auth } = useCurrentUser();
 
   //ページを開いた時にだけ実行する
@@ -23,9 +24,11 @@ export const Home: VFC = memo(() => {
   useEffect(() => getCurrentUser,[isOpen])
 
   const onClickEvent = useCallback(
-    (id: number | undefined) => {
+    (id: number | undefined, userId: number | undefined) => {
       //参加しているイベントIDとクリックしたイベントIDが一致する物が見つかったらtrueをセットする
       setIsJoined(!!auth.memberships?.find((event) => event.event_id === id));
+      setIsOrganizer(!!auth.memberships?.find((event) => event.user_id === userId));
+      console.log(isOrganizer);
       onSelectEvent({ id, events, onOpen});
     },
     [onOpen, events, onSelectEvent, auth]
@@ -39,6 +42,7 @@ export const Home: VFC = memo(() => {
         <WrapItem key={event.id}>
           <EventCard
             id={event.id}
+            userId={event.user_id}
             imageUrl="https://source.unsplash.com/random"
             eventName={event.event_name}
             prefecture="三重県"
@@ -47,7 +51,7 @@ export const Home: VFC = memo(() => {
         </WrapItem>
       ))}
     </Wrap>
-    <EventDetailModal event={selectedEvent} isOpen={isOpen} onClose={onClose} isJoined={isJoined}/>
+    <EventDetailModal event={selectedEvent} isOpen={isOpen} onClose={onClose} isJoined={isJoined} isOrganizer={isOrganizer}/>
     </>
   );
 });

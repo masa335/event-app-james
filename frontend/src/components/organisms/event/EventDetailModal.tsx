@@ -10,11 +10,12 @@ type Props = {
   event: Event | null;
   isOpen: boolean;
   isJoined: boolean;
+  isOrganizer: boolean;
   onClose: () => void;
 };
 
 export const EventDetailModal: VFC<Props> = memo(props => {
-  const { event, isOpen, onClose, isJoined } = props;
+  const { event, isOpen, onClose, isJoined, isOrganizer } = props;
   const [ buttonSwitch, setButtonSwitch ] = useState<boolean>();
   const { createMemberships, deleteMemberships, loading } = useMemberships();
   
@@ -66,11 +67,11 @@ export const EventDetailModal: VFC<Props> = memo(props => {
               <FormLabel>イベントの説明</FormLabel>
               <Textarea value={event?.explanation} isReadOnly={true}></Textarea>
             </FormControl>
-            {buttonSwitch ?
+            {!isOrganizer && (buttonSwitch ?
               <Button onClick={onClickCancel} colorScheme="red" isLoading={loading}>参加を取り消す</Button>
               :
               <Button onClick={onClickJoin} colorScheme="blue" isLoading={loading}>参加する</Button>
-            }
+            )}
           </Stack>
         </ModalBody>
       </ModalContent>
