@@ -17,7 +17,7 @@ export const Home: VFC = memo(() => {
   const { getCurrentUser, auth } = useCurrentUser();
 
   //ページを開いた時にだけ実行する
-  useEffect(() => getEvents(undefined),[getEvents])
+  useEffect(() => getEvents(),[getEvents])
 
   //モーダルを開閉するタイミングで実行
   useEffect(() => getCurrentUser,[isOpen])

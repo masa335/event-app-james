@@ -6,7 +6,7 @@ export const useAllEvents = () => {
   const [loading, setLoading] = useState(false);
   const [events, setEvents] = useState<Array<Event>>([]);
 
-  const getEvents = useCallback((userId: string | undefined) => {
+  const getEvents = useCallback(() => {
     setLoading(true);
     axios
     .get<Array<Event>>("http://192.168.10.2:3001/api/v1/events")
