@@ -1,8 +1,10 @@
-import { memo, VFC } from "react";
+import { memo, useEffect, VFC } from "react";
 import { Stack, Modal, ModalContent, ModalOverlay, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, Textarea, Button } from "@chakra-ui/react";
 import { Event } from "../../../types/event";
 import { prefectures } from "../../../data/prefectures";
 import { useMemberships } from "../../../hooks/useMemberships";
+import { useState } from "react";
+
 
 type Props = {
   event: Event | null;
@@ -13,15 +15,19 @@ type Props = {
 
 export const EventDetailModal: VFC<Props> = memo(props => {
   const { event, isOpen, onClose, isJoined } = props;
+  const [ buttonSwitch, setButtonSwitch ] = useState<boolean>();
   const { createMemberships, deleteMemberships, loading } = useMemberships();
+  
+  useEffect(() => setButtonSwitch(isJoined),[isOpen])
 
   const onClickJoin = () => {
     event?.id ? createMemberships(event?.id) : console.log("eventIdがありません");
-    // isJoined = true;
+    setButtonSwitch(true);
   }
 
   const onClickCancel = () => {
     event?.id ? deleteMemberships(event?.id) : console.log("eventIdがありません")
+    setButtonSwitch(false);
   }
 
   return (
@@ -60,7 +66,7 @@ export const EventDetailModal: VFC<Props> = memo(props => {
               <FormLabel>イベントの説明</FormLabel>
               <Textarea value={event?.explanation} isReadOnly={true}></Textarea>
             </FormControl>
-            {isJoined ?
+            {buttonSwitch ?
               <Button onClick={onClickCancel} colorScheme="red" isLoading={loading}>参加を取り消す</Button>
               :
               <Button onClick={onClickJoin} colorScheme="blue" isLoading={loading}>参加する</Button>
