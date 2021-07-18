@@ -16,17 +16,24 @@ type authUser = {
   uid: string;
 };
 
+type memberships = [{
+  event_id: number;
+  user_id: number;
+}];
+
 export type Auth = {
   loading: boolean
   isSignedIn: boolean;
   currentUser?: authUser | undefined;
+  memberships?: memberships | undefined;
 };
 
 //グルーバルステートの初期値
 const initialAuth: Auth = {
   loading: false,
   isSignedIn: false,
-  currentUser: undefined
+  currentUser: undefined,
+  memberships: undefined
 };
 
 export const authState = atom({

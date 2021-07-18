@@ -96,7 +96,7 @@ export const User: VFC = memo(() => {
         </TabPanels>
       </Tabs>
     </Box>
-    <EventDetailModal event={selectedEvent} isOpen={isOpen} onClose={onClose}/>
+    <EventDetailModal event={selectedEvent} isOpen={isOpen} onClose={onClose} isJoined={true}/>
     </>
   );
 });

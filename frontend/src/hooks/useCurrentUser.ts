@@ -22,9 +22,10 @@ export const useCurrentUser = () => {
         "uid": Cookies.get("_uid")
       }})
       .then((res) => {
-        setAuth({loading: false, isSignedIn: true, currentUser: res.data.current_user});
+        setAuth({loading: false, isSignedIn: true, currentUser: res.data.current_user, memberships: res.data.memberships});
         console.log("recoil set");
         console.log(res.data.current_user);
+        console.log(res.data.memberships);
       })
       .catch((err) => {
         console.log(err);

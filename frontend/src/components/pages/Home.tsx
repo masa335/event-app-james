@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { memo, VFC } from "react";
 import { useAllEvents } from "../../hooks/useAllEvents";
 
@@ -7,17 +7,23 @@ import { EventCard } from "../organisms/event/eventCard";
 import { useCallback } from "react";
 import { EventDetailModal } from "../organisms/event/EventDetailModal";
 import { useSelectUser } from "../../hooks/useSelectEvent";
+import { useRecoilValue } from "recoil";
+import { authState } from "../../recoil/atoms/Auth";
 
 export const Home: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { getEvents, events, loading } = useAllEvents();
   const { onSelectEvent, selectedEvent } = useSelectUser();
+  const [ isJoined, setIsJoined ] = useState(false); // 参加済みのイベントならtrue
+  const auth = useRecoilValue(authState);
 
   //ページを開いた時にだけ実行する
   useEffect(() => getEvents(undefined),[getEvents])
 
   const onClickEvent = useCallback(
     (id: number | undefined) => {
+      //参加しているイベントIDとクリックしたイベントIDが一致する物が見つかったらtrueをセットする
+      setIsJoined(!!auth.memberships?.find((event) => event.event_id === id));
       onSelectEvent({ id, events, onOpen});
     },
     [onOpen, events, onSelectEvent]
@@ -39,7 +45,7 @@ export const Home: VFC = memo(() => {
         </WrapItem>
       ))}
     </Wrap>
-    <EventDetailModal event={selectedEvent} isOpen={isOpen} onClose={onClose}/>
+    <EventDetailModal event={selectedEvent} isOpen={isOpen} onClose={onClose} isJoined={isJoined}/>
     </>
   );
 });

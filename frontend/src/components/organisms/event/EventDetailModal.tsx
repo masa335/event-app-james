@@ -1,16 +1,28 @@
 import { memo, VFC } from "react";
-import { Stack, Modal, ModalContent, ModalOverlay, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, Textarea } from "@chakra-ui/react";
+import { Stack, Modal, ModalContent, ModalOverlay, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, Textarea, Button } from "@chakra-ui/react";
 import { Event } from "../../../types/event";
 import { prefectures } from "../../../data/prefectures";
+import { useMemberships } from "../../../hooks/useMemberships";
 
 type Props = {
   event: Event | null;
   isOpen: boolean;
+  isJoined: boolean;
   onClose: () => void;
 };
 
 export const EventDetailModal: VFC<Props> = memo(props => {
-  const { event, isOpen, onClose } = props;
+  const { event, isOpen, onClose, isJoined } = props;
+  const { createMemberships, deleteMemberships, loading } = useMemberships();
+
+  const onClickJoin = () => {
+    event?.id ? createMemberships(event?.id) : console.log("eventIdがありません");
+    // isJoined = true;
+  }
+
+  const onClickCancel = () => {
+    event?.id ? deleteMemberships(event?.id) : console.log("eventIdがありません")
+  }
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} motionPreset="slideInBottom" autoFocus={false} scrollBehavior="inside">
@@ -48,6 +60,11 @@ export const EventDetailModal: VFC<Props> = memo(props => {
               <FormLabel>イベントの説明</FormLabel>
               <Textarea value={event?.explanation} isReadOnly={true}></Textarea>
             </FormControl>
+            {isJoined ?
+              <Button onClick={onClickCancel} colorScheme="red" isLoading={loading}>参加を取り消す</Button>
+              :
+              <Button onClick={onClickJoin} colorScheme="blue" isLoading={loading}>参加する</Button>
+            }
           </Stack>
         </ModalBody>
       </ModalContent>
