@@ -6,6 +6,7 @@ import { CreateEvent } from "../components/pages/CreateEvent"
 import { Signup } from "../components/pages/Signup";
 import { Settings } from "../components/pages/Settings";
 import { UpdatePassword } from "../components/pages/UpdatePassword";
+import { EditEvent } from "../components/pages/EditEvent";
 
 export const HomeRoutes = [
   { 
@@ -37,6 +38,11 @@ export const HomeRoutes = [
     path: "/create",
     exact: false,
     children: <CreateEvent />
+  },
+  {
+    path: "/event/:id",
+    exact: false,
+    children: <EditEvent />
   },
   {
     path: "/settings",

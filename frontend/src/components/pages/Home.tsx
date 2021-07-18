@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { memo, VFC } from "react";
-import { useAllEvents } from "../../hooks/useAllEvents";
+import { useEvents } from "../../hooks/useEvents";
 
 import { Wrap, WrapItem, Heading, useDisclosure, Box } from "@chakra-ui/react";
 import { EventCard } from "../organisms/event/eventCard";
@@ -11,14 +11,14 @@ import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 export const Home: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { getEvents, events, loading } = useAllEvents();
+  const { getAllEvents, events, loading } = useEvents();
   const { onSelectEvent, selectedEvent } = useSelectUser();
   const [ isJoined, setIsJoined ] = useState(false); // 参加済みのイベントならtrue
   const [ isOrganizer, setIsOrganizer ] = useState(false); //イベント主催者ならtrue
   const { getCurrentUser, auth } = useCurrentUser();
 
   //ページを開いた時にだけ実行する
-  useEffect(() => getEvents(),[getEvents])
+  useEffect(() => getAllEvents(),[getAllEvents])
 
   //モーダルを開閉するタイミングで実行
   useEffect(() => getCurrentUser,[isOpen])
