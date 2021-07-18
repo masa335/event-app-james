@@ -1,5 +1,5 @@
 import { memo, VFC } from "react";
-import { Button, FormControl, FormLabel, Input, Center, Stack, FormErrorMessage } from "@chakra-ui/react"
+import { Button, FormControl, FormLabel, Input, Center, Stack, FormErrorMessage, Heading } from "@chakra-ui/react"
 import { useSignup } from "../../hooks/useSignup";
 import { SignupParams } from "../../types/signupParams";
 import { useForm } from "react-hook-form";
@@ -21,6 +21,7 @@ export const Signup: VFC = memo(() => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Center my="30px" mx={{base: "40px", md: "200px", lg: "485px"}}>
           <Stack spacing={4} w="100%">
+            <Heading as="h4" size="md" textAlign="left">新規登録</Heading>
             <FormControl isInvalid={errors.email}>
               <FormLabel fontSize="md">メール</FormLabel>
               <Input 

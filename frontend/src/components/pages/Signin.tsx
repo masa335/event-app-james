@@ -18,7 +18,7 @@ export const Signin: VFC = memo(() => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Center my="30px" mx={{base: "40px", md: "200px", lg: "485px"}}>
           <Stack spacing={4} w="100%">
-            <Heading as="h4" textAlign="center">ログイン</Heading>
+            <Heading as="h4" size="md" textAlign="left">ログイン</Heading>
             <FormControl>
               <FormLabel fontSize="md">メール</FormLabel>
               <Input 

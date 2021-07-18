@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { memo, VFC } from "react";
 import { useAllEvents } from "../../hooks/useAllEvents";
 
-import { Wrap, WrapItem, Heading, useDisclosure } from "@chakra-ui/react";
+import { Wrap, WrapItem, Heading, useDisclosure, Box } from "@chakra-ui/react";
 import { EventCard } from "../organisms/event/eventCard";
 import { useCallback } from "react";
 import { EventDetailModal } from "../organisms/event/EventDetailModal";
@@ -36,7 +36,9 @@ export const Home: VFC = memo(() => {
 
   return (
     <>
-    <Heading as="h3" size="lg" pl="30px">新着イベント</Heading>
+    <Box my="20px" mx="20px" p={1} bg="#76a1b8">
+      <Heading as="h2" size="md" color="white">新着イベント</Heading>
+    </Box>
     <Wrap pr={{ base:4, md: 8 }} pl={{ base:4, md: 8 }} pb={{ base:4, md: 8 }} pt="5px" justify="space-around">
       {events.map((event) => (
         <WrapItem key={event.id}>
