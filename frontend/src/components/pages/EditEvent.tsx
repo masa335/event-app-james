@@ -1,5 +1,5 @@
 import React, { memo, VFC, useState, useCallback, ChangeEvent, useEffect, } from "react";
-import { Heading, Box, Center, Stack, FormControl, FormLabel, Input, FormErrorMessage, Button, Textarea, Select } from "@chakra-ui/react";
+import { Heading, Box, Center, Stack, FormControl, FormLabel, Input, FormErrorMessage, Button, Textarea, Select, Link } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
 import { useRecoilValue } from "recoil";
@@ -12,7 +12,7 @@ import moment from 'moment';
 
 export const EditEvent: VFC = memo(() => {
   const { id } = useParams<{ id: string }>(); //URLパラメーターを受け取る
-  const { updateEvent, loading } = useEvents();
+  const { updateEvent, deleteEvent, loading } = useEvents();
   const { getEvent, event } = useEvents();
 
   const auth = useRecoilValue(authState);
@@ -28,6 +28,10 @@ export const EditEvent: VFC = memo(() => {
     const selectedImage: File = e.target.files[0];
     setImage(selectedImage)
   }, [])
+
+  const onClickDelete = () => {
+    deleteEvent(id, event?.user_id);
+  };
 
   // イベント情報を取得
   useEffect(() => getEvent(id),[getEvent])
@@ -166,6 +170,7 @@ export const EditEvent: VFC = memo(() => {
               </Stack>
             </FormControl>
             <Button type="submit" colorScheme="blue" disabled={loading} isLoading={loading}>保存する</Button>
+            <Link onClick={onClickDelete} color="red.400">イベントを削除する</Link>
           </Stack>
         </Center>
       </form>

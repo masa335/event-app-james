@@ -49,5 +49,20 @@ export const useEvents = () => {
     .finally(() => setLoading(false));
   },[]);
 
-  return { getAllEvents, getEvent, updateEvent, events, event, loading }
+  const deleteEvent = useCallback((eventId: string | undefined, userId: number | undefined) => {
+    setLoading(true);
+    axios
+    .delete<Event>(`/api/v1/events/${eventId}`)
+    .then((res) => {
+      console.log(res.data);
+      showMessage({ title: "イベントを削除しました", status: "success" });
+      history.push(`/user/${userId}`)
+    })
+    .catch(() => {
+      showMessage({ title: "イベントを削除できませんでした", status: "error" });
+    })
+    .finally(() => setLoading(false));
+  },[]);
+
+  return { getAllEvents, getEvent, updateEvent, deleteEvent, events, event, loading }
 };
