@@ -68,6 +68,11 @@ export const NotSignedInRoutes = [
     children: <Signin />
   },
   {
+    path: "/signup",
+    exact: false,
+    children: <Signup />
+  },
+  {
     path: "*",
     exact: false,
     children: <Signin />
