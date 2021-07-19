@@ -1,11 +1,16 @@
 import axios from "axios";
 import { useCallback, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Event } from "../types/event";
+import { useMessage } from "./useMessage";
 
 export const useEvents = () => {
   const [loading, setLoading] = useState(false);
   const [events, setEvents] = useState<Array<Event>>([]);
   const [event, setEvent] = useState<Event>();
+
+  const { showMessage } = useMessage();
+  const history = useHistory();
 
   const getAllEvents = useCallback(() => {
     setLoading(true);
@@ -29,20 +34,20 @@ export const useEvents = () => {
     .finally(() => setLoading(false));
   },[]);
 
-  // const updateEvent = useCallback((userId: number | undefined, params: FormData) => {
-  //   setLoading(true);
-  //   axios
-  //   .put<User>(`/api/v1/users/${userId}`, params, {headers:{ "Content-Type": "multipart/form-data" }})
-  //   .then((res) => {
-  //     setUserInfo(res.data);
-  //     showMessage({ title: "プロフィールを更新しました", status: "success" });
-  //     history.push(`/user/${userId}`)
-  //   })
-  //   .catch(() => {
-  //     showMessage({ title: "プロフィールを更新できませんでした", status: "error" });
-  //   })
-  //   .finally(() => setLoading(false));
-  // },[]);
+  const updateEvent = useCallback((eventId: string | undefined, params: FormData) => {
+    setLoading(true);
+    axios
+    .put<Event>(`/api/v1/events/${eventId}`, params, {headers:{ "Content-Type": "multipart/form-data" }})
+    .then((res) => {
+      console.log(res.data);
+      showMessage({ title: "イベントを更新しました", status: "success" });
+      history.push(`/user/${params.get("user_id")}`)
+    })
+    .catch(() => {
+      showMessage({ title: "イベントを更新できませんでした", status: "error" });
+    })
+    .finally(() => setLoading(false));
+  },[]);
 
-  return { getAllEvents, getEvent, events, event, loading }
+  return { getAllEvents, getEvent, updateEvent, events, event, loading }
 };

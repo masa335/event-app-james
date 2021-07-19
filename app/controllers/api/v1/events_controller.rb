@@ -18,6 +18,15 @@ class Api::V1::EventsController < ApplicationController
     end
   end
 
+  def update
+    event = Event.find(params[:id])
+    if event.update!(event_params)
+      render json: event, status: :ok
+    else
+      render json: event.errors
+    end
+  end
+
   private
 
   def event_params

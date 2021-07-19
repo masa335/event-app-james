@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { useRecoilValue } from "recoil";
 import { authState } from "../../recoil/atoms/Auth";
 import { Event } from "../../types/event";
-import { useCreateEvent } from "../../hooks/useCreateEvent";
 import { prefectures } from "../../data/prefectures";
 import { useEvents } from "../../hooks/useEvents";
 import { useParams } from "react-router-dom";
@@ -13,7 +12,7 @@ import moment from 'moment';
 
 export const EditEvent: VFC = memo(() => {
   const { id } = useParams<{ id: string }>(); //URLパラメーターを受け取る
-  const { createEvent, loading } = useCreateEvent();
+  const { updateEvent, loading } = useEvents();
   const { getEvent, event } = useEvents();
 
   const auth = useRecoilValue(authState);
@@ -76,7 +75,8 @@ export const EditEvent: VFC = memo(() => {
     formData.append('explanation', params.explanation);
     image && formData.append('image', image ?? ""); //画像が選択されていない時はappendしない。
 
-    createEvent(formData);
+    console.log(formData.get('user_id'));
+    updateEvent(id, formData);
   };
 
   return (
