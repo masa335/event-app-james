@@ -5,6 +5,7 @@ import { prefectures } from "../../../data/prefectures";
 import { useMemberships } from "../../../hooks/useMemberships";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import moment from "moment";
 
 
 type Props = {
@@ -24,19 +25,28 @@ export const EventDetailModal: VFC<Props> = memo(props => {
   
   useEffect(() => setButtonSwitch(isJoined),[isOpen])
 
+  const dateFormat = (date: Date | undefined) => {
+    const formatDate = moment(date, moment.ISO_8601).format("yyyy/MM/DD HH:mm");
+    return formatDate
+  };
+
   const onClickJoin = () => {
     event?.id ? createMemberships(event?.id) : console.log("eventIdがありません");
     setButtonSwitch(true);
-  }
+  };
 
   const onClickCancel = () => {
     event?.id ? deleteMemberships(event?.id) : console.log("eventIdがありません")
     setButtonSwitch(false);
-  }
+  };
+  
+  const onClickEdit = () => {
+    history.push(`/event/${event?.id}`)
+  };
 
   const redirectToSignIn = () => {
     history.push("/login")
-  }
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} motionPreset="slideInBottom" autoFocus={false} scrollBehavior="inside">
@@ -56,11 +66,11 @@ export const EventDetailModal: VFC<Props> = memo(props => {
             </FormControl>
             <FormControl>
               <FormLabel>開始日時</FormLabel>
-              <Input value={String(event?.start_date)} isReadOnly={true}></Input>
+              <Input value={dateFormat(event?.start_date)} isReadOnly={true}></Input>
             </FormControl>
             <FormControl>
               <FormLabel>終了日時</FormLabel>
-              <Input value={String(event?.end_date)} isReadOnly={true}></Input>
+              <Input value={dateFormat(event?.end_date)} isReadOnly={true}></Input>
             </FormControl>
             <FormControl>
               <FormLabel>開催する都道府県</FormLabel>
@@ -75,9 +85,11 @@ export const EventDetailModal: VFC<Props> = memo(props => {
               <Textarea value={event?.explanation} isReadOnly={true}></Textarea>
             </FormControl>
             {isSignedIn ? 
-              ( !isOrganizer && 
+              ( isOrganizer ? 
+                (<Button onClick={onClickEdit} colorScheme="teal" isLoading={loading}>編集する</Button>)
+                :
                 ( buttonSwitch ?
-                  <Button onClick={onClickCancel} colorScheme="red" isLoading={loading}>参加を取り消す</Button>
+                  <Button onClick={onClickCancel} colorScheme="gray" isLoading={loading}>参加を取り消す</Button>
                   :
                   <Button onClick={onClickJoin} colorScheme="blue" isLoading={loading}>参加する</Button>
                 )
