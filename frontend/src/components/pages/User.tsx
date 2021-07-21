@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, VFC } from "react";
-import { Heading, Box, Image, Text, Tabs, TabList, Tab, TabPanels, TabPanel, Wrap, WrapItem, useDisclosure } from "@chakra-ui/react"
+import { Heading, Box, Image, Text, Tabs, TabList, Tab, TabPanels, TabPanel, Wrap, WrapItem, useDisclosure, Link, Flex, Center, VStack, Button } from "@chakra-ui/react"
 import { useParams } from "react-router-dom";
 
 import { useUser } from "../../hooks/useUser";
@@ -29,16 +29,22 @@ export const User: VFC = memo(() => {
     <>
     {console.log(userInfo)}
     <Box mx="40px" my="20px">
-      <Box borderBottom="6px" borderStyle="double" borderColor="blackAlpha.400">
-        <Image
-            borderRadius="full"
-            boxSize="160px"
-            src={userInfo?.user.image.url}
-            alt={userInfo?.user.name}
-            m="auto"
-          />
-        <Text fontSize="2xl" textAlign="center" color="gray.600">{userInfo?.user.name}</Text>
-        <Text fontSize="lg" textAlign="center" color="gray.600">{userInfo?.user.self_introduction}</Text>
+      <Box pb="10px" borderBottom="6px" borderStyle="double" borderColor="blackAlpha.400">
+        <VStack>
+          <Image
+              borderRadius="full"
+              boxSize="160px"
+              src={userInfo?.user.image.url}
+              alt={userInfo?.user.name}
+            />
+          <Text fontSize="2xl" color="gray.600">{userInfo?.user.name}</Text>
+          <Text fontSize="sm" textAlign="center" color="gray.600">{userInfo?.user.self_introduction}</Text>
+          <Flex>
+            <Text fontSize="lg" color="gray.600" mr="10px">フォロー中 <Link href="#" fontWeight="bold">102</Link></Text>
+            <Text fontSize="lg" color="gray.600">フォロワー <Link href="#" fontWeight="bold">54</Link></Text>
+          </Flex>
+          <Button colorScheme="blue" isLoading={loading}>フォロー</Button>
+        </VStack>
       </Box>
       <Box my="20px" p={1} bg="#76a1b8">
         <Heading as="h2" size="md" color="white">イベント一覧</Heading>
