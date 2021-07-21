@@ -1,6 +1,7 @@
 class Api::V1::EventsController < ApplicationController
   def index
-    events = Event.all
+    # EventsとUsersテーブルを内部結合して、必要なカラムをselect
+    events = Event.joins(:user).select('events.*, users.name as organizer')
     render json: events, status: :ok
   end
 

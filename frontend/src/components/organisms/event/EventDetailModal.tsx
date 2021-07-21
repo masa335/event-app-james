@@ -1,11 +1,12 @@
 import { memo, useEffect, VFC } from "react";
-import { Stack, Modal, ModalContent, ModalOverlay, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, Textarea, Button } from "@chakra-ui/react";
+import { Stack, Modal, ModalContent, ModalOverlay, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, Textarea, Button, Text, Icon, Link } from "@chakra-ui/react";
 import { Event } from "../../../types/event";
 import { prefectures } from "../../../data/prefectures";
 import { useMemberships } from "../../../hooks/useMemberships";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
+import { BiUser } from "react-icons/bi"
 
 
 type Props = {
@@ -49,13 +50,19 @@ export const EventDetailModal: VFC<Props> = memo(props => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} motionPreset="slideInBottom" autoFocus={false} scrollBehavior="inside">
+    <Modal isOpen={isOpen} onClose={onClose} motionPreset="slideInBottom" autoFocus={false}>
       <ModalOverlay />
       <ModalContent pb={2}>
         <ModalHeader>イベント詳細</ModalHeader>
         <ModalCloseButton />
         <ModalBody mx={6}>
           <Stack spacing={4}>
+            <FormControl>
+              <Text>
+                <Icon as={BiUser} />  
+                <Link href={`/user/${event?.user_id}`} color="blue.400" ml={1}>{event?.organizer}</Link>
+              </Text>
+            </FormControl>
             <FormControl>
               <FormLabel>イベント名</FormLabel>
               <Input value={event?.event_name} isReadOnly={true}></Input>

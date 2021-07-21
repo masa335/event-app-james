@@ -10,5 +10,6 @@ export type Event = {
   end_date: Date;
   image: {
     url: string
-  }
+  },
+  organizer?: string;
 }
