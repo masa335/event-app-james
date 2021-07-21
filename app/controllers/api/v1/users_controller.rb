@@ -20,6 +20,18 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  def follows
+    user = User.find(params[:id])
+    users = user.followings
+    render json: users, status: :ok
+  end
+
+  def followers
+    user = User.find(params[:id])
+    users = user.followers
+    render json: users, status: :ok
+  end
+
   private
 
   def user_params

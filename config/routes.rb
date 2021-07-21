@@ -4,7 +4,11 @@ Rails.application.routes.draw do
       resources :events do
         resource :memberships, only: [:create, :destroy]
       end
-      resources :users, only: [:show, :update]
+      resources :users, only: [:show, :update] do
+        resource :relationships, only: [:create, :destroy]
+        get :follows, on: :member
+        get :followers, on: :member
+      end
       mount_devise_token_auth_for 'User', at: 'auth', controllers: {
         registrations: 'api/v1/auth/registrations'
       }
