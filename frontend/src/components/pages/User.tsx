@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, VFC } from "react";
-import { Heading, Box, Image, Text, Tabs, TabList, Tab, TabPanels, TabPanel, Wrap, WrapItem, useDisclosure, Link, Flex, Center, VStack, Button } from "@chakra-ui/react"
+import { Heading, Box, Image, Text, Tabs, TabList, Tab, TabPanels, TabPanel, Wrap, WrapItem, useDisclosure, Link, Flex, VStack, Button } from "@chakra-ui/react"
 import { useParams } from "react-router-dom";
 
 import { useUser } from "../../hooks/useUser";
@@ -24,7 +24,7 @@ export const User: VFC = memo(() => {
     },
     [onOpen, events, onSelectEvent]
   );
-  
+
   return (
     <>
     {console.log(userInfo)}
@@ -40,8 +40,8 @@ export const User: VFC = memo(() => {
           <Text fontSize="2xl" color="gray.600">{userInfo?.user.name}</Text>
           <Text fontSize="sm" textAlign="center" color="gray.600">{userInfo?.user.self_introduction}</Text>
           <Flex>
-            <Text fontSize="lg" color="gray.600" mr="10px">フォロー中 <Link href="#" fontWeight="bold">102</Link></Text>
-            <Text fontSize="lg" color="gray.600">フォロワー <Link href="#" fontWeight="bold">54</Link></Text>
+            <Text fontSize="lg" color="gray.600" mr="10px">フォロー中 <Link href={`/following/${id}`} fontWeight="bold">102</Link></Text>
+            <Text fontSize="lg" color="gray.600">フォロワー <Link href={`/followers/${id}`} fontWeight="bold">54</Link></Text>
           </Flex>
           <Button colorScheme="blue" isLoading={loading}>フォロー</Button>
         </VStack>

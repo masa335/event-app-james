@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useCallback, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { User } from "../types/user";
+import { User, Users } from "../types/user";
 import { useMessage } from "./useMessage";
 
 axios.defaults.baseURL = 'http://192.168.10.2:3001';
@@ -9,6 +9,7 @@ axios.defaults.baseURL = 'http://192.168.10.2:3001';
 export const useUser = () => {
   const [loading, setLoading] = useState(false);
   const [userInfo, setUserInfo] = useState<User>();
+  const [following, setFollowing] = useState<Array<Users>>([]);
 
   const { showMessage } = useMessage();
   const history = useHistory();
@@ -39,6 +40,17 @@ export const useUser = () => {
     .finally(() => setLoading(false));
   },[]);
 
-  return { getUserInfo, userInfo, updateUserInfo, loading, }
+  const getFollowingOrFllowers = useCallback((userId: string | number | undefined) => {
+    setLoading(true);
+    axios
+    .get<Array<Users>>(`/api/v1/users/${userId}/follows`)
+    .then((res) => setFollowing(res.data))
+    .catch(() => {
+      console.log("情報の取得に失敗しました。");
+    })
+    .finally(() => setLoading(false));
+  },[]);
+
+  return { getUserInfo, userInfo, updateUserInfo, getFollowingOrFllowers, following, loading }
 };
 

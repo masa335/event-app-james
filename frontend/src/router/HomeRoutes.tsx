@@ -7,6 +7,7 @@ import { Signup } from "../components/pages/Signup";
 import { Settings } from "../components/pages/Settings";
 import { UpdatePassword } from "../components/pages/UpdatePassword";
 import { EditEvent } from "../components/pages/EditEvent";
+import { FollowingAndFollower } from "../components/pages/FollowingAndFollower";
 
 export const HomeRoutes = [
   { 
@@ -33,6 +34,16 @@ export const HomeRoutes = [
     path: "/user/:id",
     exact: false,
     children: <User />
+  },
+  {
+    path: "/following/:id",
+    exact: false,
+    children: <FollowingAndFollower defaultIndex={0} />
+  },
+  {
+    path: "/followers/:id",
+    exact: false,
+    children: <FollowingAndFollower defaultIndex={1} />
   },
   {
     path: "/create",

@@ -43,3 +43,19 @@ export type User = {
     }
   }];
 };
+
+export type Users = {
+    id: number;
+    provider: string;
+    uid: string;
+    allow_password_change: boolean;
+    name: string;
+    image: {
+      url: string;
+    }
+    email: string;
+    gender: number;
+    age: number;
+    self_introduction: string;
+    admin: boolean;
+  };
