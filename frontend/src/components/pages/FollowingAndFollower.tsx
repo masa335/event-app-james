@@ -11,15 +11,21 @@ type Props = {
 export const FollowingAndFollower: VFC<Props> = memo(props => {
   const { defaultIndex } = props;
   const { id } = useParams<{ id: string }>(); //URLパラメーターを受け取る();
-  const { getFollowingOrFllowers, following } = useUser();
+  const { getFollowingOrFllowers, following, followers } = useUser();
   const history = useHistory();
   
-  useEffect(() => getFollowingOrFllowers(id),[])
+  useEffect(() => getFollowingOrFllowers(id, defaultIndex),[])
 
+  const onChangeTab = (index: number) => {
+    index === 0 ?
+      history.push(`/following/${id}`)
+    :
+      history.push(`/followers/${id}`);
+  };
 
   return (
     <>
-    <Tabs defaultIndex={defaultIndex}>
+    <Tabs onChange={onChangeTab} defaultIndex={defaultIndex}>
       <TabList>
         <Tab>フォロー中</Tab>
         <Tab>フォロワー</Tab>
@@ -34,10 +40,9 @@ export const FollowingAndFollower: VFC<Props> = memo(props => {
         </TabPanel>
         <TabPanel>
           <Stack spacing={4}>
-            {/* {following.map((following) => (
-              <Link key={following.id}>{following.name}</Link>
-            ))} */}
-            <p>test masanori</p>
+            {followers.map((follower) => (
+              <Link key={follower.id}>{follower.name}</Link>
+            ))}
           </Stack>
         </TabPanel>
       </TabPanels>

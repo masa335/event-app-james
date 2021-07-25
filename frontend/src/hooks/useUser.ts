@@ -10,6 +10,7 @@ export const useUser = () => {
   const [loading, setLoading] = useState(false);
   const [userInfo, setUserInfo] = useState<User>();
   const [following, setFollowing] = useState<Array<Users>>([]);
+  const [followers, setFollowers] = useState<Array<Users>>([]);
 
   const { showMessage } = useMessage();
   const history = useHistory();
@@ -40,17 +41,27 @@ export const useUser = () => {
     .finally(() => setLoading(false));
   },[]);
 
-  const getFollowingOrFllowers = useCallback((userId: string | number | undefined) => {
+  const getFollowingOrFllowers = useCallback((userId: string | number | undefined, index: number | undefined) => {
     setLoading(true);
-    axios
-    .get<Array<Users>>(`/api/v1/users/${userId}/follows`)
-    .then((res) => setFollowing(res.data))
-    .catch(() => {
-      console.log("情報の取得に失敗しました。");
-    })
-    .finally(() => setLoading(false));
+    // index=0はフォロー中、1がフォロワー
+    index === 0 ?
+      axios
+      .get<Array<Users>>(`/api/v1/users/${userId}/follows`)
+      .then((res) => setFollowing(res.data))
+      .catch(() => {
+        console.log("情報の取得に失敗しました。");
+      })
+      .finally(() => setLoading(false))
+    :
+      axios
+      .get<Array<Users>>(`/api/v1/users/${userId}/followers`)
+      .then((res) => setFollowers(res.data))
+      .catch(() => {
+        console.log("情報の取得に失敗しました。");
+      })
+      .finally(() => setLoading(false));
   },[]);
 
-  return { getUserInfo, userInfo, updateUserInfo, getFollowingOrFllowers, following, loading }
+  return { getUserInfo, userInfo, updateUserInfo, getFollowingOrFllowers, following, followers, loading }
 };
 
