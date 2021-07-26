@@ -8,6 +8,7 @@ Rails.application.routes.draw do
         resource :relationships, only: [:create, :destroy]
         get :follows, on: :member
         get :followers, on: :member
+        get :follows_followers_count, on: :member
       end
       mount_devise_token_auth_for 'User', at: 'auth', controllers: {
         registrations: 'api/v1/auth/registrations'

@@ -59,3 +59,8 @@ export type Users = {
     self_introduction: string;
     admin: boolean;
   };
+
+  export type Count = {
+    follows: number;
+    followers: number;
+  };

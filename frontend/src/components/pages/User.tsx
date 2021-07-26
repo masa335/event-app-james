@@ -11,12 +11,15 @@ import { prefectures } from "../../data/prefectures";
 export const User: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { id } = useParams<{ id: string }>(); //URLパラメーターを受け取る
-  const { getUserInfo, loading, userInfo } = useUser();
+  const { getUserInfo, loading, userInfo, getFollowsFllowersCount, count } = useUser();
   const events = userInfo?.organized_events.concat(userInfo?.participating_events)!; //主催イベントと参加イベントをマージ
   const { onSelectEvent, selectedEvent } = useSelectUser();
 
   //ユーザー情報を取得
-  useEffect(() => getUserInfo(id),[getUserInfo,id]);
+  useEffect(() => {
+    getUserInfo(id);
+    getFollowsFllowersCount(id);
+  },[getUserInfo,id]);
 
   const onClickEvent = useCallback(
     (id: number | undefined) => {
@@ -27,7 +30,6 @@ export const User: VFC = memo(() => {
 
   return (
     <>
-    {console.log(userInfo)}
     <Box mx="40px" my="20px">
       <Box pb="10px" borderBottom="6px" borderStyle="double" borderColor="blackAlpha.400">
         <VStack>
@@ -40,8 +42,8 @@ export const User: VFC = memo(() => {
           <Text fontSize="2xl" color="gray.600">{userInfo?.user.name}</Text>
           <Text fontSize="sm" textAlign="center" color="gray.600">{userInfo?.user.self_introduction}</Text>
           <Flex>
-            <Text fontSize="lg" color="gray.600" mr="10px">フォロー中 <Link href={`/following/${id}`} fontWeight="bold">102</Link></Text>
-            <Text fontSize="lg" color="gray.600">フォロワー <Link href={`/followers/${id}`} fontWeight="bold">54</Link></Text>
+            <Text fontSize="lg" color="gray.600" mr="10px">フォロー中 <Link href={`/following/${id}`} fontWeight="bold">{count?.follows}</Link></Text>
+            <Text fontSize="lg" color="gray.600">フォロワー <Link href={`/followers/${id}`} fontWeight="bold">{count?.followers}</Link></Text>
           </Flex>
           <Button colorScheme="blue" isLoading={loading}>フォロー</Button>
         </VStack>
