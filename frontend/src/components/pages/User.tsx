@@ -1,5 +1,5 @@
-import { memo, useCallback, useEffect, VFC } from "react";
-import { Heading, Box, Image, Text, Tabs, TabList, Tab, TabPanels, TabPanel, Wrap, WrapItem, useDisclosure, Link, Flex, VStack, Button } from "@chakra-ui/react"
+import { memo, useCallback, useEffect, useRef, useState, VFC } from "react";
+import { Heading, Box, Image, Text, Tabs, TabList, Tab, TabPanels, TabPanel, Wrap, WrapItem, useDisclosure, Link, Flex, VStack, Button, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter } from "@chakra-ui/react"
 import { useParams } from "react-router-dom";
 
 import { useUser } from "../../hooks/useUser";
@@ -7,19 +7,27 @@ import { EventCard } from "../organisms/event/eventCard";
 import { EventDetailModal } from "../organisms/event/EventDetailModal";
 import { useSelectUser } from "../../hooks/useSelectEvent";
 import { prefectures } from "../../data/prefectures";
+import { useRelationships } from "../../hooks/useRelationships";
+import { useRecoilValue } from "recoil";
+import { authState } from "../../recoil/atoms/Auth";
 
 export const User: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { id } = useParams<{ id: string }>(); //URLパラメーターを受け取る
+  const auth = useRecoilValue(authState);
   const { getUserInfo, loading, userInfo, getFollowsFllowersCount, count } = useUser();
   const events = userInfo?.organized_events.concat(userInfo?.participating_events)!; //主催イベントと参加イベントをマージ
   const { onSelectEvent, selectedEvent } = useSelectUser();
-
+  const { createRelationships, deleteRelationships } = useRelationships();
+  const [ isFollowed, setIsFollowed ] = useState(false);
+  const [ isOpenDialog, setIsOpenDialog ] = useState(false);
+  const cancelRef = useRef<HTMLButtonElement>(null);
+  
   //ユーザー情報を取得
   useEffect(() => {
     getUserInfo(id);
     getFollowsFllowersCount(id);
-  },[getUserInfo,id]);
+  },[getUserInfo,id,isFollowed]);
 
   const onClickEvent = useCallback(
     (id: number | undefined) => {
@@ -27,6 +35,21 @@ export const User: VFC = memo(() => {
     },
     [onOpen, events, onSelectEvent]
   );
+
+  const onClickFollow = () => {
+    createRelationships(id);
+    setIsFollowed(true);
+  };
+
+  const onClickRemove = () => {
+    deleteRelationships(id);
+    setIsFollowed(false);
+    setIsOpenDialog(false);
+  };
+
+  const onCloseDialog = () => setIsOpenDialog(false);
+
+  const onOpenDialog = () => setIsOpenDialog(true);
 
   return (
     <>
@@ -45,7 +68,15 @@ export const User: VFC = memo(() => {
             <Text fontSize="lg" color="gray.600" mr="10px">フォロー中 <Link href={`/following/${id}`} fontWeight="bold">{count?.follows}</Link></Text>
             <Text fontSize="lg" color="gray.600">フォロワー <Link href={`/followers/${id}`} fontWeight="bold">{count?.followers}</Link></Text>
           </Flex>
-          <Button colorScheme="blue" isLoading={loading}>フォロー</Button>
+          {
+          Number(id) === auth.currentUser?.id ?
+            ""
+          :
+            isFollowed ?
+              <Button onClick={onOpenDialog} colorScheme="blue" isLoading={loading}>フォロー中</Button>
+            :
+              <Button onClick={onClickFollow} colorScheme="blue" variant="outline" isLoading={loading}>フォロー</Button>
+          }
         </VStack>
       </Box>
       <Box my="20px" p={1} bg="#76a1b8">
@@ -107,6 +138,28 @@ export const User: VFC = memo(() => {
       </Tabs>
     </Box>
     <EventDetailModal event={selectedEvent} isOpen={isOpen} onClose={onClose} isJoined={true} isOrganizer={true} isSignedIn={true}/>
+    <AlertDialog isOpen={isOpenDialog} leastDestructiveRef={cancelRef} onClose={onCloseDialog}>
+      <AlertDialogOverlay>
+        <AlertDialogContent>
+          <AlertDialogHeader fontSize="lg" fontWeight="bold">
+            フォロー解除
+          </AlertDialogHeader>
+
+          <AlertDialogBody>
+            フォロー解除します。よろしいですか？
+          </AlertDialogBody>
+
+          <AlertDialogFooter>
+            <Button ref={cancelRef} onClick={onCloseDialog}>
+              キャンセル
+            </Button>
+            <Button colorScheme="red" onClick={onClickRemove} ml={3}>
+              フォロー解除
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialogOverlay>
+    </AlertDialog>
     </>
   );
 });
