@@ -4,10 +4,12 @@ class Api::V1::UsersController < ApplicationController
     user = User.find(params[:id])
     organized_events = user.events.joins(:user).select('events.*, users.name as organizer')
     participating_events = user.participating_events.joins(:user).select('events.*, users.name as organizer')
+    is_followed = user.followers.exists?(id: current_api_v1_user.id)
     render json: {
       user: user,
       participating_events: participating_events,
-      organized_events: organized_events
+      organized_events: organized_events,
+      is_followed: is_followed
     }, status: :ok
   end
 
@@ -38,6 +40,12 @@ class Api::V1::UsersController < ApplicationController
     followers_count = user.followers.count
     render json: { follows: follows_count, followers: followers_count }, status: :ok
   end
+
+  # def followed?
+  #   user = User.find(params[:id])
+  #   is_followed = user.followings.exists?(params[:follower_id])
+  #   render json: is_followed, status: :ok
+  # end
 
   private
 

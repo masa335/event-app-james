@@ -42,6 +42,7 @@ export type User = {
       url: string
     }
   }];
+  is_followed: boolean;
 };
 
 export type Users = {

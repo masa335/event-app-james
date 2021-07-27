@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 import { useCallback, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Count, User, Users } from "../types/user";
@@ -12,6 +13,7 @@ export const useUser = () => {
   const [following, setFollowing] = useState<Array<Users>>([]);
   const [followers, setFollowers] = useState<Array<Users>>([]);
   const [count, setCount] = useState<Count>();
+  const [ isFollowed, setIsFollowed ] = useState<boolean | undefined>(false);
 
   const { showMessage } = useMessage();
   const history = useHistory();
@@ -19,8 +21,15 @@ export const useUser = () => {
   const getUserInfo = useCallback((userId: string | number | undefined) => {
     setLoading(true);
     axios
-    .get<User>(`/api/v1/users/${userId}`)
-    .then((res) => setUserInfo(res.data))
+    .get<User>(`/api/v1/users/${userId}`, { headers: {
+      "access-token": Cookies.get("_access_token"),
+      "client": Cookies.get("_client"),
+      "uid": Cookies.get("_uid")
+    }})
+    .then((res) => {
+      setUserInfo(res.data);
+      setIsFollowed(res.data.is_followed);
+    })
     .catch(() => {
       console.log("ユーザー情報の取得に失敗しました。");
     })
@@ -81,7 +90,9 @@ export const useUser = () => {
     getFollowingOrFllowers, 
     getFollowsFllowersCount, 
     following, 
-    followers, 
+    followers,
+    setIsFollowed,
+    isFollowed, 
     count,
     loading 
   };

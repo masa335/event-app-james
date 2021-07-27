@@ -15,11 +15,10 @@ export const User: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { id } = useParams<{ id: string }>(); //URLパラメーターを受け取る
   const auth = useRecoilValue(authState);
-  const { getUserInfo, loading, userInfo, getFollowsFllowersCount, count } = useUser();
+  const { getUserInfo, loading, userInfo, getFollowsFllowersCount, count, isFollowed, setIsFollowed } = useUser();
   const events = userInfo?.organized_events.concat(userInfo?.participating_events)!; //主催イベントと参加イベントをマージ
   const { onSelectEvent, selectedEvent } = useSelectUser();
   const { createRelationships, deleteRelationships } = useRelationships();
-  const [ isFollowed, setIsFollowed ] = useState(false);
   const [ isOpenDialog, setIsOpenDialog ] = useState(false);
   const cancelRef = useRef<HTMLButtonElement>(null);
   
@@ -146,7 +145,7 @@ export const User: VFC = memo(() => {
           </AlertDialogHeader>
 
           <AlertDialogBody>
-            フォロー解除します。よろしいですか？
+            {`${userInfo?.user.name}さんのフォローを解除します。\nよろしいですか？`}
           </AlertDialogBody>
 
           <AlertDialogFooter>
