@@ -18,6 +18,8 @@ export const User: VFC = memo(() => {
   const { getUserInfo, loading, userInfo, getFollowsFllowersCount, count, isFollowed, setIsFollowed } = useUser();
   const events = userInfo?.organized_events.concat(userInfo?.participating_events)!; //主催イベントと参加イベントをマージ
   const { onSelectEvent, selectedEvent } = useSelectUser();
+  const [ isJoined, setIsJoined ] = useState(false); // 参加済みのイベントならtrue
+  const [ isOrganizer, setIsOrganizer ] = useState(false); //イベント主催者ならtrue
   const { createRelationships, deleteRelationships } = useRelationships();
   const [ isOpenDialog, setIsOpenDialog ] = useState(false);
   const cancelRef = useRef<HTMLButtonElement>(null);
@@ -29,10 +31,14 @@ export const User: VFC = memo(() => {
   },[getUserInfo,id,isFollowed]);
 
   const onClickEvent = useCallback(
-    (id: number | undefined) => {
+    (id: number | undefined, userId: number | undefined) => {
+      //参加しているイベントIDとクリックしたイベントIDが一致する物が見つかったらtrueをセットする
+      setIsJoined(!!auth.memberships?.find((event) => event.event_id === id));
+      setIsOrganizer(!!auth.memberships?.find((event) => event.user_id === userId));
+      console.log(isOrganizer);
       onSelectEvent({ id, events, onOpen});
     },
-    [onOpen, events, onSelectEvent]
+    [onOpen, events, onSelectEvent, auth]
   );
 
   const onClickFollow = () => {
@@ -136,7 +142,7 @@ export const User: VFC = memo(() => {
         </TabPanels>
       </Tabs>
     </Box>
-    <EventDetailModal event={selectedEvent} isOpen={isOpen} onClose={onClose} isJoined={true} isOrganizer={true} isSignedIn={true}/>
+    <EventDetailModal event={selectedEvent} isOpen={isOpen} onClose={onClose} isJoined={isJoined} isOrganizer={isOrganizer} isSignedIn={auth.isSignedIn}/>
     <AlertDialog isOpen={isOpenDialog} leastDestructiveRef={cancelRef} onClose={onCloseDialog}>
       <AlertDialogOverlay>
         <AlertDialogContent>
