@@ -2,8 +2,8 @@ class Api::V1::UsersController < ApplicationController
   # ユーザー情報取得(個別)
   def show
     user = User.find(params[:id])
-    organized_events = user.events.joins(:user).select('events.*, users.name as organizer')
-    participating_events = user.participating_events.joins(:user).select('events.*, users.name as organizer')
+    organized_events = user.events.joins(:user).select('events.*, users.name as organizer').order(id: 'DESC')
+    participating_events = user.participating_events.joins(:user).select('events.*, users.name as organizer').order(id: 'DESC')
     is_followed = user.followers.exists?(id: current_api_v1_user.id)
     render json: {
       user: user,
