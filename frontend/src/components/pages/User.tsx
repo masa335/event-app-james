@@ -64,7 +64,7 @@ export const User: VFC = memo(() => {
           <Image
               borderRadius="full"
               boxSize="160px"
-              src={userInfo?.user.image.url}
+              src={userInfo?.user.image.url ?? "http://192.168.10.2:3000/uploads/defaul_icon.png"}
               alt={userInfo?.user.name}
             />
           <Text fontSize="2xl" color="gray.600">{userInfo?.user.name}</Text>
@@ -114,7 +114,7 @@ export const User: VFC = memo(() => {
                 <EventCard
                   id={event.id}
                   userId={event.user_id}
-                  imageUrl={event.image.url ?? "https://source.unsplash.com/random"}
+                  imageUrl={event.image.url ?? "https://placehold.jp/150x150.png?text=no image"}
                   eventName={event.event_name}
                   prefecture={event.prefecture_id ? prefectures[event.prefecture_id] : ""}
                   onClick={onClickEvent}
@@ -130,7 +130,7 @@ export const User: VFC = memo(() => {
                 <EventCard
                   id={event.id}
                   userId={event.user_id}
-                  imageUrl={event.image.url ?? "https://source.unsplash.com/random"}
+                  imageUrl={event.image.url ?? "https://placehold.jp/150x150.png?text=no image"}
                   eventName={event.event_name}
                   prefecture={event.prefecture_id ? prefectures[event.prefecture_id] : ""}
                   onClick={onClickEvent}

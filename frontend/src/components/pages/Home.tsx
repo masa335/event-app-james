@@ -8,6 +8,7 @@ import { useCallback } from "react";
 import { EventDetailModal } from "../organisms/event/EventDetailModal";
 import { useSelectUser } from "../../hooks/useSelectEvent";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { prefectures } from "../../data/prefectures";
 
 export const Home: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -45,9 +46,9 @@ export const Home: VFC = memo(() => {
           <EventCard
             id={event.id}
             userId={event.user_id}
-            imageUrl="https://source.unsplash.com/random"
+            imageUrl={event.image.url ?? "https://placehold.jp/150x150.png?text=no image"}
             eventName={event.event_name}
-            prefecture="三重県"
+            prefecture={event.prefecture_id ? prefectures[event.prefecture_id] : ""}
             onClick={onClickEvent}
           />
         </WrapItem>
