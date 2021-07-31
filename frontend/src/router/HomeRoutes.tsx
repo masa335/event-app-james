@@ -8,6 +8,7 @@ import { Settings } from "../components/pages/Settings";
 import { UpdatePassword } from "../components/pages/UpdatePassword";
 import { EditEvent } from "../components/pages/EditEvent";
 import { FollowingAndFollower } from "../components/pages/FollowingAndFollower";
+import { Search } from "../components/pages/Search";
 
 export const HomeRoutes = [
   { 
@@ -34,6 +35,11 @@ export const HomeRoutes = [
     path: "/user/:id",
     exact: false,
     children: <User />
+  },
+  {
+    path: "/search",
+    exact: false,
+    children: <Search />
   },
   {
     path: "/following/:id",
@@ -82,6 +88,11 @@ export const NotSignedInRoutes = [
     path: "/signup",
     exact: false,
     children: <Signup />
+  },
+  {
+    path: "/search",
+    exact: false,
+    children: <Search />
   },
   {
     path: "*",
