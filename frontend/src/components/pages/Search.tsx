@@ -1,19 +1,43 @@
-import { memo, VFC } from "react";
+import { memo, useCallback, useEffect, useState, VFC } from "react";
 import { useForm } from "react-hook-form";
-import { Button, FormControl, FormLabel, Input, Center, Stack, Link, Heading, Box, Wrap, WrapItem, HStack, Flex } from "@chakra-ui/react"
+import { Button, FormControl, FormLabel, Input, Heading, Box, Wrap, WrapItem, HStack, useDisclosure } from "@chakra-ui/react"
 
-import { useSignin } from "../../hooks/useSignin";
-import { SigninParams } from "../../types/signinParams";
 import { EventCard } from "../organisms/event/eventCard";
+import { useEvents } from "../../hooks/useEvents";
+import { prefectures } from "../../data/prefectures";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { useSelectUser } from "../../hooks/useSelectEvent";
+import { EventDetailModal } from "../organisms/event/EventDetailModal";
 
 export const Search: VFC = memo(() => {
-  const { signin, loading } = useSignin();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { searchEvent, events, loading } = useEvents();
+  const [ isJoined, setIsJoined ] = useState(false); // 参加済みのイベントならtrue
+  const [ isOrganizer, setIsOrganizer ] = useState(false); //イベント主催者ならtrue
+  const { getCurrentUser, auth } = useCurrentUser();
+  const { onSelectEvent, selectedEvent } = useSelectUser();
   const { register, handleSubmit, formState } = useForm({ mode: "all" });
 
-  const onSubmit = (params: SigninParams) => {
-    // signin(params);
-    console.log(params);
+  type Params = {
+    keyword: string;
   };
+
+  const onSubmit = (params: Params) => {
+    searchEvent(params);
+  };
+
+  //モーダルを開閉するタイミングで実行
+  useEffect(() => getCurrentUser,[isOpen])
+
+  const onClickEvent = useCallback(
+    (id: number | undefined, userId: number | undefined) => {
+      //参加しているイベントIDとクリックしたイベントIDが一致する物が見つかったらtrueをセットする
+      setIsJoined(!!auth.memberships?.find((event) => event.event_id === id));
+      setIsOrganizer(!!auth.memberships?.find((event) => event.user_id === userId));
+      onSelectEvent({ id, events, onOpen});
+    },
+    [onOpen, events, onSelectEvent, auth]
+  );
 
   return (
     <>
@@ -24,16 +48,16 @@ export const Search: VFC = memo(() => {
             <FormControl>
               <FormLabel fontSize="md">キーワード</FormLabel>
               <Input 
-              id="email"
+              id="keyword"
               type="text"
               width="200px"
               placeholder="なんでも検索"
-              {...register("email",{ required: "メールは必須入力です" })}
+              {...register("keyword",{ required: "キーワードは必須入力です" })}
               border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
             </FormControl>
           </Box>
           <Box>
-            <Button type="submit" colorScheme="blue" disabled={!formState.isValid || loading} isLoading={loading}>検索</Button>
+            <Button type="submit" colorScheme="blue" disabled={!formState.isValid || loading} isLoading={loading}>イベント検索</Button>
           </Box>
         </HStack>
       </form>
@@ -42,7 +66,7 @@ export const Search: VFC = memo(() => {
       <Heading as="h2" size="md" color="white">検索結果</Heading>
     </Box>
     <Wrap pr={{ base:4, md: 8 }} pl={{ base:4, md: 8 }} pb={{ base:4, md: 8 }} pt="5px" justify="space-around">
-      {/* {events.map((event) => (
+      {events.map((event) => (
         <WrapItem key={event.id}>
           <EventCard
             id={event.id}
@@ -53,10 +77,10 @@ export const Search: VFC = memo(() => {
             onClick={onClickEvent}
           />
         </WrapItem>
-      ))} */}
-      <p>★検索結果表示</p>
+      ))}
     </Wrap>
   </Box>
+  <EventDetailModal event={selectedEvent} isOpen={isOpen} onClose={onClose} isJoined={isJoined} isOrganizer={isOrganizer} isSignedIn={auth.isSignedIn}/>
   </>
   );
 });

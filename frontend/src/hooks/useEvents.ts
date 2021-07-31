@@ -34,6 +34,17 @@ export const useEvents = () => {
     .finally(() => setLoading(false));
   },[]);
 
+  const searchEvent = useCallback((params) => {
+    setLoading(true);
+    axios
+    .get<Array<Event>>("http://192.168.10.2:3001/api/v1/events/search", {params: params})
+    .then((res) => setEvents(res.data))
+    .catch(() => {
+      alert("イベントの取得に失敗しました。");
+    })
+    .finally(() => setLoading(false));
+  },[]);
+
   const updateEvent = useCallback((eventId: string | undefined, params: FormData) => {
     setLoading(true);
     axios
@@ -64,5 +75,5 @@ export const useEvents = () => {
     .finally(() => setLoading(false));
   },[]);
 
-  return { getAllEvents, getEvent, updateEvent, deleteEvent, events, event, loading }
+  return { getAllEvents, getEvent, updateEvent, deleteEvent, searchEvent, events, event, loading }
 };
