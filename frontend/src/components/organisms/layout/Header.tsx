@@ -1,18 +1,22 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useDisclosure } from "@chakra-ui/hooks";
 import { Box, Flex, Heading, Link, Spacer } from "@chakra-ui/layout";
+import { FormControl, HStack, Icon, Input } from "@chakra-ui/react";
 import { memo, useCallback, VFC } from "react";
+import { useForm } from "react-hook-form";
 import { useHistory } from "react-router";
 import { useRecoilValue } from "recoil";
 import { useSignout } from "../../../hooks/useSignout";
 import { authState } from "../../../recoil/atoms/Auth";
 import { MenuIconButton } from "../../atoms/button/MenuIconButton";
 import { MenuDrawer } from "../../molecules/MenuDrawer";
+import { GoSearch } from "react-icons/go"
 
 export const Header: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const history = useHistory();
   const { signout } = useSignout();
+  const { register, handleSubmit, getValues } = useForm({ mode: "all" });
 
   const auth = useRecoilValue(authState);
   const isSignedIn = auth.isSignedIn;
@@ -28,6 +32,16 @@ export const Header: VFC = memo(() => {
   const onClickSettings = useCallback(() => history.push("/settings"),[]);
 
   const onClickLogin = useCallback(() => history.push("/login"),[]);
+
+  const onClickSearch = () => history.push(`/search?keyword=${getValues("keyword")}`);
+
+  type Params = {
+    keyword: string;
+  };
+
+  const onSubmit = (params: Params) => {
+    history.push(`/search?keyword=${params.keyword}`);
+  };
 
   return (
     <>
@@ -65,6 +79,30 @@ export const Header: VFC = memo(() => {
                 <Link onClick={onClickSettings}>設定</Link>
               </Box>
             }
+            <Box pr={4}>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <HStack spacing="10px" alignItems="center">
+                  <Box>
+                    <FormControl>
+                      <Input 
+                      id="keyword"
+                      type="text"
+                      width="200px"
+                      height="30px"
+                      color="black"
+                      placeholder="イベント検索"
+                      {...register("keyword",{ required: "キーワードは必須入力です" })}
+                      border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
+                    </FormControl>
+                  </Box>
+                  <Box>
+                    <Link onClick={onClickSearch}>
+                      <Icon as={GoSearch} />
+                    </Link>
+                  </Box>
+                </HStack>
+              </form>
+            </Box>
             <Spacer />
             <Box pr={4}>
               {!loading && (isSignedIn ? (

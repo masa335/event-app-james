@@ -8,23 +8,34 @@ import { prefectures } from "../../data/prefectures";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useSelectUser } from "../../hooks/useSelectEvent";
 import { EventDetailModal } from "../organisms/event/EventDetailModal";
+import { useHistory, useLocation } from "react-router-dom";
 
 export const Search: VFC = memo(() => {
+  const history = useHistory();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { searchEvent, events, loading } = useEvents();
   const [ isJoined, setIsJoined ] = useState(false); // 参加済みのイベントならtrue
   const [ isOrganizer, setIsOrganizer ] = useState(false); //イベント主催者ならtrue
   const { getCurrentUser, auth } = useCurrentUser();
   const { onSelectEvent, selectedEvent } = useSelectUser();
-  const { register, handleSubmit, formState } = useForm({ mode: "all" });
+  const { search } = useLocation(); //クエリパラメータを取得
+  const query = new URLSearchParams(search); //クエリパラメータを扱いやすい形に変換
+  const { register, handleSubmit, setValue } = useForm({ mode: "all" });
 
   type Params = {
     keyword: string;
   };
 
   const onSubmit = (params: Params) => {
-    searchEvent(params);
+    history.push(`/search?keyword=${params.keyword}`)
   };
+
+  useEffect(() => {
+    setValue("keyword", query.get("keyword"));
+    searchEvent({
+      keyword: query.get("keyword")
+    });
+  },[search]);
 
   //モーダルを開閉するタイミングで実行
   useEffect(() => getCurrentUser,[isOpen])
@@ -57,7 +68,7 @@ export const Search: VFC = memo(() => {
             </FormControl>
           </Box>
           <Box>
-            <Button type="submit" colorScheme="blue" disabled={!formState.isValid || loading} isLoading={loading}>イベント検索</Button>
+            <Button type="submit" colorScheme="blue" disabled={loading} isLoading={loading}>イベント検索</Button>
           </Box>
         </HStack>
       </form>
