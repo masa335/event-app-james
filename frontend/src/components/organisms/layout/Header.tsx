@@ -11,10 +11,12 @@ import { authState } from "../../../recoil/atoms/Auth";
 import { MenuIconButton } from "../../atoms/button/MenuIconButton";
 import { MenuDrawer } from "../../molecules/MenuDrawer";
 import { GoSearch } from "react-icons/go"
+import { useLocation } from "react-router-dom";
 
 export const Header: VFC = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const history = useHistory();
+  const { pathname } = useLocation(); //パスネームを取得
   const { signout } = useSignout();
   const { register, handleSubmit, getValues } = useForm({ mode: "all" });
 
@@ -22,6 +24,8 @@ export const Header: VFC = memo(() => {
   const isSignedIn = auth.isSignedIn;
   const loading = auth.loading;
   const userId = auth.currentUser?.id;
+
+  const isSearch = pathname.includes("/search");
 
   const onClickHome = useCallback(() => history.push("/"),[]);
 
@@ -79,30 +83,32 @@ export const Header: VFC = memo(() => {
                 <Link onClick={onClickSettings}>設定</Link>
               </Box>
             }
-            <Box pr={4}>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <HStack spacing="10px" alignItems="center">
-                  <Box>
-                    <FormControl>
-                      <Input 
-                      id="keyword"
-                      type="text"
-                      width="200px"
-                      height="30px"
-                      color="black"
-                      placeholder="イベント検索"
-                      {...register("keyword",{ required: "キーワードは必須入力です" })}
-                      border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
-                    </FormControl>
-                  </Box>
-                  <Box>
-                    <Link onClick={onClickSearch}>
-                      <Icon as={GoSearch} />
-                    </Link>
-                  </Box>
-                </HStack>
-              </form>
-            </Box>
+            {!isSearch &&
+              <Box pr={4}>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <HStack spacing="10px" alignItems="center">
+                    <Box>
+                      <FormControl>
+                        <Input 
+                        id="keyword"
+                        type="text"
+                        width="200px"
+                        height="30px"
+                        color="black"
+                        placeholder="イベント検索"
+                        {...register("keyword",{ required: "キーワードは必須入力です" })}
+                        border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
+                      </FormControl>
+                    </Box>
+                    <Box>
+                      <Link onClick={onClickSearch}>
+                        <Icon as={GoSearch} />
+                      </Link>
+                    </Box>
+                  </HStack>
+                </form>
+              </Box>
+            }
             <Spacer />
             <Box pr={4}>
               {!loading && (isSignedIn ? (
