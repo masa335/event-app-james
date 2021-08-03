@@ -8,29 +8,29 @@
 /.bundle
 
 # Ignore all logfiles and tempfiles.
-/log/*
-/tmp/*
-!/log/.keep
-!/tmp/.keep
+api/log/*
+api/tmp/*
+!api/log/.keep
+!api/tmp/.keep
 
 # Ignore pidfiles, but keep the directory.
-/tmp/pids/*
-!/tmp/pids/
-!/tmp/pids/.keep
+api/tmp/pids/*
+!api/tmp/pids/
+!api/tmp/pids/.keep
 
 # Ignore uploaded files in development.
-/storage/*
-!/storage/.keep
-.byebug_history
+api/storage/*
+!api/storage/.keep
+api/.byebug_history
 
 # Ignore master key for decrypting credentials and more.
-/config/master.key
+api/config/master.key
 
 # Ignore .env
-/.env
+api/.env
 
 # その他開発メモ
 /development_log.md
 
 # 画像保存先
-/public/uploads
+api/public/uploads
