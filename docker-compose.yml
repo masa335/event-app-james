@@ -38,7 +38,22 @@ services:
     networks:
       app_net:
         ipv4_address: '172.20.0.3'
-
+    
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    image: frontend
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./frontend:/usr/src/app
+    ports:
+      - "3000:3000"
+    command: sh -c "yarn start"
+    networks:
+      app_net:
+        ipv4_address: '172.20.0.4'
+    
 networks:
   app_net:
     driver: bridge
