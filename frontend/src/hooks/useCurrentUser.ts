@@ -6,7 +6,7 @@ import { useRecoilState } from "recoil";
 import { authState } from "../recoil/atoms/Auth";
 
 
-axios.defaults.baseURL = 'http://192.168.10.2:3001';
+axios.defaults.baseURL = 'http://localhost:3001';
 
 //認証済みのユーザーを取得する
 export const useCurrentUser = () => {

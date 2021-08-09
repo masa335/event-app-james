@@ -1,8 +1,2 @@
-FROM node:14.4.0
-
+FROM node:12.18.0-alpine
 WORKDIR /usr/src/app
-
-ENV LANG C.UTF-8
-ENV TZ Asia/Tokyo
-
-ADD . /usr/src/app

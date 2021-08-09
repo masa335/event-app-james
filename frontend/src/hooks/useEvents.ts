@@ -4,6 +4,8 @@ import { useHistory } from "react-router-dom";
 import { Event } from "../types/event";
 import { useMessage } from "./useMessage";
 
+axios.defaults.baseURL = 'http://localhost:3001';
+
 export const useEvents = () => {
   const [loading, setLoading] = useState(false);
   const [events, setEvents] = useState<Array<Event>>([]);
@@ -15,9 +17,10 @@ export const useEvents = () => {
   const getAllEvents = useCallback(() => {
     setLoading(true);
     axios
-    .get<Array<Event>>("http://192.168.10.2:3001/api/v1/events")
+    .get<Array<Event>>("/api/v1/events")
     .then((res) => setEvents(res.data))
-    .catch(() => {
+    .catch((err) => {
+      console.log(err);
       alert("イベントの取得に失敗しました。");
     })
     .finally(() => setLoading(false));
@@ -26,7 +29,7 @@ export const useEvents = () => {
   const getEvent = useCallback((id: string) => {
     setLoading(true);
     axios
-    .get<Event>(`http://192.168.10.2:3001/api/v1/events/${id}`)
+    .get<Event>(`/api/v1/events/${id}`)
     .then((res) => setEvent(res.data))
     .catch(() => {
       alert("イベントの取得に失敗しました。");
@@ -37,7 +40,7 @@ export const useEvents = () => {
   const searchEvent = useCallback((params) => {
     setLoading(true);
     axios
-    .get<Array<Event>>("http://192.168.10.2:3001/api/v1/events/search", {params: params})
+    .get<Array<Event>>("/api/v1/events/search", {params: params})
     .then((res) => setEvents(res.data))
     .catch(() => {
       alert("イベントの取得に失敗しました。");
