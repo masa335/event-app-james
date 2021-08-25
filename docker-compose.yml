@@ -39,21 +39,16 @@ services:
       app_net:
         ipv4_address: '172.20.0.3'
     
-  # frontend:
-  #   container_name: frontend
-  #   build: ./frontend
-  #   image: frontend
-  #   tty: true
-  #   stdin_open: true
-  #   volumes:
-  #     - ./frontend:/usr/src/app
-  #   ports:
-  #     - "3001:3000"
-  #   command: sh -c "yarn start"
-  #   networks:
-  #     app_net:
-  #       ipv4_address: '172.20.0.4'
-    
+  nginx:
+    build: ./nginx/
+    volumes:
+      - public-data:/myapp/public
+      - tmp-data:/myapp/tmp
+    ports:
+      - 80:80
+    depends_on:
+      - api
+
 networks:
   app_net:
     driver: bridge
@@ -63,5 +58,7 @@ networks:
         - subnet: 172.20.0.0/24
 
 volumes:
+  public-data:
   mysql_data:
   bundle_data:
+  tmp-data:
