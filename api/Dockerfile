@@ -7,6 +7,7 @@ RUN mkdir /app
 WORKDIR /app
 
 ADD Gemfile /app/Gemfile
+ADD Gemfile.lock /app/Gemfile.lock
 
 RUN apt-get update -qq && \
     apt-get install -y build-essential \
@@ -16,3 +17,10 @@ RUN apt-get update -qq && \
 RUN bundle install
 
 ADD . /app
+
+# Nginxと通信を行うための記述
+RUN mkdir -p tmp/sockets
+RUN mkdir -p tmp/pids
+
+VOLUME /app/public
+VOLUME /app/tmp
