@@ -18,7 +18,7 @@ RUN bundle install
 
 ADD . /app
 
-# Nginxと通信を行うための記述
+# Nginxと通信を行うための記述、githubActionのテスト
 RUN mkdir -p tmp/sockets
 RUN mkdir -p tmp/pids
 
