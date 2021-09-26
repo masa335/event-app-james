@@ -36,6 +36,11 @@ class Api::V1::EventsController < ApplicationController
     else
       render json: event.errors
     end
+    # 同時にメンバーシップも作成する
+    latest_event = Event.last
+    user = User.find(params[:user_id])
+    membership = user.memberships.build(event_id: latest_event.id)
+    membership.save
   end
 
   def update
