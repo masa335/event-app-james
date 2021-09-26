@@ -7,7 +7,7 @@ import { SigninParams } from "../types/signinParams";
 import { useCurrentUser } from "./useCurrentUser";
 import { useMessage } from "./useMessage";
 
-axios.defaults.baseURL = 'http://localhost:3001';
+axios.defaults.baseURL = 'http://localhost:3000';
 
 export const useSignin = () => {
   const { showMessage } = useMessage();

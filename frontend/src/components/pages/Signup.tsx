@@ -13,7 +13,7 @@ export const Signup: VFC = memo(() => {
   password.current = watch("password", "");
 
   const onSubmit = (params: SignupParams) => {
-    params.confirm_success_url = "http://192.168.10.2:3000/";
+    params.confirm_success_url = "http://localhost:3000/";
     signup(params);
   };
 

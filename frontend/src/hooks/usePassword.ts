@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import { User } from "../types/user";
 import { useMessage } from "./useMessage";
 
-axios.defaults.baseURL = 'http://localhost:3001';
+axios.defaults.baseURL = 'http://localhost:3000';
 
 export const usePassword = () => {
   const { showMessage } = useMessage();

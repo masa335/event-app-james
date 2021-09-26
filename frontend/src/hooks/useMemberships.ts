@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import { useCallback, useState } from "react";
 import { useMessage } from "./useMessage";
 
-axios.defaults.baseURL = 'http://localhost:3001';
+axios.defaults.baseURL = 'http://localhost:3000';
 
 export const useMemberships = () => {
   const { showMessage } = useMessage();

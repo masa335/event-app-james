@@ -6,7 +6,7 @@ import { useRecoilValue } from "recoil";
 import { authState } from "../recoil/atoms/Auth";
 import { useMessage } from "./useMessage";
 
-axios.defaults.baseURL = 'http://localhost:3001';
+axios.defaults.baseURL = 'http://localhost:3000';
 
 export const useCreateEvent = () => {
   const history = useHistory();

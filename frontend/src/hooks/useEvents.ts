@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { Event } from "../types/event";
 import { useMessage } from "./useMessage";
 
-axios.defaults.baseURL = 'http://localhost:3001';
+axios.defaults.baseURL = 'http://localhost:3000';
 
 export const useEvents = () => {
   const [loading, setLoading] = useState(false);
