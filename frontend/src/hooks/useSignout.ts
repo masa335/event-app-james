@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import axios from "axios";
+import axiosBaseUrl from "../config/axiosBaseUrl";
 import Cookies from "js-cookie";
 import { useCallback, useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -7,9 +7,9 @@ import { useSetRecoilState } from "recoil";
 import { authState } from "../recoil/atoms/Auth";
 import { useMessage } from "./useMessage";
 
-axios.defaults.baseURL = 'http://localhost:3000';
 
 export const useSignout = () => {
+  const axios = axiosBaseUrl;
   const { showMessage } = useMessage();
   const history = useHistory();
 

@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import axios from "axios";
+import axiosBaseUrl from "../config/axiosBaseUrl";
 import Cookies from "js-cookie";
 import { useCallback, useState } from "react";
 import { useMessage } from "./useMessage";
 
-axios.defaults.baseURL = 'http://localhost:3000';
 
 export const useMemberships = () => {
+  const axios = axiosBaseUrl;
   const { showMessage } = useMessage();
 
   const [loading, setLoading] = useState(false);

@@ -1,12 +1,11 @@
-import axios from "axios";
+import axiosBaseUrl from "../config/axiosBaseUrl";
 import { useCallback, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Event } from "../types/event";
 import { useMessage } from "./useMessage";
 
-axios.defaults.baseURL = 'http://localhost:3000';
-
 export const useEvents = () => {
+  const axios = axiosBaseUrl;
   const [loading, setLoading] = useState(false);
   const [events, setEvents] = useState<Array<Event>>([]);
   const [event, setEvent] = useState<Event>();

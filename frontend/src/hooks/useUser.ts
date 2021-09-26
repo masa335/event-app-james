@@ -1,13 +1,13 @@
-import axios from "axios";
+import axiosBaseUrl from "../config/axiosBaseUrl";
 import Cookies from "js-cookie";
 import { useCallback, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Count, User, Users } from "../types/user";
 import { useMessage } from "./useMessage";
 
-axios.defaults.baseURL = 'http://localhost:3000';
 
 export const useUser = () => {
+  const axios = axiosBaseUrl;
   const [loading, setLoading] = useState(false);
   const [userInfo, setUserInfo] = useState<User>();
   const [following, setFollowing] = useState<Array<Users>>([]);

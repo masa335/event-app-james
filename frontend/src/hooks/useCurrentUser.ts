@@ -1,15 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import axios from "axios";
+import axiosBaseUrl from "../config/axiosBaseUrl";
 import Cookies from "js-cookie";
 import { useCallback } from "react";
 import { useRecoilState } from "recoil";
 import { authState } from "../recoil/atoms/Auth";
 
 
-axios.defaults.baseURL = 'http://localhost:3000';
-
 //認証済みのユーザーを取得する
 export const useCurrentUser = () => {
+  const axios = axiosBaseUrl;
 
   const [auth, setAuth] = useRecoilState(authState);
 

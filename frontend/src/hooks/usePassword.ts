@@ -1,13 +1,13 @@
-import axios from "axios";
+import axiosBaseUrl from "../config/axiosBaseUrl";
 import Cookies from "js-cookie";
 import { useCallback, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { User } from "../types/user";
 import { useMessage } from "./useMessage";
 
-axios.defaults.baseURL = 'http://localhost:3000';
 
 export const usePassword = () => {
+  const axios = axiosBaseUrl;
   const { showMessage } = useMessage();
   const history = useHistory();
   const [loading, setLoading] = useState(false);

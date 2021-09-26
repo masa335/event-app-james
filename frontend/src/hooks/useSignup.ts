@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import axios from "axios";
+import axiosBaseUrl from "../config/axiosBaseUrl";
 import { useCallback, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { SignupParams } from "../types/signupParams";
 import { useMessage } from "./useMessage";
 
-axios.defaults.baseURL = 'http://localhost:3000';
 
 export const useSignup = () => {
+  const axios = axiosBaseUrl;
   const { showMessage } = useMessage();
   const history = useHistory();
 

@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import axios from "axios";
+import axiosBaseUrl from "../config/axiosBaseUrl";
 import { useCallback, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { authState } from "../recoil/atoms/Auth";
 import { useMessage } from "./useMessage";
 
-axios.defaults.baseURL = 'http://localhost:3000';
 
 export const useCreateEvent = () => {
+  const axios = axiosBaseUrl;
   const history = useHistory();
   const { showMessage } = useMessage();
   const auth = useRecoilValue(authState);
