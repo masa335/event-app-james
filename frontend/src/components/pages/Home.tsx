@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { memo, VFC } from "react";
 import { useEvents } from "../../hooks/useEvents";
 
-import { Wrap, WrapItem, Heading, useDisclosure, Box, Image, Button, HStack, Text, Stack, baseStyle } from "@chakra-ui/react";
+import { Wrap, WrapItem, Heading, useDisclosure, Box, Image, Button, Text, Stack } from "@chakra-ui/react";
 import { EventCard } from "../organisms/event/eventCard";
 import { useCallback } from "react";
 import { EventDetailModal } from "../organisms/event/EventDetailModal";
@@ -51,54 +51,59 @@ export const Home: VFC = memo(() => {
 
   return (
     <>
-    <Box my="20px" mx="20px" p={1} textAlign="center" borderRadius="lg">
-      <Heading mb={2} as="h2" size="lg">
-        仕事で忙しくても、バンドやセッションがしたい人たちを繋ぎます！
-      </Heading>
-      <Wrap pr={{ base:4, md: 8 }} pl={{ base:4, md: 8 }} pb={{ base:4, md: 8 }} pt="5px" justify="space-around">
-        <Box w="xs" p={2} borderWidth="1px" borderRadius="lg" overflow="hidden" shadow="md" bg="#F6E5CC">
-          <Heading mb={2} as="h2" size="md" color="black">週末バンドを楽しみたい！</Heading>
-          <Image w="xs" h="240px" src={`${process.env.PUBLIC_URL}/band.jpg`} />
-          <Box p="4">
-            <Box>
-              平日はガッツリ仕事して、週末は趣味でバンドがしたいという時に、
-              メンバー探しに一苦労…。JAMESで素敵な週末バンドメンバーを探そう！
+    {console.log(`${auth.isSignedIn}0927`)}
+    {!auth.isSignedIn && !loading &&
+    <Box>
+      <Box my="20px" mx="20px" p={1} textAlign="center" borderRadius="lg">
+        <Heading mb={2} as="h2" size="lg">
+          仕事で忙しくても、バンドやセッションがしたい人たちを繋ぎます！
+        </Heading>
+        <Wrap pr={{ base:4, md: 8 }} pl={{ base:4, md: 8 }} pb={{ base:4, md: 8 }} pt="5px" justify="space-around">
+          <Box w="xs" p={2} borderWidth="1px" borderRadius="lg" overflow="hidden" shadow="md" bg="#F6E5CC">
+            <Heading mb={2} as="h2" size="md" color="black">週末バンドを楽しみたい！</Heading>
+            <Image w="xs" h="240px" src={`${process.env.PUBLIC_URL}/band.jpg`} />
+            <Box p="4">
+              <Box>
+                平日はガッツリ仕事して、週末は趣味でバンドがしたいという時に、
+                メンバー探しに一苦労…。JAMESで素敵な週末バンドメンバーを探そう！
+              </Box>
             </Box>
           </Box>
-        </Box>
-        <Box w="xs" p={2} borderWidth="1px" borderRadius="lg" overflow="hidden" shadow="md" bg="#F6E5CC">
-          <Heading mb={2} as="h2" size="md" color="black">仕事終わりにセッション！</Heading>
-          <Image w="xs" h="240px" src={`${process.env.PUBLIC_URL}/session.jpg`} />
-          <Box p="4">
-            <Box>
-              仕事終わりに会社近くのスタジオでセッションしたい時の仲間探しに！
-              仕事以外の時間もJAMESで充実させよう！
+          <Box w="xs" p={2} borderWidth="1px" borderRadius="lg" overflow="hidden" shadow="md" bg="#F6E5CC">
+            <Heading mb={2} as="h2" size="md" color="black">仕事終わりにセッション！</Heading>
+            <Image w="xs" h="240px" src={`${process.env.PUBLIC_URL}/session.jpg`} />
+            <Box p="4">
+              <Box>
+                仕事終わりに会社近くのスタジオでセッションしたい時の仲間探しに！
+                仕事以外の時間もJAMESで充実させよう！
+              </Box>
             </Box>
           </Box>
-        </Box>
-        <Box w="xs" p={2} borderWidth="1px" borderRadius="lg" overflow="hidden" shadow="md" bg="#F6E5CC">
-          <Heading mb={2} as="h2" size="md" color="black">練習相手を探したい！</Heading>
-          <Image w="xs" h="240px" src={`${process.env.PUBLIC_URL}/practice.jpg`} />
-          <Box p="4">
-            <Box>
-              一人で楽器の練習をしているけど、モチベーションが続かない・・・。
-              たまには誰かと練習したくないですか？
-              JAMESで素敵な練習相手を見つけよう！
+          <Box w="xs" p={2} borderWidth="1px" borderRadius="lg" overflow="hidden" shadow="md" bg="#F6E5CC">
+            <Heading mb={2} as="h2" size="md" color="black">練習相手を探したい！</Heading>
+            <Image w="xs" h="240px" src={`${process.env.PUBLIC_URL}/practice.jpg`} />
+            <Box p="4">
+              <Box>
+                一人で楽器の練習をしているけど、モチベーションが続かない・・・。
+                たまには誰かと練習したくないですか？
+                JAMESで素敵な練習相手を見つけよう！
+              </Box>
             </Box>
           </Box>
+        </Wrap>
+      </Box>
+      <Stack mx={{base:10, md:100}} p={5} bg="white" shadow="md" borderRadius="lg" spacing={{base:10, md:150}} justify="center" direction={{base:"column", md:"row"}}>
+        <Box textAlign="center">
+          <Button mb={1} colorScheme="blue" shadow="lg" onClick={onClickStart}>いますぐスタート！</Button>
+          <Text fontSize="sm">新規登録を行います</Text>
         </Box>
-      </Wrap>
+        <Box textAlign="center">
+          <Button mb={1} colorScheme="teal" shadow="lg" onClick={onClickGuestLogin}>ちょっと使ってみる！</Button>
+          <Text fontSize="sm">ゲストユーザーでログインします</Text>
+        </Box>
+      </Stack>
     </Box>
-    <Stack mx={{base:10, md:100}} p={5} bg="white" shadow="md" borderRadius="lg" spacing={{base:10, md:150}} justify="center" direction={{base:"column", md:"row"}}>
-      <Box textAlign="center">
-        <Button mb={1} colorScheme="blue" shadow="lg" onClick={onClickStart}>いますぐスタート！</Button>
-        <Text fontSize="sm">新規登録を行います</Text>
-      </Box>
-      <Box textAlign="center">
-        <Button mb={1} colorScheme="teal" shadow="lg" onClick={onClickGuestLogin}>ちょっと使ってみる！</Button>
-        <Text fontSize="sm">ゲストユーザーでログインします</Text>
-      </Box>
-    </Stack>
+    }
     <Box my="20px" mx="20px" p={1} bg="#76a1b8">
       <Heading as="h2" size="md" color="white">新着イベント</Heading>
     </Box>
