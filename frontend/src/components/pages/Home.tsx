@@ -9,14 +9,19 @@ import { EventDetailModal } from "../organisms/event/EventDetailModal";
 import { useSelectUser } from "../../hooks/useSelectEvent";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { prefectures } from "../../data/prefectures";
+import { useHistory } from "react-router-dom";
+import { useSignin } from "../../hooks/useSignin";
+import { GuestUserInfo } from "../../data/GuestUserInfo";
 
 export const Home: VFC = memo(() => {
+  const history = useHistory();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { getAllEvents, events, loading } = useEvents();
   const { onSelectEvent, selectedEvent } = useSelectUser();
   const [ isJoined, setIsJoined ] = useState(false); // 参加済みのイベントならtrue
   const [ isOrganizer, setIsOrganizer ] = useState(false); //イベント主催者ならtrue
   const { getCurrentUser, auth } = useCurrentUser();
+  const { signin } = useSignin();
 
   //ページを開いた時にだけ実行する
   useEffect(() => getAllEvents(),[getAllEvents])
@@ -34,6 +39,15 @@ export const Home: VFC = memo(() => {
     },
     [onOpen, events, onSelectEvent, auth]
   );
+
+  const onClickStart = () => {
+    history.push("/signup")
+  };
+
+  const onClickGuestLogin = () => {
+    const params = GuestUserInfo;
+    signin(params);
+  };
 
   return (
     <>
@@ -77,11 +91,11 @@ export const Home: VFC = memo(() => {
     </Box>
     <Stack mx={{base:10, md:100}} p={5} bg="white" shadow="md" borderRadius="lg" spacing={{base:10, md:150}} justify="center" direction={{base:"column", md:"row"}}>
       <Box textAlign="center">
-        <Button mb={1} colorScheme="blue" shadow="lg">いますぐスタート！</Button>
+        <Button mb={1} colorScheme="blue" shadow="lg" onClick={onClickStart}>いますぐスタート！</Button>
         <Text fontSize="sm">新規登録を行います</Text>
       </Box>
       <Box textAlign="center">
-        <Button mb={1} colorScheme="teal" shadow="lg">ちょっと使ってみる！</Button>
+        <Button mb={1} colorScheme="teal" shadow="lg" onClick={onClickGuestLogin}>ちょっと使ってみる！</Button>
         <Text fontSize="sm">ゲストユーザーでログインします</Text>
       </Box>
     </Stack>
