@@ -13,4 +13,5 @@ export type Event = {
   },
   max_participants: number;
   organizer?: string;
+  participants_count: number;
 }

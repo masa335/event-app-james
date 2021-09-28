@@ -117,6 +117,8 @@ export const User: VFC = memo(() => {
                   imageUrl={event.image.url ?? "https://placehold.jp/150x150.png?text=no image"}
                   eventName={event.event_name}
                   prefecture={event.prefecture_id ? prefectures[event.prefecture_id] : ""}
+                  maxParticipants={event.max_participants}
+                  participantsCount={event.participants_count}
                   onClick={onClickEvent}
                 />
               </WrapItem>
@@ -133,6 +135,8 @@ export const User: VFC = memo(() => {
                   imageUrl={event.image.url ?? "https://placehold.jp/150x150.png?text=no image"}
                   eventName={event.event_name}
                   prefecture={event.prefecture_id ? prefectures[event.prefecture_id] : ""}
+                  maxParticipants={event.max_participants}
+                  participantsCount={event.participants_count}
                   onClick={onClickEvent}
                 />
               </WrapItem>

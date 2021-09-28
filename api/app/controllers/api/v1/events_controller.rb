@@ -1,7 +1,9 @@
 class Api::V1::EventsController < ApplicationController
   def index
+    # 参加人数を求めるサブクエリ
+    participants_count_sql = Membership.select('count(id)').where('memberships.event_id = events.id').to_sql
     # EventsとUsersテーブルを内部結合して、必要なカラムをselect
-    events = Event.joins(:user).select('events.*, users.name as organizer').order(id: 'DESC')
+    events = Event.joins(:user).select("events.*, users.name as organizer, (#{participants_count_sql}) as participants_count").order(id: 'DESC')
     render json: events, status: :ok
   end
 
