@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
 import { BiUser } from "react-icons/bi"
+import { EventCategoryList } from "../../../data/EventCategoryList";
 
 
 type Props = {
@@ -69,7 +70,7 @@ export const EventDetailModal: VFC<Props> = memo(props => {
             </FormControl>
             <FormControl>
               <FormLabel>カテゴリ</FormLabel>
-              <Input value={event?.event_category} isReadOnly={true}></Input>
+              <Input value={event?.prefecture_id ? EventCategoryList[event?.event_category] : ""} isReadOnly={true}></Input>
             </FormControl>
             <FormControl>
               <FormLabel>開始日時</FormLabel>
