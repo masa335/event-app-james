@@ -24,6 +24,7 @@ export type User = {
     explanation: string;
     start_date: Date;
     end_date: Date;
+    max_participants: number;
     image: {
       url: string
     }
@@ -38,6 +39,7 @@ export type User = {
     explanation: string;
     start_date: Date;
     end_date: Date;
+    max_participants: number;
     image: {
       url: string
     }
