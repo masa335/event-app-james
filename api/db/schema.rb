@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_26_004741) do
+ActiveRecord::Schema.define(version: 2021_09_27_233726) do
 
   create_table "events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 2021_09_26_004741) do
     t.string "image"
     t.datetime "start_date"
     t.datetime "end_date"
+    t.integer "max_participants"
     t.index ["user_id"], name: "index_events_on_user_id"
   end
 

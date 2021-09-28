@@ -11,5 +11,7 @@ export type Event = {
   image: {
     url: string
   },
+  max_participants: number;
   organizer?: string;
+  participants_count: number;
 }

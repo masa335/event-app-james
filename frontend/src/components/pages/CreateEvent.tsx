@@ -36,6 +36,7 @@ export const CreateEvent: VFC = memo(() => {
     formData.append('start_date', startDate);
     formData.append('end_date', endDate);
     formData.append('prefecture_id', `${params.prefecture_id}`);
+    formData.append('max_participants', `${params.max_participants}`);
     formData.append('venue', params.venue);
     formData.append('explanation', params.explanation);
     image && formData.append('image', image ?? ""); //画像が選択されていない時はappendしない。
@@ -102,6 +103,17 @@ export const CreateEvent: VFC = memo(() => {
                   )
                 }
               </Select>
+            </FormControl>
+            <FormControl isInvalid={errors.name}>
+              <FormLabel fontSize="md">参加人数上限</FormLabel>
+              <Input 
+              id="max_participants"
+              type="text"
+              {...register("max_participants",{ required: "参加人数上限は必須入力です" })}
+              w="70px" border="1px" borderColor="gray.400" backgroundColor="gray.100"/> 人
+              <FormErrorMessage>
+                {errors.max_participants && errors.max_participants.message}
+              </FormErrorMessage>
             </FormControl>
             <FormControl>
               <FormLabel fontSize="md">会場</FormLabel>

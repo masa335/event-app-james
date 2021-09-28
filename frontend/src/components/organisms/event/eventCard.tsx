@@ -1,5 +1,5 @@
 import { memo, VFC } from "react";
-import { Box, Icon, Image, Stack, Text, HStack } from "@chakra-ui/react";
+import { Box, Icon, Image, Stack, Text, HStack, VStack, Flex } from "@chakra-ui/react";
 import { MdLocationOn } from "react-icons/md"
 
 type Props = {
@@ -8,11 +8,13 @@ type Props = {
   imageUrl: string;
   eventName: string;
   prefecture: string;
+  maxParticipants: number | undefined;
+  participantsCount: number | undefined;
   onClick: (id: number | undefined, userId: number | undefined) => void;
 };
 
 export const EventCard: VFC<Props> = memo(props => {
-  const { id, userId, imageUrl, eventName, prefecture, onClick } = props;
+  const { id, userId, imageUrl, eventName, prefecture, maxParticipants, participantsCount, onClick } = props;
 
   return (
     <Box
@@ -25,7 +27,7 @@ export const EventCard: VFC<Props> = memo(props => {
       _hover={{ cursor: "pointer", opacity: 0.8 }}
       onClick={() => onClick(id, userId)}
     >
-      <Stack textAlign="center">
+      <VStack>
         <Image
           borderRadius="full"
           boxSize="160px"
@@ -37,14 +39,15 @@ export const EventCard: VFC<Props> = memo(props => {
           {eventName}
         </Text>
         <Box>
-        <HStack textAlign="center">
+        <Flex alignItems="center">
           <Icon as={MdLocationOn} />
           <Text fontSize="sm" color="gray">
             {prefecture}
           </Text>
-        </HStack>
+          <Text ml={5} fontSize="sm">{`${participantsCount}/${maxParticipants}人`}</Text>
+        </Flex>
         </Box>
-      </Stack>
+      </VStack>
     </Box>
   );
 });
