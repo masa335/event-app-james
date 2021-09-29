@@ -54,12 +54,12 @@ export const CreateEvent: VFC = memo(() => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Center my="30px" mx={{base: "10px", md: "200px", lg: "300px"}}>
           <Stack spacing={4} w="100%">
-            <FormControl isInvalid={errors.name}>
+            <FormControl isInvalid={errors.event_name}>
               <FormLabel fontSize="md">イベント名</FormLabel>
               <Input 
               id="event_name"
               type="text"
-              {...register("event_name",{ required: "イベント名は必須入力です" })}
+              {...register("event_name",{ required: "イベント名は必須入力です", maxLength: {value: 50, message: "50字以内で入力してください"} })}
               border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
               <FormErrorMessage>
                 {errors.event_name && errors.event_name.message}
@@ -81,21 +81,27 @@ export const CreateEvent: VFC = memo(() => {
                 }
               </Select>
             </FormControl>
-            <FormControl>
+            <FormControl isInvalid={errors.start_date}>
               <FormLabel fontSize="md">開始日時</FormLabel>
               <Input
               id="start_date"
               type="datetime-local"
-              {...register("start_date")}
+              {...register("start_date", { required: "開始日時は必須入力です"})}
               w="250px" border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
+              <FormErrorMessage>
+                {errors.start_date && errors.start_date.message}
+              </FormErrorMessage>
             </FormControl>
-            <FormControl>
+            <FormControl isInvalid={errors.end_date}>
               <FormLabel fontSize="md">終了日時</FormLabel>
               <Input
               id="end_date"
               type="datetime-local"
-              {...register("end_date")}
+              {...register("end_date", { required: "終了日時は必須入力です"})}
               w="250px" border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
+              <FormErrorMessage>
+                {errors.end_date && errors.end_date.message}
+              </FormErrorMessage>
             </FormControl>
             <FormControl>
               <FormLabel fontSize="md">開催する都道府県</FormLabel>
@@ -113,12 +119,16 @@ export const CreateEvent: VFC = memo(() => {
                 }
               </Select>
             </FormControl>
-            <FormControl isInvalid={errors.name}>
+            <FormControl isInvalid={errors.max_participants}>
               <FormLabel fontSize="md">参加人数上限</FormLabel>
               <Input 
               id="max_participants"
               type="text"
-              {...register("max_participants",{ required: "参加人数上限は必須入力です" })}
+              {...register("max_participants",{ 
+                required: "参加人数上限は必須入力です", 
+                max: {value: 100, message: "100人以下で入力してください"}, 
+                pattern: {value: /^[0-9]+$/, message: "半角数字で入力してください"} 
+              })}
               w="70px" border="1px" borderColor="gray.400" backgroundColor="gray.100"/> 人
               <FormErrorMessage>
                 {errors.max_participants && errors.max_participants.message}
