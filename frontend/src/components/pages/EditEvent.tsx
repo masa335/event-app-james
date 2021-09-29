@@ -9,6 +9,7 @@ import { prefectures } from "../../data/prefectures";
 import { useEvents } from "../../hooks/useEvents";
 import { useParams } from "react-router-dom";
 import moment from 'moment';
+import { EventCategoryList } from "../../data/EventCategoryList";
 
 export const EditEvent: VFC = memo(() => {
   const { id } = useParams<{ id: string }>(); //URLパラメーターを受け取る
@@ -73,7 +74,7 @@ export const EditEvent: VFC = memo(() => {
     const endDate = (new Date(params.end_date).toString());
     formData.append('user_id', `${auth.currentUser?.id}`);
     formData.append('event_name', params.event_name);
-    formData.append('event_category', params.event_category);
+    formData.append('event_category', `${params.event_category}`);
     formData.append('start_date', startDate);
     formData.append('end_date', endDate);
     formData.append('prefecture_id', `${params.prefecture_id}`);
@@ -108,11 +109,19 @@ export const EditEvent: VFC = memo(() => {
             </FormControl>
             <FormControl>
               <FormLabel fontSize="md">カテゴリ</FormLabel>
-              <Input 
+              <Select 
               id="event_category"
+              placeholder="選択してください"
               type="text"
               {...register("event_category")}
-              border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
+              w="200px" border="1px" borderColor="gray.400" backgroundColor="gray.100"
+              >
+                {
+                  EventCategoryList.map((category, index) =>
+                  <option key={index} value={index}>{category}</option>
+                  )
+                }
+              </Select>
             </FormControl>
             <FormControl>
               <FormLabel fontSize="md">開始日時</FormLabel>

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
       resources :events do
         resource :memberships, only: [:create, :destroy]
         get :search, on: :collection
+        get :participants, on: :collection
       end
       resources :users, only: [:show, :update] do
         resource :relationships, only: [:create, :destroy]

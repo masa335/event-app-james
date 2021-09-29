@@ -51,7 +51,6 @@ export const Home: VFC = memo(() => {
 
   return (
     <>
-    {console.log(`${auth.isSignedIn}0927`)}
     {!auth.isSignedIn && !loading &&
     <Box>
       <Box my="20px" mx="20px" p={1} textAlign="center" borderRadius="lg">

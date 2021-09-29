@@ -3,12 +3,14 @@ import { useCallback, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Event } from "../types/event";
 import { useMessage } from "./useMessage";
+import { Users } from "../types/user";
 
 export const useEvents = () => {
   const axios = axiosBaseUrl;
   const [loading, setLoading] = useState(false);
   const [events, setEvents] = useState<Array<Event>>([]);
   const [event, setEvent] = useState<Event>();
+  const [participants, setParticipants] = useState<Array<Users>>();
 
   const { showMessage } = useMessage();
   const history = useHistory();
@@ -32,6 +34,17 @@ export const useEvents = () => {
     .then((res) => setEvent(res.data))
     .catch(() => {
       alert("イベントの取得に失敗しました。");
+    })
+    .finally(() => setLoading(false));
+  },[]);
+
+  const getParticipants = useCallback((id: string) => {
+    setLoading(true);
+    axios
+    .get<Array<Users>>(`/api/v1/events/participants`, {params: {id: id}})
+    .then((res) => setParticipants(res.data))
+    .catch(() => {
+      alert("イベント参加者の取得に失敗しました。");
     })
     .finally(() => setLoading(false));
   },[]);
@@ -77,5 +90,5 @@ export const useEvents = () => {
     .finally(() => setLoading(false));
   },[]);
 
-  return { getAllEvents, getEvent, updateEvent, deleteEvent, searchEvent, events, event, loading }
+  return { getAllEvents, getEvent, getParticipants, updateEvent, deleteEvent, searchEvent, events, event, participants, loading }
 };

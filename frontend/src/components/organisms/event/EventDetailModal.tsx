@@ -1,5 +1,5 @@
 import { memo, useEffect, VFC } from "react";
-import { Stack, Modal, ModalContent, ModalOverlay, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, Textarea, Button, Text, Icon, Link } from "@chakra-ui/react";
+import { Stack, Modal, ModalContent, ModalOverlay, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, Textarea, Button, Text, Icon, Link, Image, HStack } from "@chakra-ui/react";
 import { Event } from "../../../types/event";
 import { prefectures } from "../../../data/prefectures";
 import { useMemberships } from "../../../hooks/useMemberships";
@@ -7,6 +7,8 @@ import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
 import { BiUser } from "react-icons/bi"
+import { EventCategoryList } from "../../../data/EventCategoryList";
+import { useEvents } from "../../../hooks/useEvents";
 
 
 type Props = {
@@ -21,10 +23,16 @@ type Props = {
 export const EventDetailModal: VFC<Props> = memo(props => {
   const { event, isOpen, onClose, isJoined, isOrganizer, isSignedIn } = props;
   const [ buttonSwitch, setButtonSwitch ] = useState<boolean>();
+  const [ isFull, setIsFull ] = useState<boolean>(); //定員オーバかどうか
   const { createMemberships, deleteMemberships, loading } = useMemberships();
+  const { getParticipants, participants} = useEvents();
   const history = useHistory();
   
-  useEffect(() => setButtonSwitch(isJoined),[isOpen])
+  useEffect(() => {
+    setButtonSwitch(isJoined);
+    event?.id && getParticipants(`${event?.id}`);
+    setIsFull(event?.max_participants === event?.participants_count);
+  },[isOpen])
 
   const dateFormat = (date: Date | undefined) => {
     const formatDate = moment(date, moment.ISO_8601).format("yyyy/MM/DD HH:mm");
@@ -69,7 +77,7 @@ export const EventDetailModal: VFC<Props> = memo(props => {
             </FormControl>
             <FormControl>
               <FormLabel>カテゴリ</FormLabel>
-              <Input value={event?.event_category} isReadOnly={true}></Input>
+              <Input value={event?.prefecture_id ? EventCategoryList[event?.event_category] : ""} isReadOnly={true}></Input>
             </FormControl>
             <FormControl>
               <FormLabel>開始日時</FormLabel>
@@ -91,6 +99,19 @@ export const EventDetailModal: VFC<Props> = memo(props => {
               <FormLabel>イベントの説明</FormLabel>
               <Textarea value={event?.explanation} isReadOnly={true}></Textarea>
             </FormControl>
+            <Text>参加者</Text>
+            <HStack>
+            {participants?.map((participant) => (
+              <Link href={`/user/${participant.id}`} key={participant.id}>
+                <Image
+                  borderRadius="full"
+                  boxSize="30px"
+                  src={participant.image.url  ?? "https://placehold.jp/150x150.png?text=no image"}
+                  alt={participant.name}
+                />
+              </Link>
+            ))}
+            </HStack>
             {isSignedIn ? 
               ( isOrganizer ? 
                 (<Button onClick={onClickEdit} colorScheme="teal" isLoading={loading}>編集する</Button>)
@@ -98,10 +119,10 @@ export const EventDetailModal: VFC<Props> = memo(props => {
                 ( buttonSwitch ?
                   <Button onClick={onClickCancel} colorScheme="gray" isLoading={loading}>参加を取り消す</Button>
                   :
-                  <Button onClick={onClickJoin} colorScheme="blue" isLoading={loading}>参加する</Button>
+                  <Button onClick={onClickJoin} colorScheme="blue" isLoading={loading} disabled={isFull}>参加する</Button>
                 )
               )
-            : <Button onClick={redirectToSignIn} colorScheme="blue" isLoading={loading}>参加する</Button>
+            : <Button onClick={redirectToSignIn} colorScheme="blue" isLoading={loading} disabled={isFull}>参加する</Button>
             }
           </Stack>
         </ModalBody>
