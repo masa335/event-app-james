@@ -22,10 +22,14 @@ type Props = {
 export const EventDetailModal: VFC<Props> = memo(props => {
   const { event, isOpen, onClose, isJoined, isOrganizer, isSignedIn } = props;
   const [ buttonSwitch, setButtonSwitch ] = useState<boolean>();
+  const [ isFull, setIsFull ] = useState<boolean>(); //定員オーバかどうか
   const { createMemberships, deleteMemberships, loading } = useMemberships();
   const history = useHistory();
   
-  useEffect(() => setButtonSwitch(isJoined),[isOpen])
+  useEffect(() => {
+    setButtonSwitch(isJoined);
+    setIsFull(event?.max_participants === event?.participants_count);
+  },[isOpen])
 
   const dateFormat = (date: Date | undefined) => {
     const formatDate = moment(date, moment.ISO_8601).format("yyyy/MM/DD HH:mm");
@@ -99,10 +103,10 @@ export const EventDetailModal: VFC<Props> = memo(props => {
                 ( buttonSwitch ?
                   <Button onClick={onClickCancel} colorScheme="gray" isLoading={loading}>参加を取り消す</Button>
                   :
-                  <Button onClick={onClickJoin} colorScheme="blue" isLoading={loading}>参加する</Button>
+                  <Button onClick={onClickJoin} colorScheme="blue" isLoading={loading} disabled={isFull}>参加する</Button>
                 )
               )
-            : <Button onClick={redirectToSignIn} colorScheme="blue" isLoading={loading}>参加する</Button>
+            : <Button onClick={redirectToSignIn} colorScheme="blue" isLoading={loading} disabled={isFull}>参加する</Button>
             }
           </Stack>
         </ModalBody>
