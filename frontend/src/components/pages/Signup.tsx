@@ -27,7 +27,10 @@ export const Signup: VFC = memo(() => {
               <Input 
               id="email"
               type="text"
-              {...register("email",{ required: "メールは必須入力です" })}
+              {...register("email",{ required: "メールは必須入力です", pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "メールアドレスの形式で入力してください"
+              }})}
               border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
               <FormErrorMessage>
                 {errors.email && errors.email.message}
@@ -38,7 +41,7 @@ export const Signup: VFC = memo(() => {
               <Input 
               id="name"
               type="text"
-              {...register("name",{ required: "ニックネームは必須入力です" })}
+              {...register("name",{ required: "ニックネームは必須入力です", maxLength: {value: 50, message: "50字以内で入力してください"} })}
               border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
               <FormErrorMessage>
                 {errors.name && errors.name.message}

@@ -2,7 +2,6 @@ import React, { memo, VFC, useEffect, useState, useCallback, ChangeEvent, } from
 import { Heading, Box, Center, Stack, FormControl, FormLabel, Input, FormErrorMessage, Button, Textarea, Link, Image } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
-import { User } from "../../types/user";
 import { useUser } from "../../hooks/useUser";
 import { useRecoilValue } from "recoil";
 import { authState } from "../../recoil/atoms/Auth";
@@ -34,7 +33,7 @@ export const Settings: VFC = memo(() => {
     
   },[auth]);
 
-  const { register, handleSubmit,　setValue, formState: { errors } } = useForm({ 
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm({ 
     mode: "onChange"
   });
 
@@ -78,27 +77,33 @@ export const Settings: VFC = memo(() => {
               <Input 
               id="name"
               type="text"
-              {...register("name",{ required: "ニックネームは必須入力です" })}
-              border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
+              {...register("name",{ required: "ニックネームは必須入力です", maxLength: {value: 50, message: "50字以内で入力してください"} })}
+              w="400px" border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
               <FormErrorMessage>
                 {errors.name && errors.name.message}
               </FormErrorMessage>
             </FormControl>
-            <FormControl>
+            <FormControl isInvalid={errors.age}>
               <FormLabel fontSize="md">年齢</FormLabel>
               <Input 
               id="age"
               type="text"
-              {...register("age")}
-              border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
+              {...register("age",{ maxLength: {value: 3, message: "3文字以内で入力してください"}, pattern: {value: /^[0-9]+$/, message: "半角数字で入力してください"} })}
+              w="70px" border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
+              <FormErrorMessage>
+                {errors.age && errors.age.message}
+              </FormErrorMessage>
             </FormControl>
-            <FormControl>
+            <FormControl isInvalid={errors.self_introduction}>
               <FormLabel fontSize="md">自己紹介</FormLabel>
               <Textarea
               id="self_introduction"
               type="textarea"
-              {...register("self_introduction")}
+              {...register("self_introduction", {maxLength: {value: 200, message: "200字以内で入力してください"}})}
               border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
+              <FormErrorMessage>
+                {errors.self_introduction && errors.self_introduction.message}
+              </FormErrorMessage>
             </FormControl>
             <FormControl>
               <FormLabel fontSize="md">プロフィール画像</FormLabel>
