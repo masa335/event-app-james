@@ -1,5 +1,5 @@
 import { memo, useEffect, VFC } from "react";
-import { Stack, Modal, ModalContent, ModalOverlay, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, Textarea, Button, Text, Icon, Link } from "@chakra-ui/react";
+import { Stack, Modal, ModalContent, ModalOverlay, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, Textarea, Button, Text, Icon, Link, Image, HStack } from "@chakra-ui/react";
 import { Event } from "../../../types/event";
 import { prefectures } from "../../../data/prefectures";
 import { useMemberships } from "../../../hooks/useMemberships";
@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 import moment from "moment";
 import { BiUser } from "react-icons/bi"
 import { EventCategoryList } from "../../../data/EventCategoryList";
+import { useEvents } from "../../../hooks/useEvents";
 
 
 type Props = {
@@ -24,10 +25,12 @@ export const EventDetailModal: VFC<Props> = memo(props => {
   const [ buttonSwitch, setButtonSwitch ] = useState<boolean>();
   const [ isFull, setIsFull ] = useState<boolean>(); //定員オーバかどうか
   const { createMemberships, deleteMemberships, loading } = useMemberships();
+  const { getParticipants, participants} = useEvents();
   const history = useHistory();
   
   useEffect(() => {
     setButtonSwitch(isJoined);
+    event?.id && getParticipants(`${event?.id}`);
     setIsFull(event?.max_participants === event?.participants_count);
   },[isOpen])
 
@@ -96,6 +99,19 @@ export const EventDetailModal: VFC<Props> = memo(props => {
               <FormLabel>イベントの説明</FormLabel>
               <Textarea value={event?.explanation} isReadOnly={true}></Textarea>
             </FormControl>
+            <Text>参加者</Text>
+            <HStack>
+            {participants?.map((participant) => (
+              <Link href={`/user/${participant.id}`} key={participant.id}>
+                <Image
+                  borderRadius="full"
+                  boxSize="30px"
+                  src={participant.image.url  ?? "https://placehold.jp/150x150.png?text=no image"}
+                  alt={participant.name}
+                />
+              </Link>
+            ))}
+            </HStack>
             {isSignedIn ? 
               ( isOrganizer ? 
                 (<Button onClick={onClickEdit} colorScheme="teal" isLoading={loading}>編集する</Button>)

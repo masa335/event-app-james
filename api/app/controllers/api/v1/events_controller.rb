@@ -12,6 +12,11 @@ class Api::V1::EventsController < ApplicationController
     render json: event, status: :ok
   end
 
+  def participants
+    participants = User.joins(:memberships).where("memberships.event_id = #{params[:id]}")
+    render json: participants, status: :ok
+  end
+
   def search
     @keyword = params[:keyword]
 
