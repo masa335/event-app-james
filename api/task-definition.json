@@ -53,6 +53,14 @@
         {
           "name":"RAILS_MASTER_KEY",
           "valueFrom": "ecs-rails-master-key"
+        },
+        {
+          "name":"EMAIL_ADDRESS",
+          "valueFrom": "ecs-email-address"
+        },
+        {
+          "name":"EMAIL_PASSWORD",
+          "valueFrom": "ecs-email-password"
         }
       ],
       "resourceRequirements": null,
