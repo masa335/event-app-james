@@ -106,7 +106,7 @@ export const EventDetailModal: VFC<Props> = memo(props => {
                 <Image
                   borderRadius="full"
                   boxSize="30px"
-                  src={participant.image.url  ?? "https://placehold.jp/150x150.png?text=no image"}
+                  src={participant.image.url ?? `${process.env.PUBLIC_URL}/default_icon.png`}
                   alt={participant.name}
                 />
               </Link>
