@@ -19,7 +19,7 @@
       "command": [
         "bash",
         "-c",
-        "bundle install && bundle exec rails db:migrate && bundle exec puma -C config/puma.rb"
+        "bundle exec rails db:migrate && bundle exec puma -C config/puma.rb"
       ],
       "linuxParameters": null,
       "cpu": 0,
@@ -61,6 +61,14 @@
         {
           "name":"EMAIL_PASSWORD",
           "valueFrom": "ecs-email-password"
+        },
+        {
+          "name":"AWS_ACCESS_KEY_ID",
+          "valueFrom": "ecs-aws-access-key-id"
+        },
+        {
+          "name":"AWS_SECRET_ACCESS_KEY",
+          "valueFrom": "ecs-aws-secret-access-key"
         }
       ],
       "resourceRequirements": null,
