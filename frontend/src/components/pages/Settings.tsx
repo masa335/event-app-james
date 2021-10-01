@@ -1,5 +1,5 @@
-import React, { memo, VFC, useEffect, useState, useCallback, ChangeEvent, } from "react";
-import { Heading, Box, Center, Stack, FormControl, FormLabel, Input, FormErrorMessage, Button, Textarea, Link, Image } from "@chakra-ui/react";
+import React, { memo, VFC, useEffect, useState, useCallback, ChangeEvent, useRef, } from "react";
+import { Heading, Box, Center, Stack, FormControl, FormLabel, Input, FormErrorMessage, Button, Textarea, Link, Image, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
 import { useUser } from "../../hooks/useUser";
@@ -7,12 +7,17 @@ import { useRecoilValue } from "recoil";
 import { authState } from "../../recoil/atoms/Auth";
 
 export const Settings: VFC = memo(() => {
-  const { updateUserInfo, loading } = useUser();
+  const { updateUserInfo, deleteUser, loading } = useUser();
   const [ userId, setUserId ] = useState<number>();
-
   const auth = useRecoilValue(authState);
 
   const [image, setImage] = useState<File>();
+
+  //ユーザー削除ダイアログ用
+  const [ isOpenDialog, setIsOpenDialog ] = useState(false);
+  const cancelRef = useRef<HTMLButtonElement>(null);
+  const onCloseDialog = () => setIsOpenDialog(false);
+  const onOpenDialog = () => setIsOpenDialog(true);
 
   //ユーザー情報を取得
   useEffect(() => {
@@ -61,6 +66,12 @@ export const Settings: VFC = memo(() => {
     updateUserInfo(userId, formData);
   };
 
+  const onClickUserDelete = () => {
+    const isGuestUser = auth.currentUser?.email === 'guest@example.com'
+    isGuestUser ? alert("ゲストユーザーは消さないでください！！！") : deleteUser(auth.currentUser?.id);
+    setIsOpenDialog(false);
+  }
+
   return (
     <>
     {console.log("return")}
@@ -78,7 +89,7 @@ export const Settings: VFC = memo(() => {
               id="name"
               type="text"
               {...register("name",{ required: "ニックネームは必須入力です", maxLength: {value: 50, message: "50字以内で入力してください"} })}
-              w="400px" border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
+              border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
               <FormErrorMessage>
                 {errors.name && errors.name.message}
               </FormErrorMessage>
@@ -124,11 +135,33 @@ export const Settings: VFC = memo(() => {
             <Heading as="h2" size="md" color="gray.600">パスワード変更</Heading>
             <Link href="/updatePassword" color="teal.500">パスワード設定を開く</Link>
             <Button type="submit" colorScheme="blue" disabled={loading} isLoading={loading}>保存する</Button>
-            <Link color="red.400">アカウントを削除する</Link>
+            <Link onClick={onOpenDialog} color="red.400">アカウントを削除する</Link>
           </Stack>
         </Center>
       </form>
     </Box>
+    <AlertDialog isOpen={isOpenDialog} leastDestructiveRef={cancelRef} onClose={onCloseDialog}>
+      <AlertDialogOverlay>
+        <AlertDialogContent>
+          <AlertDialogHeader fontSize="lg" fontWeight="bold">
+            アカウント削除
+          </AlertDialogHeader>
+
+          <AlertDialogBody>
+            {`アカウントを削除します。\nよろしいですか？`}
+          </AlertDialogBody>
+
+          <AlertDialogFooter>
+            <Button ref={cancelRef} onClick={onCloseDialog}>
+              キャンセル
+            </Button>
+            <Button colorScheme="red" onClick={onClickUserDelete} ml={3}>
+              アカウント削除
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialogOverlay>
+    </AlertDialog>
     </>
   );
 });
