@@ -6,7 +6,7 @@ Rails.application.routes.draw do
         get :search, on: :collection
         get :participants, on: :collection
       end
-      resources :users, only: [:show, :update] do
+      resources :users, only: [:show, :update, :destroy] do
         resource :relationships, only: [:create, :destroy]
         get :follows, on: :member
         get :followers, on: :member

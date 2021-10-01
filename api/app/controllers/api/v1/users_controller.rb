@@ -45,11 +45,14 @@ class Api::V1::UsersController < ApplicationController
     render json: { follows: follows_count, followers: followers_count }, status: :ok
   end
 
-  # def followed?
-  #   user = User.find(params[:id])
-  #   is_followed = user.followings.exists?(params[:follower_id])
-  #   render json: is_followed, status: :ok
-  # end
+  def destroy
+    user = User.find(params[:id])
+    if user.destroy!
+      render json: user, status: :ok
+    else
+      render json: user.errors
+    end
+  end
 
   private
 

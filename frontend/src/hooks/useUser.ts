@@ -4,6 +4,8 @@ import { useCallback, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Count, User, Users } from "../types/user";
 import { useMessage } from "./useMessage";
+import { useSetRecoilState } from "recoil";
+import { authState } from "../recoil/atoms/Auth";
 
 
 export const useUser = () => {
@@ -14,6 +16,7 @@ export const useUser = () => {
   const [followers, setFollowers] = useState<Array<Users>>([]);
   const [count, setCount] = useState<Count>();
   const [ isFollowed, setIsFollowed ] = useState<boolean | undefined>(false);
+  const setAuth = useSetRecoilState(authState);
 
   const { showMessage } = useMessage();
   const history = useHistory();
@@ -83,10 +86,30 @@ export const useUser = () => {
       .finally(() => setLoading(false))
   },[]);
 
+  const deleteUser = useCallback((userId: string | number | undefined) => {
+    setLoading(true);
+      axios
+      .delete<Users>(`/api/v1/users/${userId}`)
+      .then((res) => {
+        Cookies.remove("_access_token");
+        Cookies.remove("_client");
+        Cookies.remove("_uid");
+        setAuth({loading: false, isSignedIn: false, currentUser: undefined}); //グローバルステート変更
+        console.log(res.data);
+        showMessage({ title: "ユーザーを削除しました", status: "success" });
+        history.push("/");
+      })
+      .catch(() => {
+        showMessage({ title: "ユーザー削除できませんでした", status: "error" });
+      })
+      .finally(() => setLoading(false))
+  },[]);
+
   return { 
     getUserInfo, 
     userInfo, 
-    updateUserInfo, 
+    updateUserInfo,
+    deleteUser,
     getFollowingOrFllowers, 
     getFollowsFllowersCount, 
     following, 
