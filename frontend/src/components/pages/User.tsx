@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useRef, useState, VFC } from "react";
-import { Heading, Box, Image, Text, Tabs, TabList, Tab, TabPanels, TabPanel, Wrap, WrapItem, useDisclosure, Link, Flex, VStack, Button, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter } from "@chakra-ui/react"
+import { Heading, Box, Image, Text, Tabs, TabList, Tab, TabPanels, TabPanel, Wrap, WrapItem, useDisclosure, Link, Flex, VStack, Button, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Skeleton } from "@chakra-ui/react"
 import { useParams } from "react-router-dom";
 
 import { useUser } from "../../hooks/useUser";
@@ -61,12 +61,14 @@ export const User: VFC = memo(() => {
     <Box mx="40px" my="20px">
       <Box pb="10px" borderBottom="6px" borderStyle="double" borderColor="blackAlpha.400">
         <VStack>
+          {loading ? <Skeleton borderRadius="full" boxSize="160px"/> :
           <Image
               borderRadius="full"
               boxSize="160px"
-              src={userInfo?.user.image.url ?? "http://192.168.10.2:3000/uploads/defaul_icon.png"}
+              src={userInfo?.user.image.url ?? `${process.env.PUBLIC_URL}/default_icon.png`}
               alt={userInfo?.user.name}
             />
+          }
           <Text fontSize="2xl" color="gray.600">{userInfo?.user.name}</Text>
           <Text fontSize="sm" textAlign="center" color="gray.600">{userInfo?.user.self_introduction}</Text>
           <Flex>
