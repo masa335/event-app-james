@@ -12,8 +12,10 @@ export const Signup: VFC = memo(() => {
   const password = useRef({});
   password.current = watch("password", "");
 
+  const isDevelopment = process.env.NODE_ENV === 'development'
+
   const onSubmit = (params: SignupParams) => {
-    params.confirm_success_url = "http://localhost:3000/";
+    params.confirm_success_url = isDevelopment ? "http://localhost:3000/" : "https://event-app-james.vercel.app/";
     signup(params);
   };
 
