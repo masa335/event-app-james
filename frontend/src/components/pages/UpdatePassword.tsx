@@ -17,7 +17,8 @@ export const UpdatePassword: VFC = memo(() => {
   password.current = watch("password", "");
 
   const onSubmit = (params: SignupParams) => {
-    updatePassword(auth.currentUser?.id, params);
+    const isGuestUser = auth.currentUser?.email === 'guest@example.com';
+    isGuestUser ? alert("ゲストユーザーのパスワードは変更できません。") : updatePassword(auth.currentUser?.id, params);
   };
 
   return (
