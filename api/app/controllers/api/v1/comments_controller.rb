@@ -1,6 +1,8 @@
 class Api::V1::CommentsController < ApplicationController
   def show
-    comments = Comment.find(params[:id])
+    comments = User.joins(:comments)
+                   .select('comments.id as comment_id, comments.event_id, comments.user_id, comments.comment, users.id as id,users.name, users.image')
+                   .where("comments.event_id = #{params[:event_id]}").order(comment_id: 'ASC')
     render json: comments, status: :ok
   end
 
