@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :events do
         resource :memberships, only: [:create, :destroy]
+        resource :comments, only: [:show, :create, :destroy]
         get :search, on: :collection
         get :participants, on: :collection
       end
