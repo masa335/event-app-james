@@ -6,9 +6,9 @@ import { Comment, Comments } from "../types/comment";
 
 export const useComments = () => {
   const axios = axiosBaseUrl;
-  const [loadingComment, setLoading] = useState(false);
-  const [comments, setComments] = useState<Array<Comments>>();
-  const [ isCommented, setIsCommented ] = useState<boolean>(false);
+  const [ loadingComment, setLoading ] = useState(false);
+  const [ comments, setComments ] = useState<Array<Comments>>();
+  const [ isEditted, setIsEditted ] = useState<boolean>(false);
 
   const { showMessage } = useMessage();
 
@@ -19,7 +19,7 @@ export const useComments = () => {
     .then((res) => {
       console.log(res.data);
       setComments(res.data);
-      setIsCommented(false);
+      setIsEditted(false);
     })
     .catch(() => {
       console.log("コメントを取得できませんでした");
@@ -38,7 +38,7 @@ export const useComments = () => {
     }})
     .then((res) => {
       console.log(res.data);
-      setIsCommented(true);
+      setIsEditted(true);
     })
     .catch(() => {
       showMessage({ title: "エラーが発生しました", status: "error" });
@@ -46,5 +46,19 @@ export const useComments = () => {
     .finally(() => setLoading(false));
   },[]);
 
-  return { createComments, getComments, setIsCommented, isCommented, comments, loadingComment }
+  const deleteComments = useCallback((id: number) => {
+    setLoading(true);
+    axios
+    .delete(`/api/v1/comments/${id}`)
+    .then((res) => {
+      console.log(res.data);
+      setIsEditted(true);
+    })
+    .catch(() => {
+      showMessage({ title: "エラーが発生しました", status: "error" });
+    })
+    .finally(() => setLoading(false));
+  },[]);
+
+  return { createComments, getComments, deleteComments, setIsEditted, isEditted, comments, loadingComment }
 };
