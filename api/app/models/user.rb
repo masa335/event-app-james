@@ -3,6 +3,7 @@
 class User < ActiveRecord::Base
   has_many :events, dependent: :destroy
   has_many :memberships, dependent: :destroy
+  has_many :comments, dependent: :destroy
   has_many :participating_events, through: :memberships, source: :event
   has_many :active_relationships, class_name: 'Relationship', foreign_key: :followed_id
   has_many :followings, through: :active_relationships, source: :follower

@@ -148,7 +148,7 @@ export const User: VFC = memo(() => {
         </TabPanels>
       </Tabs>
     </Box>
-    <EventDetailModal event={selectedEvent} isOpen={isOpen} onClose={onClose} isJoined={isJoined} isOrganizer={isOrganizer} isSignedIn={auth.isSignedIn}/>
+    <EventDetailModal event={selectedEvent} isOpen={isOpen} onClose={onClose} isJoined={isJoined} isOrganizer={isOrganizer} isSignedIn={auth.isSignedIn} loginUserId={auth.currentUser?.id}/>
     <AlertDialog isOpen={isOpenDialog} leastDestructiveRef={cancelRef} onClose={onCloseDialog}>
       <AlertDialogOverlay>
         <AlertDialogContent>
