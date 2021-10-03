@@ -34,3 +34,6 @@ api/.env
 
 # 画像保存先
 api/public/uploads
+
+# VScodeの設定
+/.vscode
