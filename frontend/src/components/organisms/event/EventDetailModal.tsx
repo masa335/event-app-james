@@ -1,5 +1,5 @@
 import { memo, useEffect, VFC } from "react";
-import { Stack, Modal, ModalContent, ModalOverlay, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, Textarea, Button, Text, Icon, Link, Image, HStack, Box, Divider } from "@chakra-ui/react";
+import { Stack, Modal, ModalContent, ModalOverlay, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, Textarea, Button, Text, Icon, Link, Image, HStack, Box, Divider, IconButton } from "@chakra-ui/react";
 import { Event } from "../../../types/event";
 import { prefectures } from "../../../data/prefectures";
 import { useMemberships } from "../../../hooks/useMemberships";
@@ -12,6 +12,7 @@ import { useEvents } from "../../../hooks/useEvents";
 import { useComments } from "../../../hooks/useComments";
 import { useForm } from "react-hook-form";
 import { Comment } from "../../../types/comment";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 
 type Props = {
@@ -20,17 +21,18 @@ type Props = {
   isJoined: boolean;
   isOrganizer: boolean;
   isSignedIn: boolean;
+  loginUserId: number | undefined;
   onClose: () => void;
 };
 
 
 export const EventDetailModal: VFC<Props> = memo(props => {
-  const { event, isOpen, onClose, isJoined, isOrganizer, isSignedIn } = props;
+  const { event, isOpen, onClose, isJoined, isOrganizer, isSignedIn, loginUserId } = props;
   const [ buttonSwitch, setButtonSwitch ] = useState<boolean>();
   const [ isFull, setIsFull ] = useState<boolean>(); //定員オーバかどうか
   const { createMemberships, deleteMemberships, loading } = useMemberships();
   const { getParticipants, participants} = useEvents();
-  const { createComments, getComments, isCommented, comments, loadingComment } = useComments();
+  const { createComments, getComments, deleteComments, isEditted, comments, loadingComment } = useComments();
   const history = useHistory();
   const { register, handleSubmit, setValue, formState } = useForm({ mode: "all" });
   
@@ -39,7 +41,7 @@ export const EventDetailModal: VFC<Props> = memo(props => {
     event?.id && getParticipants(`${event?.id}`);
     setIsFull(event?.max_participants === event?.participants_count);
     getComments(event?.id);
-  },[isOpen, isCommented])
+  },[isOpen, isEditted])
 
   const onSubmit = (params: Comment) => {
     if(isSignedIn) {
@@ -68,6 +70,10 @@ export const EventDetailModal: VFC<Props> = memo(props => {
   
   const onClickEdit = () => {
     history.push(`/event/${event?.id}`)
+  };
+
+  const onClickCommentDelete = (id: number) => {
+    deleteComments(id);
   };
 
   const redirectToSignIn = () => {
@@ -157,9 +163,24 @@ export const EventDetailModal: VFC<Props> = memo(props => {
                           />
                         <Box>
                           <Text fontSize="sm">{comment.name}</Text>
-                          <Box px={2} py={1} borderRadius="md" bg="gray.200">
-                            <Text fontSize="xs">{comment.comment}</Text>
-                          </Box>
+                          <HStack>
+                            <Box px={2} py={1} borderRadius="md" bg="gray.200">
+                              <Text fontSize="xs">{comment.comment}</Text>
+                            </Box>
+                            <Box>
+                              {(isOrganizer || comment.user_id === loginUserId) &&
+                                <IconButton
+                                onClick={() => onClickCommentDelete(comment.comment_id)}
+                                isLoading={loadingComment}
+                                variant="link"
+                                color="gray.300"
+                                _hover={{ color: "gray.500" }}
+                                aria-label="Delete comment"
+                                icon={<DeleteIcon />}
+                              />
+                              }
+                            </Box>
+                          </HStack>
                         </Box>
                       </HStack>
                     </Box>
