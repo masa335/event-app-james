@@ -8,7 +8,7 @@ AllCops:
   Exclude:
     - "vendor/**/*"
     - "bin/**"
-    - "db/schema.rb"
+    - 'db/schema.rb'
     - "node_modules/**/*"
     - "tmp/**/*"
     - "lib/**/*"
@@ -45,8 +45,6 @@ Style/FrozenStringLiteralComment:
 Style/RedundantSelf:
   Enabled: false
 
-##################### Lint ##################################
-
 ##################### Metrics ##################################
 
 # 変数の代入(A)、メソッドの呼び出し等(B)、条件分岐(C)から算出される複雑度
@@ -61,13 +59,18 @@ Metrics/CyclomaticComplexity:
 Metrics/LineLength:
   Max: 160
   Exclude:
-    - "db/migrate/*.rb"
+    - "/db/migrate/*.rb"
 
 # メソッドの行数
 Metrics/MethodLength:
   Max: 30
   Exclude:
-    - "db/migrate/*.rb"
+    - "/db/migrate/*.rb"
+
+# ブロックの行数
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*"
 
 # ハッシュ記法
 HashSyntax:

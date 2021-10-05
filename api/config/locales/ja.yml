@@ -1,6 +1,13 @@
 ---
 ja:
   activerecord:
+    attributes:
+      user:
+        name: 名前
+        email: メール
+        age: 年齢
+        self_introduction: 自己紹介
+        
     errors:
       messages:
         record_invalid: 'バリデーションに失敗しました: %{errors}'
@@ -109,8 +116,9 @@ ja:
   errors:
     format: "%{attribute}%{message}"
     messages:
+      invalid_password: あああ
       accepted: を受諾してください
-      blank: を入力してください
+      blank: "%{attribute}を入力してください"
       confirmation: と%{attribute}の入力が一致しません
       empty: を入力してください
       equal_to: は%{count}にしてください
@@ -121,17 +129,17 @@ ja:
       inclusion: は一覧にありません
       invalid: は不正な値です
       less_than: は%{count}より小さい値にしてください
-      less_than_or_equal_to: は%{count}以下の値にしてください
+      less_than_or_equal_to: "%{attribute}は%{count}以下の値にしてください"
       model_invalid: 'バリデーションに失敗しました: %{errors}'
-      not_a_number: は数値で入力してください
+      not_a_number: "%{attribute}は半角数字で入力してください"
       not_an_integer: は整数で入力してください
       odd: は奇数にしてください
       other_than: は%{count}以外の値にしてください
       present: は入力しないでください
       required: を入力してください
-      taken: はすでに存在します
-      too_long: は%{count}文字以内で入力してください
-      too_short: は%{count}文字以上で入力してください
+      taken: "この%{attribute}はすでに存在します"
+      too_long: "%{attribute}は%{count}文字以内で入力してください"
+      too_short: "%{attribute}は%{count}文字以上で入力してください"
       wrong_length: は%{count}文字で入力してください
     template:
       body: 次の項目を確認してください
