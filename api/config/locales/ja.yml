@@ -7,6 +7,14 @@ ja:
         email: メール
         age: 年齢
         self_introduction: 自己紹介
+      event:
+        user_id: ユーザーID
+        event_name: イベント名
+        event_category: イベントカテゴリ
+        prefecture_id: 都道府県ID
+        start_date: 開始時間
+        end_date: 終了時間
+        max_participants: 参加人数上限
         
     errors:
       messages:
