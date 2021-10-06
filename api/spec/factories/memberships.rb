@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :membership do
-    event nil
-    user nil
+    association :user
+    association :event
   end
 end
