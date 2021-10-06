@@ -18,10 +18,10 @@ RSpec.describe User, type: :model do
   end
 
   it 'is invalid with duplicate email address' do
-    FactoryBot.create(:user)
-    user = FactoryBot.build(:user)
-    user.valid?
-    expect(user.errors[:email]).to include('このメールはすでに存在します')
+    user = FactoryBot.create(:user)
+    other_user = FactoryBot.build(:user, email: user.email)
+    other_user.valid?
+    expect(other_user.errors[:email]).to include('このメールはすでに存在します')
   end
 
   it 'is invalid with name length more than 50 characters' do
