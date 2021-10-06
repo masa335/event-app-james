@@ -15,6 +15,15 @@ ja:
         start_date: 開始時間
         end_date: 終了時間
         max_participants: 参加人数上限
+      comment:
+        user_id: ユーザーID
+        event_id: イベントID
+      membership:
+        user_id: ユーザーID
+        event_id: イベントID
+      relationship:
+        follower_id: follower_id
+        followed_id: followed_id
         
     errors:
       messages:
