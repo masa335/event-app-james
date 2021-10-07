@@ -54,4 +54,7 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # ログインして、client,access-token,uidを取得できるようにするヘルパーを読み込み
+  config.include AuthorizationSpecHelper, type: :request
 end
