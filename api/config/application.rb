@@ -50,5 +50,8 @@ module James
     config.middleware.use ActionDispatch::Cookies # Required for all session management
     config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
     config.middleware.use ActionDispatch::Flash
+
+    # libディレクトリ配下のモジュールを読み込めるようにする設定
+    config.autoload_paths << Rails.root.join('lib')
   end
 end
