@@ -1,8 +1,8 @@
 name: Test
 
 on:
-  push:
-    branches: pull_request
+  pull_request:
+    branches: main
 
 jobs:
   setup_and_test_execution:
@@ -17,12 +17,13 @@ jobs:
       uses: ruby/setup-ruby@473e4d8fe5dd94ee328fdfca9f8c9c7afc9dae5e
       with:
         ruby-version: ${{ matrix.ruby-version }}
-        bundler-cache: true # hoge runs 'bundle install' and caches installed gems automatically
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
         working-directory: ./api
 
     - name: Setup Database
       run: |
         cp config/database.yml.ci config/database.yml
+        cat config/database.yml
         sudo /etc/init.d/mysql start
         bundle exec rake db:create
         bundle exec rake db:schema:load
