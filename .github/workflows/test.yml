@@ -8,15 +8,25 @@ jobs:
   setup_and_test_execution:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8.0
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD:
+          MYSQL_DATABASE: james_test
+          MYSQL_USER: root
+          MYSQL_PASSWORD:
+          MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        options: --health-cmd "mysqladmin ping -h localhost" --health-interval 20s --health-timeout 10s --health-retries 10
+
     steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
       uses: ruby/setup-ruby@477b21f02be01bcb8030d50f37cfec92bfa615b6
       with:
         ruby-version: 2.6.5
-
-    - name: Install mysql
-      run: sudo apt-get install libmysqlclient-dev
 
     - name: Install dependencies
       run:  bundle install
