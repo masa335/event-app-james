@@ -7,7 +7,9 @@ class Api::V1::UsersController < ApplicationController
     participants_count_sql = Membership.select('count(id)').where('memberships.event_id = events.id').to_sql
 
     organized_events = user.events.joins(:user).select("events.*, users.name as organizer, (#{participants_count_sql}) as participants_count").order(id: 'DESC')
-    participating_events = user.participating_events.joins(:user).select("events.*, users.name as organizer, (#{participants_count_sql}) as participants_count").order(id: 'DESC')
+    participating_events = user.participating_events.joins(:user)
+                               .select("events.*, users.name as organizer, (#{participants_count_sql}) as participants_count")
+                               .order(id: 'DESC')
     is_followed = user.followers.exists?(id: current_api_v1_user.id)
     render json: {
       user: user,

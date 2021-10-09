@@ -63,7 +63,7 @@ Metrics/LineLength:
 
 # メソッドの行数
 Metrics/MethodLength:
-  Max: 30
+  Max: 35
   Exclude:
     - "/db/migrate/*.rb"
 
@@ -71,6 +71,11 @@ Metrics/MethodLength:
 Metrics/BlockLength:
   Exclude:
     - "spec/**/*"
+    - "config/*"
+
+Metrics/AbcSize:
+  Exclude:
+    - "/db/migrate/*.rb"
 
 # ハッシュ記法
 HashSyntax:

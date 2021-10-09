@@ -10,9 +10,9 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     origins 'http://localhost:3000', 'https://event-app-james.vercel.app'
 
     resource '*',
-      headers: :any,
-      methods: [:get, :post, :put, :patch, :delete, :options, :head],
-      expose: ["access-token", "expiry", "token-type", "uid", "client"],
-      credentials: true
+             headers: :any,
+             methods: [:get, :post, :put, :patch, :delete, :options, :head],
+             expose: %w[access-token expiry token-type uid client],
+             credentials: true
   end
 end

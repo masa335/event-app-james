@@ -44,9 +44,9 @@ RSpec.describe 'Api::V1::CommentsRequest', type: :request do
     end
 
     it 'コメントが投稿できること' do
-      expect {
+      expect do
         post api_v1_event_comments_path(@event.id), params: { comment: 'test' }, headers: @auth_tokens
-      }.to change(Comment, :count).by(1)
+      end.to change(Comment, :count).by(1)
     end
 
     it '投稿したコメントが正しいこと' do
