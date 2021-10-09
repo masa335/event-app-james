@@ -35,3 +35,4 @@ jobs:
       run: bundle exec rspec
       env:
         RAILS_ENV: test
+      working-directory: ./api
