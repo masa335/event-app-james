@@ -22,11 +22,13 @@ jobs:
     - name: Setup Database
       run: |
         cp config/database.yml.ci config/database.yml
+        sudo /etc/init.d/mysql start
         bundle exec rake db:create
         bundle exec rake db:schema:load
       working-directory: ./api
       env:
         RAILS_ENV: test
+        MYSQL_ROOT_PASSWORD: password
 
     - name: Run RSpec
       run: bundle exec rspec
