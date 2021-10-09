@@ -35,3 +35,9 @@ jobs:
       env:
         RAILS_ENV: test
       working-directory: ./api
+    
+    - name: Run Rubocop
+      run: bundle exec rubocop
+      env:
+        RAILS_ENV: test
+      working-directory: ./api
