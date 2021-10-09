@@ -19,7 +19,9 @@ jobs:
       run: sudo apt-get install libmysqlclient-dev
 
     - name: Install dependencies
-      run:  bundle install
+      run:  ｜
+        cd api
+        bundle install
 
     - name: Setup Database
       run: |
