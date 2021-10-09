@@ -50,86 +50,91 @@ export const Header: VFC = memo(() => {
   return (
     <>
       <Flex
-          as="nav"
-          bg="#76a1b8"
-          color="white"
-          align="center"
-          justify="space-between"
-          padding={{ base:3, md: 5 }}
-        >
-          <Flex align="center" as="a" mr={8} _hover={{ cursor: "pointer" }} onClick={onClickHome}>
-            <Heading as="h1" fontSize={{ base: "md", md: "lg" }}>
-              JAMES
-            </Heading>
-          </Flex>
-          <Flex
-            align="center"
-            fontSize="sm"
-            display={{ base: "none", md: "flex" }}
-            flexGrow={2}
-          >
-            {!loading && isSignedIn &&
-              <Box pr={4}>
-                <Link onClick={onClickCreateEvent}>イベント作成</Link>
-              </Box>
-            }
-            {!loading && isSignedIn &&
-              <Box pr={4}>
-                <Link onClick={onClickUser}>アカウント</Link>
-              </Box>
-            }
-            {!loading && isSignedIn &&
-              <Box pr={4}>
-                <Link onClick={onClickSettings}>設定</Link>
-              </Box>
-            }
-            {!isSearch &&
-              <Box pr={4}>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <HStack spacing="10px" alignItems="center">
-                    <Box>
-                      <FormControl>
-                        <Input 
-                        id="keyword"
-                        type="text"
-                        width="200px"
-                        height="30px"
-                        color="black"
-                        placeholder="イベント検索"
-                        {...register("keyword",{ required: "キーワードは必須入力です" })}
-                        border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
-                      </FormControl>
-                    </Box>
-                    <Box>
-                      <Link onClick={onClickSearch}>
-                        <Icon as={GoSearch} />
-                      </Link>
-                    </Box>
-                  </HStack>
-                </form>
-              </Box>
-            }
-            <Spacer />
-            <Box pr={4}>
-              {!loading && (isSignedIn ? (
-                <Link onClick={signout}>ログアウト</Link>
-              ) : (
-                <Link onClick={onClickLogin}>ログイン</Link>
-              ))}
-            </Box>
-          </Flex>
-          <MenuIconButton onOpen={onOpen}/>
+        as="nav"
+        bg="#76a1b8"
+        color="white"
+        align="center"
+        justify="space-between"
+        padding={{ base:3, md: 5 }}
+      >
+        <Flex align="center" as="a" mr={8} _hover={{ cursor: "pointer" }} onClick={onClickHome}>
+          <Heading as="h1" fontSize={{ base: "md", md: "lg" }}>
+            JAMES
+          </Heading>
         </Flex>
-        <MenuDrawer 
-          isOpen={isOpen}
-          isSignedIn={isSignedIn} 
-          onClose={onClose} 
-          onClickUser={onClickUser} 
-          onClickLogin={onClickLogin}
-          onClickLogout={signout}
-          onClickCreateEvent={onClickCreateEvent}
-          onClickSettings={onClickSettings}
-        />
-      </>
+        <Flex
+          align="center"
+          fontSize="sm"
+          display={{ base: "none", md: "flex" }}
+          flexGrow={2}
+        >
+          {!loading && isSignedIn &&
+            <Box pr={4}>
+              <Link onClick={onClickCreateEvent}>イベント作成</Link>
+            </Box>
+          }
+          {!loading && isSignedIn &&
+            <Box pr={4}>
+              <Link onClick={onClickUser}>アカウント</Link>
+            </Box>
+          }
+          {!loading && isSignedIn &&
+            <Box pr={4}>
+              <Link onClick={onClickSettings}>設定</Link>
+            </Box>
+          }
+          {!isSearch &&
+            <Box pr={4}>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <HStack spacing="10px" alignItems="center">
+                  <Box>
+                    <FormControl>
+                      <Input 
+                      id="keyword"
+                      type="text"
+                      width="200px"
+                      height="30px"
+                      color="black"
+                      placeholder="イベント検索"
+                      {...register("keyword",{ required: "キーワードは必須入力です" })}
+                      border="1px" borderColor="gray.400" backgroundColor="gray.100"/>
+                    </FormControl>
+                  </Box>
+                  <Box>
+                    <Link onClick={onClickSearch}>
+                      <Icon as={GoSearch} />
+                    </Link>
+                  </Box>
+                </HStack>
+              </form>
+            </Box>
+          }
+          <Spacer />
+          <Box pr={4}>
+            {!loading && (isSignedIn ? (
+              <Link onClick={signout}>ログアウト</Link>
+            ) : (
+              <Link onClick={onClickLogin}>ログイン</Link>
+            ))}
+          </Box>
+        </Flex>
+        <Box alignItems="center" display={{ base: "flex", md: "none" }}>
+          <Link pr={2} onClick={onClickSearch}>
+            <Icon as={GoSearch} />
+          </Link>
+        <MenuIconButton onOpen={onOpen}/>
+        </Box>
+      </Flex>
+      <MenuDrawer 
+        isOpen={isOpen}
+        isSignedIn={isSignedIn} 
+        onClose={onClose} 
+        onClickUser={onClickUser} 
+        onClickLogin={onClickLogin}
+        onClickLogout={signout}
+        onClickCreateEvent={onClickCreateEvent}
+        onClickSettings={onClickSettings}
+      />
+    </>
   );
 });

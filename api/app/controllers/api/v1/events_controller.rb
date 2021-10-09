@@ -19,6 +19,8 @@ class Api::V1::EventsController < ApplicationController
 
   def search
     @keyword = params[:keyword]
+    # 参加人数を求めるサブクエリ
+    participants_count_sql = Membership.select('count(id)').where('memberships.event_id = events.id').to_sql
 
     if @keyword.present?
       @events = []
@@ -26,12 +28,13 @@ class Api::V1::EventsController < ApplicationController
         next if keyword.blank?
 
         @events += Event.joins(:user)
-                        .select('events.*, users.name as organizer')
+                        .select("events.*, users.name as organizer, (#{participants_count_sql}) as participants_count")
                         .where('event_name LIKE(?) OR explanation LIKE(?)', "%#{keyword}%", "%#{keyword}%")
+                        .order(id: 'DESC')
       end
       @events.uniq!
     else
-      @events = Event.joins(:user).select('events.*, users.name as organizer').order(id: 'DESC')
+      @events = Event.joins(:user).select("events.*, users.name as organizer, (#{participants_count_sql}) as participants_count").order(id: 'DESC')
     end
     render json: @events, status: :ok
   end
