@@ -7,17 +7,22 @@ on:
 jobs:
   setup_and_test_execution:
     runs-on: ubuntu-latest
+    strategy:
+          matrix:
+            ruby-version: 2.6.5
 
     steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
-      uses: ruby/setup-ruby@477b21f02be01bcb8030d50f37cfec92bfa615b6
+      uses: ruby/setup-ruby@473e4d8fe5dd94ee328fdfca9f8c9c7afc9dae5e
       with:
-        ruby-version: 2.6.5
-
-    - name: Install dependencies
-      run:  bundle install
+        ruby-version: ${{ matrix.ruby-version }}
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       working-directory: ./api
+
+    # - name: Install dependencies
+    #   run:  bundle install
+    #   working-directory: ./api
 
     - name: Setup Database
       run: |
@@ -28,7 +33,6 @@ jobs:
       working-directory: ./api
       env:
         RAILS_ENV: test
-        MYSQL_ROOT_PASSWORD: password
 
     - name: Run RSpec
       run: bundle exec rspec
