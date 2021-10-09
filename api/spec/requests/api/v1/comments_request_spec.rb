@@ -10,7 +10,7 @@ RSpec.describe 'Api::V1::CommentsRequest', type: :request do
 
     it 'HTTPレスポンス200を返すこと' do
       get api_v1_event_comments_path(@event.id)
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status(400)
     end
 
     it '指定したイベントの全てのコメントを読み出すこと' do
