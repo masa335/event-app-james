@@ -1,0 +1,35 @@
+name: Test
+
+on:
+  push:
+    branches: main
+
+jobs:
+  setup_and_test_execution:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@477b21f02be01bcb8030d50f37cfec92bfa615b6
+      with:
+        ruby-version: 2.6.5
+
+    - name: Install mysql
+      run: sudo apt-get install libmysqlclient-dev
+
+    - name: Install dependencies
+      run:  bundle install
+
+    - name: Setup Database
+      run: |
+        cp api/config/database.yml.ci api/config/database.yml
+        bundle exec rake db:create
+        bundle exec rake db:schema:load
+      env:
+        RAILS_ENV: test
+
+    - name: Run RSpec
+      run: bundle exec rspec
+      env:
+        RAILS_ENV: test
