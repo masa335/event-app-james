@@ -21,10 +21,19 @@ export const useCurrentUser = () => {
         "uid": Cookies.get("_uid")
       }})
       .then((res) => {
-        setAuth({loading: false, isSignedIn: true, currentUser: res.data.current_user, memberships: res.data.memberships});
-        console.log("recoil set");
-        console.log(res.data.current_user);
-        console.log(res.data.memberships);
+        if (res.data.status === 200) {
+          setAuth({loading: false, isSignedIn: true, currentUser: res.data.current_user, memberships: res.data.memberships});
+          console.log("recoil set");
+          console.log(res.data.current_user);
+          console.log(res.data.memberships);
+        } else {
+          //クッキーの削除
+          Cookies.remove("_access_token")
+          Cookies.remove("_client")
+          Cookies.remove("_uid")
+          setAuth({loading: false, isSignedIn: false });
+          console.log("ログイン情報が確認できない為、再ログインしてください")
+        }
       })
       .catch((err) => {
         console.log(err);
