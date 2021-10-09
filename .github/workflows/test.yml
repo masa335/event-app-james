@@ -23,7 +23,6 @@ jobs:
     - name: Setup Database
       run: |
         cp config/database.yml.ci config/database.yml
-        cat config/database.yml
         sudo /etc/init.d/mysql start
         bundle exec rake db:create
         bundle exec rake db:schema:load
