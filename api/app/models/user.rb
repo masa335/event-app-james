@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   mount_uploader :image, AvaterUploader # CarrierWaveで作ったクラスと紐付ける
 
   validates :name, presence: true, length: { maximum: 50 }
-  validates :age, length: { maximum: 3 }, numericality: { only_integer: true }
+  validates :age, length: { maximum: 3 }, numericality: { only_integer: true, allow_nil: true }
   validates :self_introduction, length: { maximum: 200 }
 
   devise :database_authenticatable, :registerable,
