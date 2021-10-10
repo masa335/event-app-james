@@ -29,6 +29,10 @@ RSpec.describe Event, type: :model do
     expect(event.errors[:event_category]).to include('イベントカテゴリは半角数字で入力してください')
   end
 
+  it 'is allowed event_category value of nil' do
+    expect(FactoryBot.build(:event, event_category: nil)).to be_valid
+  end
+
   it 'is invalid without a start_date' do
     event = FactoryBot.build(:event, start_date: nil)
     event.valid?
@@ -51,6 +55,10 @@ RSpec.describe Event, type: :model do
     event = FactoryBot.build(:event, prefecture_id: 47)
     event.valid?
     expect(event.errors[:prefecture_id]).to include('都道府県IDは46以下の値にしてください')
+  end
+
+  it 'is allowed prefecture_id value of nil' do
+    expect(FactoryBot.build(:event, prefecture_id: nil)).to be_valid
   end
 
   it 'is invalid without a max_participants' do

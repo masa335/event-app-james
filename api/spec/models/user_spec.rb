@@ -42,6 +42,10 @@ RSpec.describe User, type: :model do
     expect(user.errors[:age]).to include('年齢は半角数字で入力してください')
   end
 
+  it 'is allowed age value of nil' do
+    expect(FactoryBot.build(:user, age: nil)).to be_valid
+  end
+
   it 'is invalid with self_introduction length more than 200 characters' do
     user = FactoryBot.build(:user, self_introduction: 'a' * 201)
     user.valid?
