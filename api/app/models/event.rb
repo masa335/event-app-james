@@ -5,10 +5,10 @@ class Event < ApplicationRecord
 
   validates :user_id, presence: true
   validates :event_name, presence: true, length: { maximum: 50 }
-  validates :event_category, numericality: { only_integer: true }
+  validates :event_category, numericality: { only_integer: true, allow_nil: true }
   validates :start_date, presence: true
   validates :end_date, presence: true
-  validates :prefecture_id, numericality: { only_integer: true, less_than_or_equal_to: 46 }
+  validates :prefecture_id, numericality: { only_integer: true, allow_nil: true, less_than_or_equal_to: 46 }
   validates :max_participants, presence: true, numericality: { only_integer: true, less_than_or_equal_to: 100 }
 
   mount_uploader :image, AvaterUploader # CarrierWaveで作ったクラスと紐付ける
