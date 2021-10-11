@@ -4,6 +4,7 @@ import { Button, FormControl, FormLabel, Input, Center, Stack, Link, Heading, Fo
 
 import { useSignin } from "../../hooks/useSignin";
 import { SigninParams } from "../../types/signinParams";
+import { GuestUserInfo } from "../../data/GuestUserInfo";
 
 export const Signin: VFC = memo(() => {
   const { signin, loading } = useSignin();
@@ -12,6 +13,11 @@ export const Signin: VFC = memo(() => {
   const onSubmit = (params: SigninParams) => {
     signin(params);
     console.log(params);
+  };
+
+  const onClickGuestLogin = () => {
+    const params = GuestUserInfo;
+    signin(params);
   };
 
   return (
@@ -45,6 +51,7 @@ export const Signin: VFC = memo(() => {
               </FormErrorMessage>
             </FormControl>
             <Button type="submit" colorScheme="blue" disabled={!formState.isValid || loading} isLoading={loading}>ログイン</Button>
+            <Button onClick={onClickGuestLogin} colorScheme="teal" isLoading={loading}>ゲストユーザーでログインする</Button>
             <Link color="teal.500" href="/signup">まだアカウントをお持ちでない方はこちら</Link>
           </Stack>
       </Center>
