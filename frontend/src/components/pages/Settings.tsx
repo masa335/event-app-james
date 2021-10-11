@@ -81,7 +81,7 @@ export const Settings: VFC = memo(() => {
       </Box>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Center my="30px" mx={{base: "10px", md: "200px", lg: "300px"}}>
-          <Stack spacing={4} w="100%">
+          <Stack maxW="500px" spacing={4} w="100%">
             <Heading as="h2" size="md" color="gray.600">プロフィール編集</Heading>
             <FormControl isInvalid={errors.name}>
               <FormLabel fontSize="md">ニックネーム</FormLabel>

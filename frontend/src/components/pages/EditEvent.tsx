@@ -95,7 +95,7 @@ export const EditEvent: VFC = memo(() => {
       </Box>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Center my="30px" mx={{base: "10px", md: "200px", lg: "300px"}}>
-          <Stack spacing={4} w="100%">
+          <Stack maxW="500px" spacing={4} w="100%">
             <FormControl isInvalid={errors.event_name}>
               <FormLabel fontSize="md">イベント名</FormLabel>
               <Input 
