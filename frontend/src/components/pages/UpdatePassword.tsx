@@ -28,7 +28,7 @@ export const UpdatePassword: VFC = memo(() => {
     </Box>
     <form onSubmit={handleSubmit(onSubmit)}>
       <Center my="30px" mx={{base: "40px", md: "200px", lg: "485px"}}>
-          <Stack spacing={4} w="100%">
+          <Stack maxW="500px" spacing={4} w="100%">
             <FormControl isInvalid={errors.password}>
               <FormLabel fontSize="md">パスワード</FormLabel>
               <Input 
