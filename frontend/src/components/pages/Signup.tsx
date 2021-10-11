@@ -1,5 +1,5 @@
 import { memo, VFC } from "react";
-import { Button, FormControl, FormLabel, Input, Center, Stack, FormErrorMessage, Heading } from "@chakra-ui/react"
+import { Button, FormControl, FormLabel, Input, Center, Stack, FormErrorMessage, Heading, Link } from "@chakra-ui/react"
 import { useSignup } from "../../hooks/useSignup";
 import { SignupParams } from "../../types/signupParams";
 import { useForm } from "react-hook-form";
@@ -77,6 +77,7 @@ export const Signup: VFC = memo(() => {
               </FormErrorMessage>
             </FormControl>
             <Button type="submit" colorScheme="blue" disabled={!formState.isValid || loading} isLoading={loading}>サインアップ</Button>
+            <Link color="teal.500" href="/login">すでにアカウントをお持ちの方はこちら</Link>
           </Stack>
       </Center>
     </form>
