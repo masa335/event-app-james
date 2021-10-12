@@ -26,11 +26,9 @@
   フロントエンドのホスティングにはVercelを利用しました。
 
 ## インフラ構成図
-***
-
+![image](https://user-images.githubusercontent.com/26037696/136884405-d38d52c3-9565-473c-a915-a2a1c84801c4.png)
 
 ## 技術スタック
-***
   * バックエンド  
     - Ruby on Rails 6  
       - devise token auth / RuboCop / RSpec / CarrierWave / byebug etc...
