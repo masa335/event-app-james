@@ -35,14 +35,10 @@
     - Puma
     - Nginx
     - MySQL
-<br>
-<br>
   * フロントエンド  
     - React  
       - chakra UI / axios / ReactHookForm / Recoil etc...
     - TypeScript
-<br>
-<br>
   * インフラ  
     - AWS  
       - VPC / ECS(Fargate) / ECR / ALB / Route53 / ACM / RDS / IAM / S3 / CloudWatch
