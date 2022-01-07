@@ -1,6 +1,6 @@
 # 普段、仕事で忙しくても、バンドがしたい人たちを繋ぐアプリです🎸
 
-  アプリURL : https://event-app-james.vercel.app/
+  アプリURL : ~~https://event-app-james.vercel.app/~~  (サービス終了)
 <br>
 <br>
 ### 📌**このアプリを作成しようと思ったきっかけ**
